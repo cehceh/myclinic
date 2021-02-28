@@ -1,0 +1,627 @@
+{% extends 'index.html' %} {% load crispy_forms_tags %} {% load render_table from django_tables2 %} {% load static %}
+<!--  -->
+{% block content %}
+
+<!-- <head>
+    <title>home page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/theform.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/realpython.css' %}"> -->
+<!-- <link rel="stylesheet" href="{% static 'fonts/Raleway.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/font-awesome.min.css' %}"> 
+</head> -->
+
+{% url 'clinic:save_patient' as create_patient_url %}
+<!--  -->
+{% if request.path == '/clinic/create/patient/' %}
+
+<!-- position:absolute; top:250px; left:-175px; display: grid; -->
+
+<!-- <div class="align-content-center" style="background-color:transparent; position: relative; display: inline-block; width: 100%; height: 100%; border-style: outset; border-radius: 20px; border-color: #aab5af; box-shadow: 2px 2px 4px 4px grey; margin: 20px; padding: 20px;" id="save-pat-div"> -->
+
+    <h1>
+        <p style="color: black;">Create Patient</p>
+    </h1>
+    <hr>
+    
+    <!-- <a role="button" class="btn btn-primary" href='#' onclick='overlay()'>Click here to show the overlay</a> -->
+    <!-- <a type="button" href='#' onclick='overlay()'>close</a> -->
+
+    <!-- <div class="alert {{ message.tags }} alert-dismissible fade show" style="background-color: lightpink; width: 100%;" role="alert">
+        {{savepatform.non_field_errors}}
+    </div> -->
+    <!--  -->
+    
+    <form method="post">{% csrf_token %}
+        <div class="float-left" id="left-savepat-div" style="overflow-x: auto; width: 45%; height: 100%;">
+            {{savepatform.id.label_tag}} {{savepatform.id}} <br>
+            <!-- <p></p><br> -->
+            <!--  -->
+            {{savepatform.name.label_tag}} {{savepatform.name}} <br />
+            <!--  -->
+            {{savepatform.address.label_tag}} {{savepatform.address}} <br />
+            <!--  -->
+            {{savepatform.birth_date.label_tag}} {{savepatform.birth_date}}
+            <hr>
+
+            <button type="submit" class="btn btn-dark" id="savepatform-btn">{{lable2}}</button>
+
+        </div>
+        <div class="float-right" id="right-savepat-div" style="overflow-x: auto; width: 45%; height: 100%;">
+            {{savepatform.cardid.label_tag}} {{savepatform.cardid}} <br>
+            <!--  -->
+            {{savepatform.phone.label_tag}} {{savepatform.phone}} <br />
+            <!--  -->
+            {{savepatform.mobile.label_tag}} {{savepatform.mobile}} <br />
+            <!--  -->
+            {{savepatform.age.label_tag}} {{savepatform.age}}
+            <hr>
+        </div>
+
+    </form>
+<!-- </div> -->
+{% endif %}
+
+
+<!-- This form for Updaet Patient -->
+<!-- <div class="alert {{ message.tags }} alert-dismissible fade show" style="background-color: lightpink; width: 1200px; height: 50px; margin: 10px; padding: 15px;" role="alert">
+        {{editpatform.non_field_errors}}
+    </div> -->
+{% if editpatform %}
+
+<!-- <div class="align-content-center" style="background-color:transparent; margin: 20px; width: 100%; height: 100%;
+      padding: 10px; border-style: outset; border-radius: 20px; border-color: #aab5af; box-shadow: 2px 2px 4px 4px grey;" id="edit-pat-div"> -->
+
+    <solid>
+        <h1 style="color:black">Update Patient</h1>
+    </solid>
+    <hr>
+    <a class="btn btn-dark" href="/clinic/create/visit/patient/{{ patient_id }}/" type="button">
+        Add New Visit
+        </a>
+    <a class="btn btn-dark" href="{% url 'clinic:save_patient' %}" type="button">
+        Add New Patient
+        </a>
+    {% if match_pasthist %}
+        <a type="button" class="btn btn-dark" href="{% url 'patientdata:save_pasthist' query.id %}">
+            Add New Past History 
+        </a>
+    {% else %}
+        <a type="button" class="btn btn-danger" href="{% url 'patientdata:save_pasthist' query.id %}">
+            Add Past History
+        </a>
+    {% endif %}
+    
+    <hr>
+    
+    <br><br>
+    <form method="POST" style="background-color:transparent;" id="edit-pat-form">{% csrf_token %}
+        <div class="float-left" style="background-color:transparent; width: 35%; height: 100%;">
+            {{ editpatform|crispy }} <br><br>
+            <button type="submit" class="btn btn-dark">Update</button>
+            <hr>
+        </div>
+        <div class="float-right" style="background-color:white; width: 55%; height: 50%; border-style: outset; border-radius: 20px; border-color: #aab5af; box-shadow: 2px 2px 4px 4px grey;" id="edit-pat-table-div">
+            {% render_table patient_visits_table %}
+        </div>
+       
+    </form>
+<!-- </div> -->
+
+{% endif %}
+
+
+<!-- No need for this at this moment -->
+{% if request.path == '/clinic/create/visit/' %}
+<div class="align-content-center" style="background-color:transparent; margin: 20px;
+        padding: 10px; border-style: outset; border-radius: 20px; border-color: #aab5af; box-shadow: 2px 2px 4px 4px grey;" id="savevis-div">
+    <!-- <div class="pt" style="background-color:white; width:700px; height:540px; position:absolute; top:150px; left:-100px; padding: 5px; border-style: outset; border-radius: 20px; border-color: #aab5af; box-shadow: 2px 2px 4px 4px grey;"> -->
+    <h1 style="color: black;"><strong>New Visits</strong></h1>
+    <hr>
+    <form method="post">{% csrf_token %}
+        <!--  -->
+        <!-- {{ save_visits_form|crispy }} <br><br> -->
+        <div class="float-left" id="left-savevis-div">
+            {{save_visits_form.id.label_tag}} {{save_visits_form.id}} <br>
+            <!--  -->
+            {{save_visits_form.patient.label_tag}} {{save_visits_form.patient}} <br>
+            <!--  -->
+            {{save_visits_form.complain.label_tag}} {{save_visits_form.complain}} <br>
+            <!--  -->
+            {{save_visits_form.amount.label_tag}} {{save_visits_form.amount}}
+            <hr>
+            <!-- <input type="button" value=""> -->
+            <!-- <input type="submit" class="btn btn-outline-light" role="button" value="Save" id="vis-form-btn" /> -->
+            <button type="submit" class="btn btn-danger">Save</button>
+
+        </div>
+        <div class="float-right" id="right-savevis-div">
+            {{save_visits_form.visitdate.label_tag}} {{save_visits_form.visitdate}} <br>
+            <!--  -->
+            {{save_visits_form.diagnosis.label_tag}} {{save_visits_form.diagnosis}} <br>
+            <!--  -->
+            {{save_visits_form.sign.label_tag}} {{save_visits_form.sign}} <br>
+            <!--  -->
+            {{save_visits_form.intervention.label_tag}} {{save_visits_form.intervention}}
+            <hr>
+        </div>
+    </form>
+</div>
+{% endif %}
+
+<!-- this form to save visit with patient id -->
+{% if bound_form %}
+    <div style="background-color: pink;">
+        {{save_visits_form.non_field_errors}}
+    </div>
+
+
+<!-- <div class="align-content-center" style="background-color:transparent; width: 1300px; height: 900px; margin: 20px; padding: 10px; border-style: outset; border-radius: 20px; border-color: #aab5af; box-shadow: 2px 2px 4px 4px grey; display: grid;" id="save-visits-div"> -->
+    <h1 style="color: black;"><strong>New Visits </strong></h1>
+    <hr>
+    <!-- <div class="float-right" style="background-color: transparent; width: 500px; height: 50px;">
+
+        <form class="form-inline mt-2 mt-md-0" method="GET" action="{% url 'clinic:search_visit' %}">
+
+            <input class="form-control mr-sm-2" type="text" name='vis' placeholder="Search Visits ID..." value="{{request.GET.vis}}" aria-label="Search">
+            
+            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+            
+        </form>
+        
+    </div> -->
+
+    <div class="" style="background-color: transparent; width: 500px; height: 50px;">
+        <!--  -->
+        <a type="button" class="btn btn-dark" href="{% url 'clinic:pass_patient_id' patient.id %}" type="button">
+            Add New Visit
+        </a>
+        <a type="button" class="btn btn-primary" href="{{ patient.get_absolute_url }}" type="button">
+            Edit Patient Data
+        </a>
+        {% if match_pasthist %}
+            <a type="button" class="btn btn-dark btn-rounded waves-effect" href="{% url 'patientdata:save_pasthist' patient.id %}">
+                Add Past History
+            </a>
+        {% else %}
+        <a type="button" class="btn btn-danger btn-rounded waves-effect" href="{% url 'patientdata:save_pasthist' patient.id %}">
+            Add Past History
+        </a>
+        {% endif %}
+            
+        <!-- <a type="button" class="btn btn-outline-primary btn-rounded waves-effect" href="#">
+            Add Past History
+        </a> -->
+        <!-- <a type="button" class="btn btn-secondary" href="{% url 'clinic:calculate_month_income' %}">
+          Monthly Report
+        </a>
+        <a type="button" class="btn btn-info float-right" href="{% url 'clinic:calculate_year_income' %}">
+          Yearly Report
+        </a> -->
+
+    </div>
+
+    <form method="post">{% csrf_token %}
+        <!--  -->
+        <div class="float-left" style="width:45%; height: 100%;" id="left">
+            <!--  -->
+            <hr>
+            <!--  -->
+            <div style="background-color: pink;">
+                {{save_visits_form.non_field_errors}}
+            </div>
+            <!--  -->
+            {{save_visits_form.id.label_tag}} {{save_visits_form.id}} <br />
+            <!--  -->
+            {{save_visits_form.patient.label_tag}} {{bound_form.patient}} <br />
+            <!--  -->
+            {{save_visits_form.complain.label_tag}} {{save_visits_form.complain}} <br />
+            <!--  -->
+            {{save_visits_form.amount.label_tag}} {{save_visits_form.amount}}
+            <hr>
+            <button type="submit" class="btn btn-dark" id="vis-form-btn">Save</button>
+            <!-- <input type="submit" class="btn-outline-danger" role="button" value="Save" id="vis-form-btn" /> -->
+        </div>
+        <div class="float-right" style="width:45%; height: 100%;" id="right">
+            <hr>
+            <!--  -->
+            {{save_visits_form.visitdate.label_tag}} {{save_visits_form.visitdate}} <br />
+            <!--  -->
+            {{save_visits_form.diagnosis.label_tag}} {{save_visits_form.diagnosis}} <br />
+            <!--  -->
+            {{save_visits_form.sign.label_tag}} {{save_visits_form.sign}} <br />
+            <!--  -->
+            {{save_visits_form.intervention.label_tag}} {{save_visits_form.intervention}}
+            <hr>
+        </div>
+    </form>
+<!-- </div> -->
+
+{% endif %}
+
+
+<!-- Update Visit Form -->
+{% if edit_visits_form %}
+<!-- <div class="pt" style="background-color:white; width:800px; height:1100px; position:absolute; top:150px; left:-10px; padding: 5px; border-style: outset; border-radius: 20px; border-color: #aab5af; box-shadow: 2px 2px 4px 4px grey;"> -->
+<!-- <div class="align-content-center" style="background-color:transparent; margin: 20px; width: 1350px; height: 1000px;
+                padding: 10px; border-style: outset; border-radius: 20px; border-color: #aab5af; box-shadow: 2px 2px 4px 4px grey;" id="edit-visits-div"> -->
+<div id="edit-visit">
+    
+    {% if  match %}
+        {% if messages %}
+            {% for message in messages %}
+                <article class="message is-{{ message.tags }}">
+                    <div class="message-body">
+                        {{ message }}
+                    </div>
+                </article>
+            
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+        
+    
+    <solid>
+        <h1 style="color:black">Update Visit</h1>
+    </solid>
+    <hr>
+    <a class="btn btn-dark" href="/clinic/create/visit/patient/{{ patient_id }}/" role="button" id="new-visit">
+        Add New Visit
+    </a>
+    <!-- <a class="btn btn-outline-primary" href="{% url 'revisitdata:save_revisit' patient.id query.id %}" role="button" id="edit-patient">
+        Add Revisit
+    </a> -->
+    <!--  -->
+    {% if match_revisit %}
+    <a class="btn btn-dark" href="{% url 'revisitdata:save_revisit' patient.id query.id %}" role="button">
+        Add Revisit
+    </a> 
+    <!--  -->
+    {% else %}
+    <a class="btn btn-danger" href="{% url 'revisitdata:save_revisit' patient.id query.id %}" role="button">
+        Add Revisit
+    </a> {% endif %}
+    <a class="btn btn-primary" href="{{ patient.get_absolute_url }}" role="button" id="edit-patient">
+        Edit Patient Data
+    </a>
+    <!--  -->
+    {% if match_present %}
+    <a class="btn btn-primary" href="{% url 'patientdata:edit_present_hist' patient.id query.id present_id.id %}" role="button" id="present-history">
+            Update Present History
+    </a> {% else %}
+    <a class="btn btn-danger" href="{% url 'patientdata:save_present_hist' patient.id query.id %}" role="button" id="present-history">
+            Add Present History
+    </a>
+    {% endif %}
+    <!--  -->
+    {% if medicine %}
+    <a class="btn btn-secondary" href="/clinic/drug/patient/{{patient_id}}/visit/{{query}}/" role="button">
+        See Prescription 
+    </a> {% else %}
+    <a class="btn btn-danger" href="/clinic/drug/patient/{{patient_id}}/visit/{{query}}/" role="button">
+        Add Prescription
+    </a> {% endif %}
+    <a class="btn btn-success float-right" href="{% url 'revisitdata:view_revisit' query.id patient.id %}" role="button">
+        All Revists for Visit No. {{query}}
+    </a>
+    <!-- <form class="form-inline mt-2 mt-md-0 float-right" method="GET" action="{% url 'clinic:search_visit' %}">
+
+        <input class="form-control mr-sm-2" type="text" name='vis' placeholder="Search Visits ..." value="{{request.GET.vis}}" aria-label="Search">
+       
+        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+        
+    </form> -->
+    <hr>
+    <!--  -->
+    <!-- {% if messages %}
+    <div class="align-content-center" style="background-color: lightpink; height: 30px;">
+        <ul class="messages">
+            {% for message in messages %}
+            <li {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %} -->
+    <form method="POST">{% csrf_token %}
+        <!--  -->
+        <div style="background-color: pink;">
+            {{edit_visits_form.non_field_errors}}
+        </div>
+        <!-- {{edit_visits_form | crispy }} -->
+        <div class="float-left" style="width: 45%; height: 100%;" id="left">
+            <!-- <div class="float-left" id="left"> -->
+            {{edit_visits_form.id.label_tag}} {{edit_visits_form.id}} <br />
+            <!--  -->
+            {{edit_visits_form.patient.label_tag}} {{edit_visits_form.patient}} <br/>
+            <!--  -->
+            {{edit_visits_form.complain.label_tag}} {{edit_visits_form.complain}} <br />
+            <!--  -->
+            {{edit_visits_form.amount.label_tag}} {{edit_visits_form.amount}}
+            <hr>
+            <!-- <button type="submit" class="btn btn-outline-danger" id="vis-form-btn">Update</button> -->
+            <input type="submit" class="btn btn-dark" value="Update" id="vis-form-btn" />
+        </div>
+        <div class="float-right" style="width: 45%; height: 100%;" id="right">
+            {{edit_visits_form.visitdate.label_tag}} {{edit_visits_form.visitdate}} <br/>
+            <!--  -->
+            {{edit_visits_form.diagnosis.label_tag}} {{edit_visits_form.diagnosis}} <br />
+            <!--  -->
+            {{edit_visits_form.sign.label_tag}} {{edit_visits_form.sign}} <br />
+            <!--  -->
+            {{edit_visits_form.intervention.label_tag}} {{edit_visits_form.intervention}}
+            <hr>
+        </div>
+    </form>
+<!-- </div> -->
+</div>
+{% endif %}
+<!--  -->
+
+
+<!-- For save Medicine -->
+{% if save_medicine_form %}
+<!--  -->
+<!-- {% if match_visit %} -->
+<!--  -->
+<!-- {% else %} -->
+<!-- <div style="background-color: pink;"> -->
+<!-- {{save_medicine_form.non_field_errors}} -->
+<!--</div> -->
+<!-- {% endif %} -->
+{% if match_visit %} {% else %}
+<!-- for empty prescription -->
+<div class="alert {{ message.tags }} alert-dismissible fade show" style="background-color: lightpink; width: 100%; height: 50px; margin: 10px; padding: 15px;" role="alert">
+    <li {% if message.tags %} class=" {{ message.tags }} " {% endif %}>
+        This prescription is empty please add drugs to this prescription
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="color: black; margin: 5px; padding: 5px;">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </li>
+</div>
+{% endif %}
+
+<!-- position:absolute; top:250px; left:-175px; -->
+<!-- <div class="align-content-center" style="background-color:transparent; width:100%; height:100%; margin: 20px; padding: 10px; border-style: outset; border-radius: 20px; border-color: #aab5af; box-shadow: 2px 2px 4px 4px rgb(173, 158, 158);" id="save-medicine"> -->
+    <!-- id="save-drug-div" -->
+    <!-- <br><br> -->
+    <div class="align-content-center">
+        <h1 style="color: black;"><strong>Add Prescription for {{patient}} with visit no. {{visid}}</strong></h1>
+    </div>
+    <div class="float-left" style="background-color: transparent; width: 500px; height: 50px;">
+        <!-- <input class="float-right" type="text" name="pages" id="pages"> -->
+        <p>
+            <h3 style="color: black;">Visit Date : {{ vis_date }}</h3>
+        </p>
+        <!-- <br><br><br> -->
+        <hr>
+    </div>
+    <!-- <hr> -->
+    <br><br>
+    <!-- <hr> -->
+    <div class="float-left" style="background-color: transparent; width: 100%; height: 100%;">
+        <br>
+
+        <!-- <form class="form-inline mt-2 mt-md-0 float-left" method="GET" action="{% url 'clinic:save_medicine' patient.id visit.id %}">
+            <input class="form-control mr-sm-2" type="text" name='pages' placeholder="edit pagination pages " value="{{request.GET.pages}}" aria-label="Search">
+            <button class="btn btn-secondary my-2 my-sm-0" type="submit" hidden>Set Pages</button>
+        </form> -->
+        
+        <!-- <input type="text" value="{{vis_date}}" name="vis-date" id="vis-date"> -->
+        <!-- <a class="btn btn-outline-primary" href="/clinic/add/prescription/patient/{{ patid }}/visit/{{ visid }}/" role="button">
+        Add New Prescription
+    </a> -->
+
+        <a class="btn btn-dark" href="/clinic/create/visit/patient/{{ patid }}/" role="button" id="new-visit">
+            Add New Visit
+        </a>
+            <a class="btn btn-primary" href="{% url 'clinic:edit_patient' patient.id %}" role="button"vid="edit-patient">
+            Edit Patient No. {{patid}} <!-- [[ patient_name.getElementById('patient') ]] -->
+        </a>
+            <a class="btn btn-primary" href="/clinic/edit/visit/{{ visid }}/patient/{{ patid }}/" role="button">
+        Edit Visit No. {{visid}}
+        </a>
+        
+        <!-- {% if present %}
+            <a class="btn btn-dark" href="{% url 'patientdata:save_present_hist' patient.id visit.id %}" role="button">
+                Add Present History
+            </a>
+        {% else %}
+            <a class="btn btn-danger" href="{% url 'patientdata:save_present_hist' patient.id visit.id %}" role="button">
+                Add Present History
+            </a>
+        {% endif %} -->
+        <!--  -->
+        {% if match_visit %}
+        <a class="btn btn-success float-right" href="{% url 'clinic:print_html' visit.id %}" role="button">
+            Print Perview
+            </a>
+        {% else %}
+        <!--  -->
+        <!-- <a class="btn btn-primary float-right" href="#add_drugs_to_prescription" role="button">
+                Print Notview 
+            </a> -->
+        <!--  -->
+        {% endif %}
+        <!-- <br><br> -->
+        <!-- <hr> -->
+        <!-- <br> -->
+    </div>
+    <!-- <hr> -->
+    <br><br>
+    <br><br>
+    <!-- <hr> -->
+    <form method="post">{% csrf_token %}
+        <!--  -->
+        <div class="float-left" style="background-color:transparent;width: 30%;height: 100%;">
+            <br>
+            <!-- <hr> -->
+            <!-- id="left-save-drug-div" -->
+            <div style="background-color: pink;">
+                {{save_medicine_form.non_field_errors}}
+            </div>
+            <!--  -->
+            <!-- {{ save_medicine_form.presc.label_tag }} {{ visit_form.presc }} <br> -->
+            <!--  -->
+            {{ save_medicine_form.name.label_tag }} {{ save_medicine_form.name }} <br>
+            <!--  -->
+            {{ save_medicine_form.plan.label_tag }} {{ save_medicine_form.plan}} <br>
+            <!--  -->
+            {{ save_medicine_form.patient.label_tag }} {{ visit_form.patient }} <br>
+            <!--  -->
+            {{ save_medicine_form.visit.label_tag }} {{ visit_form.visit }} <br>
+
+            <button type="submit" class="btn btn-dark" id="save_medicine_form-btn">Add Drug</button>
+            <!-- <input type="submit" class="btn btn-outline-danger" id="save_medicine_form-btn" value="Add Drug"> -->
+            <hr>
+        </div>
+        <br>
+        <div class="float-right" style="float:right; background-color:white; width:60%; height:100%; 
+        border-style: outset; border-radius: 20px; border-color: #aab5af; box-shadow: 2px 2px 4px 4px grey;">
+            <br>
+            <!-- id="drug-table-div" -->
+            {% render_table drug_table %}
+           
+        </div>
+
+    </form>
+
+<!-- </div> -->
+
+{% endif %}
+
+<!-- Updating Medicine -->
+{% if edit_medicine_form %}
+<!--  -->
+<!-- {% if messages %}
+<div class="align-content-center" style="background-color: lightpink; height: 30px;">
+    <ul class="messages">
+        {% for message in messages %}
+        <li {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %} -->
+
+<!-- <div class="align-content-center" style="background-color:transparent; position: relative; display: inline-block; width: 100%; height:100%; margin: 20px; padding: 15px; border-style: outset; border-radius: 20px; border-color: #aab5af; box-shadow: 2px 2px 4px 4px grey;" id="edit-drug-div"> -->
+
+    <!-- <solid>
+        <h1 style="color:black">Edit Medicine</h1>
+    </solid>
+    <br><br> -->
+    <div class="float-left" style="background-color: transparent; width: 500px; height: 50px;">
+        <h1 style="color: black;"><strong>Update Prescription</strong></h1>
+        <!-- <input class="float-right" type="text" name="pages" id="pages"> -->
+        <!-- <hr> -->
+
+        <p>
+            <h3 style="color: black;">Visit Date : {{ vis_date }}</h3>
+        </p>
+        <!-- <hr> -->
+        <!-- <br><br><br> -->
+    </div>
+    <br><br>
+
+    <div class="float-right" style="background-color: transparent; width: 100%; height: 100%;">
+        <a class="btn btn-dark" href="/clinic/create/visit/patient/{{ patid }}/" role="button" id="new-visit">
+            Add New Visit
+        </a>
+        <a class="btn btn-primary" href="{% url 'clinic:edit_patient' patient.id %}" role="button" id="edit-patient">
+            Edit Patient Data
+        </a>
+        <a class="btn btn-primary" href="/clinic/edit/visit/{{ visid }}/patient/{{ patid }}/" role="button">
+            Edit Visit No. {{visid}}
+        </a>
+        <a class="btn btn-success float-right" href="{% url 'clinic:print_html' visit.id %}" role="button">
+            Print Perview
+        </a>
+        <!-- <br><br> -->
+        <hr>
+        <!-- <br> -->
+    </div>
+    <br><br>
+
+    <form method="POST">{% csrf_token %}
+        <!--  -->
+        <!-- {{ edit_medicine_form|crispy }} <br><br> -->
+        <!--  -->
+        <div class="float-left" style="background-color:transparent; width:35%; height:100%;">
+            <br>
+            <hr>
+            <!-- id="left-edit-drug-div" -->
+            {{ edit_medicine_form.name.label_tag }} {{ edit_medicine_form.name }} <br>
+            <!--  -->
+            {{ edit_medicine_form.plan.label_tag }} {{ edit_medicine_form.plan}} <br>
+            <!--  -->
+            {{ edit_medicine_form.patient.label_tag }} {{ edit_medicine_form.patient }} <br>
+            <!--  -->
+            {{ edit_medicine_form.visit.label_tag }} {{ edit_medicine_form.visit }} <br>
+
+            <!-- <input type="submit" class="btn btn-block" value="Update"> -->
+            <button type="submit" class="btn btn-dark" id="save_medicine_form-btn">Update</button>
+            <hr>
+        </div>
+        <br>
+        <div class="float-right" style="float:right; background-color:white; width:60%; height:100%; border-style: outset; border-radius: 20px; border-color: #aab5af; box-shadow: 2px 2px 4px 4px grey;">
+            <!-- id="drug-table-div" -->
+            <br>
+            <!--  -->
+            {% render_table drug_table %}
+            
+        </div>
+    </form>
+<!-- </div> -->
+{% endif %}
+
+{% endblock %}
+
+<!-- Here you must write the script -->
+{% block scripts %}
+    <!-- Write javascript code Here -->
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#birth-date, #visitdate').datepicker({
+                dateFormat: "yy-mm-dd"
+            });
+
+            $('#birth-date').on('change', function() {
+                var dob = new Date($('#birth-date').val());
+                var today = new Date();
+                var age = Math.floor((today - dob) / (365.25 * 24 * 60 * 60 * 1000)); // $('#age').val(age); // });
+                $('#age').val(age);
+            });
+        })
+    </script>
+    <!-- <script type="text/javascript" src="{% static 'js/vue.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/axios.min.js' %}"></script> -->
+    <script>
+        // Using Vue.js Here
+        // var editPasthist = new Vue ({
+        //     el: '#save-medicine',
+        //     delimiters: ['[[', ']]'],
+        //     // data () {
+        //     //     return 
+        //     data: {
+        //         patient_name: '' ,
+        //         title: "Edit Past History",
+        //         message: 'Code with amr',
+        //         showDialog: false,
+        //         category_id: 0,
+        //     },
+        // })
+        // new instance of Vue.js
+        // var editVisit = new Vue({
+        //     el: '#edit-visit',
+        //     delimiters: ['[[', ']]'],
+        //     data: {
+        //         message: '',
+        //         // title: "Add Past History",
+        //     }
+        // });
+
+    </script>
+
+{% endblock  %}

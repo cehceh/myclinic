@@ -1,0 +1,28 @@
+{% extends 'index.html' %}
+{% load i18n %}
+
+{% block content %}
+    
+<section class="hero is-medium is-info is-bold">
+    
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">{% trans 'Wellcome To Our Clinic Application' %}</h1>
+            
+            {% if request.user.is_authenticated %}
+                <h2 class="subtitle">{% trans 'We are happy to be with us' %} {{user.username}} 
+                    <a href="dashboard"> {% trans 'Goto Your Dashboard' %}</a>
+                </h2>
+            {% else %}
+                <h2 class="subtitle">
+                    {% trans 'We will be happy if you join Our Clinic, Try to' %} 
+                    <a href="#"><strong>{% trans 'Sign up' %}</strong></a>{% trans 'now' %}  
+                </h2>
+            {% endif %}                
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}
+    

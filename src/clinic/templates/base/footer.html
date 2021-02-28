@@ -1,0 +1,55 @@
+
+<footer class="page-footer blue-grey darken-4" id="footer-id">
+    <div class="container">
+        <div class="row center">
+            <h5><a class="white-text" href="/clinic/">KMA Clinic Application</a></h5>
+            <br>
+        </div> 
+
+       <div class="row">
+            <div class="col s6 l3 center">
+                <a href="{% url 'patientdata:table_patient' %}" class="btn-flat white-text">Patients</a>
+            </div>
+            <div class="col s6 l3 center">
+                <a href="#" class="btn-flat white-text">Search</a>
+            </div>
+            <div class="col s6 l3 center">
+                <a href="{% url 'visits:table_visits' %}" class="btn-flat white-text">Visits</a>
+            </div>
+            <div class="col s6 l3 center">
+                <a href="https://github.com/cehceh/" class="btn-flat white-text" target="_blank">github</a>
+            </div>
+            <div class="col s6 l3 center">
+                <a href="http://amr-aly.simplesite.com" class="btn-flat white-text">Desktop</a>
+            </div>
+        </div>
+        <div class="row center">
+            Developed By Amr © {% now 'Y' %} 
+        </div>
+    </div>
+    
+    <div class="footer-copyright blue-grey darken-0">
+        <div class="container left">
+            <h5><a class="white-text" href="#" >KMA Applications</a></h5>
+        </div>
+        <div class="container center">
+            Developed By Amr © {% now 'Y' %} 
+        </div>
+        
+    </div>
+</footer>
+
+<!-- <footer class="footer bg-light" id="footer-vue">
+            <div class="content has-text-centered">
+                <img :src="image"> <p><strong>Events Project</strong> [ msg ]</p> 
+            </div>
+        </footer> -->
+        <!-- <nav class="navbar navbar-dark bg-dark fixed-bottom" id="footer-vue">
+            <a class="navbar-brand" href="/">
+                &copy; [ footerTitle ] {% now ' Y' %}
+            </a>
+            <div class="content-center text-white">
+                &copy; [ footerTitle ] {% now ' Y' %} 
+                <img :src="image"> <p><strong>Events Project</strong> [ msg ]</p> 
+            </div>
+        </nav> -->

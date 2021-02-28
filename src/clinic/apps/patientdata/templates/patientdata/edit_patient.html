@@ -1,0 +1,134 @@
+{% extends 'index.html' %} {% load crispy_forms_tags %} 
+{% load render_table from django_tables2 %} 
+{% load static %}
+<!--  -->
+{% block content %}
+
+<!--  -->
+
+
+    <solid>
+        <h1 style="color:black">Update Patient</h1>
+    </solid>
+    <hr>
+    <div class="container">
+        <a class="button is-dark" href="{% url 'visits:pass_patient_id' patient_id %}" role="button">
+            New Visit</a>
+        <a class="button is-dark" href="{% url 'patientdata:save_patient' %}" role="button">
+            New Patient</a>
+    </div>
+    <hr>
+    
+    <br><br>
+    <form method="POST" style="background-color:transparent;" id="edit-pat-form">{% csrf_token %}
+        
+        <div class="float-left" style="background-color:transparent;height: 100%; width: 35%;" id="left-editpat-div">
+            <!-- {{editpatform.id.label_tag}} {{editpatform.id}} <br>
+          
+            {{editpatform.name.label_tag.disabled}}
+            {{editpatform.name.disabled}} <br />
+            
+            {{editpatform.address.label_tag}} {{editpatform.address}} <br />
+            
+            {{editpatform.birth_date.label_tag}} {{editpatform.birth_date}}
+            
+            {{editpatform.cardid.label_tag.hidden}}
+            {{editpatform.cardid.hidden}} <br>
+           
+            {{editpatform.phone.label_tag}} {{editpatform.phone}} <br />
+            
+            {{editpatform.mobile.label_tag}} {{editpatform.mobile}} <br />
+            
+            {{editpatform.age.label_tag}} {{editpatform.age}} -->
+
+
+            {{ editpatform|crispy }} <br><br>
+            <button type="submit" class="button is-primary">Update</button>
+            
+            <hr>
+        </div>
+
+        <div class="float-right" style="float:right; height: 100%; width: 55%;background-color:white; border-style: outset; border-radius: 20px; border-color: #aab5af; box-shadow: 2px 2px 4px 4px grey;" id="edit-pat-table-div">
+            {% render_table patient_visits_table %}
+        </div>
+       
+    </form>
+
+{% endblock %}
+
+{% block scripts %}
+
+    <script type="text/javascript">
+        $('#birth-date, #visitdate').datepicker({
+            dateFormat: "yy-mm-dd",
+        });
+        $('#birth-date').on('change', function() {
+            var dob = new Date($('#birth-date').val());
+            var today = new Date();
+            var age = Math.floor((today - dob) / (365.25 * 24 * 60 * 60 * 1000)); // $('#age').val(age); // });
+            $('#age').val(age);
+        });
+
+        $('#plan').bind('input propertychange', function(ev) {
+            var text = ev.target.value;
+            if (arabicPattern.test(text)) {
+                // arabic;
+                $('#plan').css('direction', 'rtl')
+            }
+        });
+        //
+        $(document).on('focus', '.plan', function() {
+            $('#plan').attr('lang', 'arabisk');
+        });
+        $(document).on('outfocus', '.plan', function() {
+            $('#plan').attr('lang', 'eng');
+        });
+
+        // for open popup window
+        // function overlay() {
+        //     el = document.getElementById("overlay");
+        //     el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
+        // }
+        /// 
+        // function printDiv() {
+        //     //
+        //     var divToPrint = document.getElementById("medicine-table");
+        //     var newWin = window.open('', 'Print-Window');
+        //     newWin.document.write(divToPrint.innerHTML);
+        //     newWin.print();
+        //     newWin.close();
+        //
+        // var divToPrint = document.getElementById('medicine-table');
+        // var newWin = window.open('', 'Print-Window');
+        // newWin.document.open();
+        // newWin.document.write('<html > <body onload = "window.print()"> ' + divToPrint.innerHTML + '</body></html>');
+
+        // newWin.document.close();
+        // setTimeout(function() {
+        //     newWin.close();
+        // }, 10);
+        // }
+        // $('#btn-print').on('click', function() {
+        //         printDiv();
+        //     })
+        // $(document).ready(function() {
+        //     $('#btn').on('click', function() {
+        //         $('#medicine-table').tableExport({
+        //             type: 'pdf',
+        //             // escape: 'false',
+        //             separator: ',',
+        //             ignoreColumn: [2, 3],
+        //             // tableName: 'yourTableName',
+        //             // type: 'csv',
+        //             pdfFontSize: 14,
+        //             pdfLeftMargin: 20,
+        //             escape: 'true',
+        //             htmlContent: 'false',
+        //             consoleLog: 'false',
+        //         })
+        //     })
+        // });
+    </script>
+
+
+{% endblock %}

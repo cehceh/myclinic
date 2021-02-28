@@ -1,0 +1,24 @@
+{% extends 'index.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load render_table from django_tables2 %} 
+
+{% block content %}
+  
+
+<!-- <div class="align-content-center" style="background-color:white; height: 100%; width: 100%; margin: 30px;
+        display: inline-block; position:relative; padding: 10px; border-style: outset; border-radius: 20px; 
+        border-color: #aab5af; box-shadow: 2px 2px 4px 4px grey;" id="tables-div" name="mydiv"> -->
+    <p class="float-left">
+        <h1><strong>All Visits Data</strong></h1>
+    </p><hr>
+    <form class="form-inline mt-2 mt-md-0 float-left" method="GET" action="{% url 'visits:table_visits' %}">
+        <input class="form-control mr-sm-2" type="text" name='pageno' placeholder="Edit pagination pages here..." value="{{request.GET.pageno}}" aria-label="Search">
+        <button class="btn btn-secondary my-2 my-sm-0" type="submit" hidden>Search</button>
+    </form><br><br>
+
+    {% render_table visits_table %}
+    <!-- </div> -->
+
+
+{% endblock  %}

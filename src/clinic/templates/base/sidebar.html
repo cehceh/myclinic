@@ -1,0 +1,170 @@
+{% load i18n %}
+{% load static %}
+
+
+<nav id="sidebar" class="active">
+    <h1><a href="/" class="logo">KMA Clinic</a></h1>
+    
+    <ul class="list-unstyled components mb-5">
+    {% if user.is_authenticated %}
+        <li class="active">
+            <a href="#userSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                <span class="fa fa-user"></span>
+                {% trans 'Wellcome' %}: {{ user.username }}
+            </a>
+            <ul class="collapse list-unstyled" id="userSubmenu">
+                <li>
+                    <a href="/dashboard"><span class="fa fa-home"></span>
+                    {% trans 'Dashboard' %}</a>
+                </li>
+                {% if user.is_staff %}
+                <li>
+                    <a href="#">
+                        <span class="fa fa-cubes"></span>
+                     {% trans 'Created Products' %}</a>
+                </li>
+                <li>
+                    <a href="#"> 
+                        <span class="fas fa-battery-full"></span>
+                         {% trans 'Created Stock' %}</a>
+                </li>
+                {% endif %}
+                <li>
+                    <a href="#">
+                    <i class="fa fa-sign-out-alt" aria-hidden="true">
+                    </i> {% trans 'Log out' %}</a>
+                </li>
+            </ul>              
+        </li>
+    {% endif %}
+        <li class="active">
+            <a href="/dashboard">
+            <span class="fa fa-home"></span> Home</a>
+        </li>
+        <li>
+            <a href="#gynSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+            <span class="fa fa-female"></span> Gyn Clinic</a>
+            <ul class="collapse list-unstyled" id="gynSubmenu">
+                <li>
+                    <a href="{% url 'booking:save_book' %}">
+                        <span class="fa fa-user-md"></span>
+                        Follow Up</a>
+                </li>
+                <li>
+                    <a href="{% url 'booking:table_book' %}">
+                        <span class="fa fa-venus-mars"></span>
+                         Obestetric History</a>
+                </li>
+                <li>
+                    <a href="{% url 'booking:table_book' %}">
+                        <span class="fa fa-venus"></span>
+                         Menstrual History</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                <span class="fa fa-bed"></span>Patient Data</a>
+            <ul class="collapse list-unstyled" id="pageSubmenu">
+                <li>
+                <a href="{% url 'patientdata:table_patient' %}">
+                    <span class="fa fa-users" aria-hidden="true">
+                    </span>All Patients</a>
+                </li>
+                <li>
+                    <a href="{% url 'visits:table_visits' %}">
+                    <span class="fa fa-stethoscope"></span>
+                    All Visits</a>
+                </li>
+                <li>
+                    <a href="{% url 'revisits:table_revisit' %}">
+                    <span class="fa fa-user-md"></span>
+                     All Revisits</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="#reportSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+            <span class="fa fa-line-chart"></span> Reports</a>
+            <ul class="collapse list-unstyled" id="reportSubmenu">
+                <li>
+                    <a href="#">
+                        <span class="fa fa-pie-chart" aria-hidden="true">
+                        </span> Daily Report</a>
+                </li>
+                <li>
+                    <a href="#">
+                    <span class="fa fa-bar-chart"></span>
+                     Monthly Report</a>
+                </li>
+                <li>
+                    <a href="#">
+                    <span class="fa fa-area-chart"></span>    
+                     Yearly Report</a>
+                </li>
+            </ul>
+        </li>
+        <!-- {% if user.is_authenticated %}
+            <li>
+                <form action="{% url 'change_language' %}" method="post" id="lang">
+                    {% csrf_token %}
+                    <select name="language" class="form-control" form="lang" onchange="form.submit()" id="myDropdown">   
+                        <option selected value="">{% trans 'Choose Language' %}</option>       
+                        {% get_available_languages as LANGUAGES %}
+                        {% for language in LANGUAGES %}
+                        <option value="{{ language.0 }}" {% if language.0 == LANGUAGE_CODE %} selected {% endif %}>
+                            {{ language.0|language_name_local }} 
+                            ({{ language.0 }})
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <input type="hidden" value="Change">
+                </form>
+            </li>
+        {% endif %} -->
+        <li>
+            <a href="#labSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+            <span class="fa fa-flask"></span> Laboratory</a>
+            <ul class="collapse list-unstyled" id="labSubmenu">
+                <li>
+                    <a href="#">
+                        <span class="fa fa-plus-square" aria-hidden="true">
+                        </span> Add Lab Prescription</a>
+                </li>
+                <li>
+                    <a href="#">
+                    <span class="fa fa-pencil-square-o"></span>
+                     Edit Lab Prescription</a>
+                </li>
+
+                <li>
+                    <a href="#">
+                    <span class="fa fa-table"></span>    
+                     All Lab Prescriptions for A Patient</a>
+                </li>
+
+            </ul>
+        </li>
+        <li>
+            <a href="#">
+                <span class="fa fa-cogs"></span> Services</a>
+        </li>
+        <li>
+            <a href="#"><span class="fa fa-phone-square">
+            </span> Contacts</a>
+        </li>
+    </ul>
+
+    <div class="footer" style="background-color: transparent;">
+        <p>
+            <h6>
+                Copyright &copy;{% now 'Y' %} 
+                All rights reserved | This software is made with
+                by Eng. Amr Aly 
+                <!-- num1 = {{var}} : {{attr1}} , 
+                num2 = {{num2}} : {{attr2}} -->
+            </h6>
+        </p>
+    </div>
+</nav>
+

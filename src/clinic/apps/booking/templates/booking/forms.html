@@ -1,0 +1,144 @@
+{% extends 'index.html' %} {% load crispy_forms_tags %} {% load render_table from django_tables2 %} {% load static %}
+<!--  -->
+
+{% block content %}
+<!--  -->
+
+<div class="align-content-center mr-sm-2" style="background-color:transparent; height: 70px; width: 100%; display: inline-block;
+position: relative; margin: 30px; padding: 15px; border-style: outset; border-radius: 20px; border-color: #aab5af; box-shadow: 2px 2px 4px 4px grey;" id="search-div" hidden>
+
+    <form class="form-inline mt-2 mt-md-0 float-right" method="GET" action="{% url 'booking:table_book' %}">
+
+        <input class="form-control mr-sm-2" type="text" name='d' placeholder="Search Book Date ..." value="{{request.GET.d}}" aria-label="Search" id="search-book" v-model="date">
+        <!--  -->
+        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+        <!--  -->
+    </form>
+    {% url 'booking:save_book' as save_book_url %} 
+    <!--  -->
+    {% if request.path == save_book_url %}
+    <form class="form-inline mt-2 mt-md-0 float-left" method="GET" action="{% url 'booking:save_book'  %}">
+
+        <input class="form-control mr-sm-2" type="text" name='pat' placeholder="Search Patients Name ..." value="{{request.GET.pat}}" aria-label="Search">
+        <!--  -->
+        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+        <!--  -->
+    </form>
+    {% elif edit_booking_form %}
+
+    <form class="form-inline mt-2 mt-md-0 float-left" method="GET" action="{% url 'booking:edit_book' qs.id %}">
+
+        <input class="form-control mr-sm-2" type="text" name='pat' placeholder="Search Patients Name ..." value="{{request.GET.pat}}" aria-label="Search">
+        <!--  -->
+        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+        <!--  -->
+    </form>
+    {% endif %}
+</div>
+
+
+
+<!-- <div class="align-content-center" style="background-color:transparent; width: 100%; height: 100%; margin: 20px; padding: 10px; border-style: outset; border-radius: 20px; border-color: #aab5af; box-shadow: 2px 2px 4px 4px grey;" id="savevis-div"> -->
+
+    {% if booking_form %}
+        <p>
+            <h1><strong>Add Booking Date And Time</strong></h1>
+        </p>
+        <div class="center-content" style="background-color: lightpink;">
+            {{booking_form.non_field_errors}}
+        </div>
+        <hr>
+       
+        <form method="post">{% csrf_token %}
+            <!--  -->
+            <!-- <div style="background-color: pink;">
+                {{booking_form.non_field_errors}}
+            </div> -->
+            <!-- {{ booking_form }} <br><br> -->
+            <div class="float-left" style="width: 45%; height: 100%;" id="left-saverevis-div">
+
+                {{booking_form.id.label_tag}} {{booking_form.id}} <br>
+                
+                <!-- <input class="form-control" readonly="readonly" style="background-color:lightpink;"> <br> -->
+                <!--  -->
+                {{booking_form.patient.label_tag}} {{bound_form.patient}} <br>
+                <!--  -->
+                {{booking_form.booknum.label_tag}} {{booking_form.booknum}} <br>
+                <!-- <p>The book No. must be {{last}}</p> -->
+                <hr>
+                <button type="submit" class="btn btn-outline-dark" id="">
+                    Save Date
+                </button>
+            </div>
+
+            <div class="float-right" style="width: 45%; height: 100%;" id="right-saverevis-div">
+                {{booking_form.bookdate.label_tag}} {{booking_form.bookdate}} <br>
+                <!--  -->
+                {{booking_form.starttime.label_tag}} {{booking_form.starttime}}<br>
+                <!--  -->
+                {{booking_form.endtime.label_tag}} {{booking_form.endtime}} <br>
+                <hr>
+            </div>
+        </form>
+    {% endif %}
+    <!--  -->
+
+    {% if edit_booking_form %}
+    <!--  -->
+
+    <div style="background-color: lightpink;">
+        {{edit_booking_form.non_field_errors}}
+    </div>
+
+    <form method="post">{% csrf_token %}
+        <!--  -->
+        <div class="float-left" style="width: 45%; height: 100%;" id="left-saverevis-div">
+
+            {{edit_booking_form.id.label_tag}} {{edit_booking_form.id}} <br>
+            <!--  -->
+            {{edit_booking_form.patient.label_tag}} {{bound_form.patient}} <br>
+            <!--  -->
+            {{edit_booking_form.booknum.label_tag}} {{edit_booking_form.booknum}} <br>
+            <hr>
+            <button type="submit" class="btn btn-outline-dark" id="savepatform-btn">
+                Update
+                </button>
+        </div>
+
+        <div class="float-right" style="width: 45%; height: 100%;" id="right-saverevis-div">
+            {{edit_booking_form.bookdate.label_tag}} {{edit_booking_form.bookdate}} <br>
+            <!--  -->
+            {{edit_booking_form.starttime.label_tag}} {{edit_booking_form.starttime}}<br>
+            <!--  -->
+            {{edit_booking_form.endtime.label_tag}} {{edit_booking_form.endtime}} <br>
+            <hr>
+        </div>
+    </form>
+
+
+    {% endif %}
+
+
+<!-- </div> -->
+{% endblock %}
+
+
+{% block scripts %}
+    <!-- <script type="text/javascript ">
+        $(document).ready(function() {
+            $('#search-book').datepicker({
+                dateformat: "yy-mm-dd "
+            });
+        })
+    </script>  -->
+    <!-- Use Vue.js Here -->
+    <script>
+        var serachdiv = new Vue({
+            el:'#main-div',
+            delimiters:['[[', ']]'],
+            data: {
+                date:'',
+            },
+        })
+    </script>
+{% endblock %}

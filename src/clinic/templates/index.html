@@ -1,0 +1,48 @@
+{% load i18n %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+        {% block title %}<title>Clinic Application</title>{% endblock %}
+
+        {% include "base/css.html" %}
+    </head>
+    <body >
+
+        <!-- sidebar with icon -->
+        <div class="wrapper d-flex align-items-stretch">
+            <!-- sidebar virtical -->
+            {% include "base/sidebar.html" %}
+            
+            <!-- Page Content -->
+            <div id="content" class="p-4 p-md-5" id="index-body" style="background:url(' {% static 'img/doctor.jpg' %} ') no-repeat center center fixed; webkit-background-size: cover; moz-background-size: cover; o-background-size: cover; 
+            background-size: cover; width:100%; height:100%; padding:10px;">
+                <!-- navbar horizontal -->
+                {% include "base/navbar.html" %}
+                {% include "base/search_bar.html" %}
+
+                {% include "base/messages.html" %}
+
+                <div class="align-content-center" style="background-color:white; width: 100%; height: 100%; margin: 20px; padding: 10px; border-style: outset; border-radius: 20px; border-color: #aab5af; box-shadow: 2px 2px 4px 4px grey; display: grid;" id="">
+                    {% block content %}
+                    {% endblock %}
+                </div>                  
+            </div>
+        </div>
+                                  
+        {% include "home/pagination.html" with page=event_page %}
+        <!-- <br>
+        <br>
+        <br> -->       
+
+        {% include "base/js.html" %}
+        
+
+        {% block scripts %}
+        {% endblock  %}
+
+    </body>
+</html>

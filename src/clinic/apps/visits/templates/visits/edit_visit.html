@@ -1,0 +1,122 @@
+{% extends 'index.html' %} {% load crispy_forms_tags %}
+{% load render_table from django_tables2 %} 
+{% load static %}
+<!--  -->
+
+
+{% block content %}
+
+
+<div id="edit-visit">
+    
+    {% if  match %}
+        {% if messages %}
+            {% for message in messages %}
+                <article class="message is-{{ message.tags }}">
+                    <div class="message-body">
+                        {{ message }}
+                    </div>
+                </article>
+            
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+        
+    
+    <solid>
+        <h1 style="color:black">Update Visit</h1>
+    </solid>
+    <hr>
+    <a class="btn btn-dark" href="/clinic/create/visit/patient/{{ patient_id }}/" role="button" id="new-visit">
+        Add New Visit
+    </a>
+    <!-- <a class="btn btn-outline-primary" href="{% url 'revisits:save_revisit' patient.id query.id %}" role="button" id="edit-patient">
+        Add Revisit
+    </a> -->
+    <!--  -->
+    {% if match_revisit %}
+    <a class="btn btn-dark" href="{% url 'revisits:save_revisit' patient.id query.id %}" role="button">
+        Add Revisit
+    </a> 
+    <!--  -->
+    {% else %}
+    <a class="btn btn-danger" href="{% url 'revisits:save_revisit' patient.id query.id %}" role="button">
+        Add Revisit
+    </a> {% endif %}
+    <a class="btn btn-primary" href="{{ patient.get_absolute_url }}" role="button" id="edit-patient">
+        Edit Patient Data
+    </a>
+    <!--  -->
+    {% if match_present %}
+    <a class="btn btn-primary" href="{% url 'presenthistory:edit_present_hist' patient.id query.id present_id.id %}" role="button" id="present-history">
+            Update Present History
+    </a> {% else %}
+    <a class="btn btn-danger" href="{% url 'presenthistory:save_present_hist' patient.id query.id %}" role="button" id="present-history">
+            Add Present History
+    </a>
+    {% endif %}
+    <!--  -->
+    {% if medicine %}
+    <a class="btn btn-secondary" href="/clinic/drug/patient/{{patient_id}}/visit/{{query}}/" role="button">
+        See Prescription 
+    </a> {% else %}
+    <a class="btn btn-danger" href="/clinic/drug/patient/{{patient_id}}/visit/{{query}}/" role="button">
+        Add Prescription
+    </a> {% endif %}
+    <a class="btn btn-success float-right" href="{% url 'revisits:view_revisit' query.id patient.id %}" role="button">
+        All Revists for Visit No. {{query}}
+    </a>
+    <!-- <form class="form-inline mt-2 mt-md-0 float-right" method="GET" action="#">
+
+        <input class="form-control mr-sm-2" type="text" name='vis' placeholder="Search Visits ..." value="{{request.GET.vis}}" aria-label="Search">
+       
+        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+        
+    </form> -->
+    <hr>
+    <!--  -->
+    <!-- {% if messages %}
+    <div class="align-content-center" style="background-color: lightpink; height: 30px;">
+        <ul class="messages">
+            {% for message in messages %}
+            <li {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %} -->
+    <form method="POST">{% csrf_token %}
+        <!--  -->
+        <div style="background-color: pink;">
+            {{edit_visits_form.non_field_errors}}
+        </div>
+        <!-- {{edit_visits_form | crispy }} -->
+        <div class="float-left" style="width: 45%; height: 100%;" id="left">
+            <!-- <div class="float-left" id="left"> -->
+            {{edit_visits_form.id.label_tag}} {{edit_visits_form.id}} <br />
+            <!--  -->
+            {{edit_visits_form.patient.label_tag}} {{edit_visits_form.patient}} <br/>
+            <!--  -->
+            {{edit_visits_form.complain.label_tag}} {{edit_visits_form.complain}} <br />
+            <!--  -->
+            {{edit_visits_form.amount.label_tag}} {{edit_visits_form.amount}}
+            <hr>
+            <!-- <button type="submit" class="btn btn-outline-danger" id="vis-form-btn">Update</button> -->
+            <input type="submit" class="btn btn-dark" value="Update" id="vis-form-btn" />
+        </div>
+        <div class="float-right" style="width: 45%; height: 100%;" id="right">
+            {{edit_visits_form.visitdate.label_tag}} {{edit_visits_form.visitdate}} <br/>
+            <!--  -->
+            {{edit_visits_form.diagnosis.label_tag}} {{edit_visits_form.diagnosis}} <br />
+            <!--  -->
+            {{edit_visits_form.sign.label_tag}} {{edit_visits_form.sign}} <br />
+            <!--  -->
+            {{edit_visits_form.intervention.label_tag}} {{edit_visits_form.intervention}}
+            <hr>
+        </div>
+    </form>
+<!-- </div> -->
+</div>
+
+
+  
+{% endblock %}

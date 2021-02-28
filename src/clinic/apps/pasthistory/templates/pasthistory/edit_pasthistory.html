@@ -1,0 +1,86 @@
+{% extends 'index.html' %} {% load crispy_forms_tags %} {% load render_table from django_tables2 %} {% load static %}
+<!--  -->
+{% block content %}
+
+<solid>
+    <h1 style="color:black">Edit Past History for ({{patient}})</h1>
+</solid>
+<hr>
+<!-- /clinic/create/visit/patient/{{ patient_id }}/ -->
+
+<a class="btn btn-primary" href="{{ patient.get_absolute_url }}" role="button">
+    Edit Patient Data
+</a>
+<a class="btn btn-dark" href="{% url 'patientdata:save_pasthist' patient.id %}" role="button">
+    Add Past History
+</a>
+<!--  -->
+<!-- <form class="form-inline mt-2 mt-md-0 float-right" method="GET" action="{% url 'clinic:search_visit' %}" hidden>
+
+    <input class="form-control mr-sm-2" type="text" name='vis' placeholder="Search Visits ..." value="{{request.GET.vis}}" aria-label="Search">
+    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+</form> -->
+<hr>
+<!--  -->
+<form method="POST">{% csrf_token %}
+    <!--  -->
+    <div style="background-color: pink;">
+        {{edit_pasthist_form.non_field_errors}}
+    </div>
+    <!-- {{edit_visits_form | crispy }} -->
+    <div class="float-left" style="float:left; width: 30%; height: 100%; margin: 10px; padding: 20px;" id="">
+        <!-- <div class="float-left" id="left"> -->
+        <!--  -->
+        <!-- {{save_pasthist_form.id.label_tag}} {{save_pasthist_form.id}} <br> -->
+        <!--  -->
+        {{edit_pasthist_form.histdate.label_tag}} {{edit_pasthist_form.histdate}} <br>
+        <!--  -->
+        {{edit_pasthist_form.pasthist.label_tag}} {{edit_pasthist_form.pasthist}} <br>
+        <!--  -->
+        {{edit_pasthist_form.remark.label_tag}} {{edit_pasthist_form.remark}} <br>
+        <!--  -->
+        {{edit_pasthist_form.patient.label_tag}} {{edit_pasthist_form.patient}} 
+        <!--  -->
+        <!--  -->
+        <hr>
+        <button type="submit" class="btn btn-dark">Update History</button>
+    </div>
+    
+    <div class="float-right" style="float:right; width: 60%; height: 100%;  margin: 10px; padding: 20px; background-color:white; border-style: outset; border-radius: 20px; border-color: #aab5af; box-shadow: 2px 2px 4px 4px grey;">
+        {% render_table pasthist_table %}            
+    </div>
+
+</form>
+
+
+
+{% endblock %}
+
+  
+{% block scripts %}
+<!-- Write javascript code Here -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#histdate').datepicker({
+            dateFormat: "yy-mm-dd"
+        });
+    })
+</script>
+<!-- <script type="text/javascript" src="{% static 'js/vue.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/axios.min.js' %}"></script> -->
+<script>
+    // var editPasthist = new Vue ({
+    //     el: '#main-div',
+    //     delimiters: ['[[', ']]'],
+    //     data: {
+    //         title: "{% if edit_pasthist_form %} \
+    //                 Edit Past History \
+    //                 {% elif save_pasthist_form %} \
+    //                 Add Past History \
+    //                 {% endif %}", 
+    //     },
+    // })
+    
+</script>
+
+{% endblock  %}

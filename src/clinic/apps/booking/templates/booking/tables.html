@@ -1,0 +1,167 @@
+{% extends 'index.html' %} {% load render_table from django_tables2 %} {% load crispy_forms_tags %}
+<!--  -->
+{% block content %}
+<!--  -->
+
+{% if book_table or book_date_table %}
+
+<!-- <div class="container" style="width: 100%; height: 100%;" id="for-vue"> -->
+    <div class="align-content-center mr-sm-2" style="background-color:transparent; height: 100%; width: 100%; margin: 30px;
+        padding: 15px; border-style: outset; border-radius: 20px; border-color: #aab5af; box-shadow: 2px 2px 4px 4px grey;
+        display: inline-block; position: relative;" id="search-div" hidden>
+
+        <form class="form-inline mt-2 mt-md-0 float-left" method="GET" action="{% url 'booking:table_book' %}">
+            <!-- <p>[[date]]</p> -->
+            <input class="form-control mr-sm-2" type="text" name='d' placeholder="Search Booking Date ..." value="{{request.GET.d}}" aria-label="Search" id="search-book" v-model="date">
+            <!-- 
+            <input class="form-control mr-sm-2" type="text" name='card' placeholder="Card ID..." value="{{request.GET.card}}" aria-label="Search"> -->
+
+            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+
+        </form>
+        <form class="form-inline mt-2 mt-md-0 float-right" method="GET" action="{% url 'booking:table_book' %}">
+            <input class="form-control mr-sm-2" type="text" name='p' placeholder="Search Patient Name ..." value="{{request.GET.p}}" aria-label="Search">
+
+            <input class="form-control mr-sm-2" type="text" name='pd' placeholder="Search patient date..." value="{{request.GET.pd}}" aria-label="Search">
+
+            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search Patient</button>
+        </form>
+    </div>
+    {% endif %}
+<!--  -->
+
+
+    <div class="align-content-center" style="background-color:white; height: 100%; width: 100%; margin: 30px; padding: 10px; border-style: outset; border-radius: 20px; border-color: #aab5af; box-shadow: 2px 2px 4px 4px grey;" id="tables-div"
+        name="mydiv">
+        
+        {% if current_date_table %}
+            <p class="float-left">
+                <h1><strong>Booking Data for Today</strong></h1>
+            </p>
+            <a class="btn btn-outline-dark float-left" href="{% url 'booking:save_book' %}" type="button">Add New Appointment</a>
+            <br><br>
+            
+            <!-- {% if  request.GET.pageno == '' %}
+
+                <form class="form-inline mt-2 mt-md-0 float-left" method="GET" action="{% url 'booking:current_date_table' %}">
+                    <input class="form-control mr-sm-2" type="text" name='pageno' placeholder="Edit pagination pages here..." 
+                    value="2" aria-label="Search">        
+                    <button class="btn btn-secondary my-2 my-sm-0" type="submit" hidden>Search Patient</button>
+                </form>    
+            {% else %}
+                <form class="form-inline mt-2 mt-md-0 float-left" method="GET" action="{% url 'booking:current_date_table' %}">
+                    <input class="form-control mr-sm-2" type="text" name='pageno' placeholder="Edit pagination pages here..." 
+                    value="{{request.GET.pageno}}" aria-label="Search">        
+                    <button class="btn btn-secondary my-2 my-sm-0" type="submit" hidden>Search Patient</button>
+                </form>      
+            {% endif %} -->
+            <form class="form-inline mt-2 mt-md-0 float-left" method="GET" action="{% url 'booking:current_date_table' %}">   
+                    <input class="form-control mr-sm-2" type="text" name='pageno' placeholder="Edit pagination pages here..." 
+                    value="{{request.GET.pageno}}" aria-label="Search"> 
+                    <button class="btn btn-secondary my-2 my-sm-0" type="submit" hidden>Search Patient</button> 
+            </form> 
+        
+            {% render_table current_date_table %}
+
+        {% endif %}
+            
+
+        {% url 'booking:table_book' as bookingtable_url%}
+        <!-- {% if request.path == bookingtable_url %} {%endif%} -->
+        {% if  search_table %}
+            
+            {% if sdate == None or sdate == '' %}
+                <!-- <p>
+                    <h1><strong>Booking Data</strong></h1>
+                    <strong style="background-color: lightcyan;">Hint: you have to make a search by name or date to see a table</strong>
+                </p> -->
+            {% else %}
+                <p class="float-left">
+                    <h1><strong>Booking Data for Date {{sdate}}</strong></h1>
+                </p>
+                <a class="btn btn-outline-dark" href="{% url 'booking:save_book' %}" type="button">Add New Appointment</a>
+                <form class="form-inline mt-2 mt-md-0 float-left" method="GET" action="{% url 'booking:table_book' %}">
+                    <input class="form-control mr-sm-2" type="text" name='pageno' placeholder="Edit pagination pages here..." 
+                    value="{{request.GET.pageno}}" aria-label="Search">        
+                    <button class="btn btn-secondary my-2 my-sm-0" type="submit" hidden>Search Patient</button>
+                </form>
+                <br>
+                {% render_table search_table %}
+            {% endif %}
+        
+            <!-- {% render_table search_table %} -->
+        {% endif %}
+            
+        <!--  -->
+        {% if book_table %}
+
+            {% if spat == None and pdate == None %}
+
+                <!-- <p>
+                    <h1><strong>Booking Data</strong></h1>
+                    <strong style="background-color: lightcyan;">Hint: you have to make a search by name or date to see a table</strong>
+                </p> -->
+            {% elif spat != None and pdate == '' %}
+                <p class="float-left">
+                    <h1><strong>Booking Data for {{spat}}</strong></h1>
+                </p>
+                <a class="btn btn-outline-dark" href="{% url 'booking:save_book' %}" type="button">Add New Appointment</a>
+                <br>
+                {% render_table book_table %}
+            {% elif spat != None and pdate != None %}
+                <p class="float-left">
+                    <h1><strong>Booking Data for {{spat}} in Date {{pdate}}</strong></h1>
+                </p> 
+                <a class="btn btn-outline-dark" href="{% url 'booking:save_book' %}" type="button">Add New Appointment</a>
+                <br>
+                {% render_table book_table %}
+            {% endif %}
+        
+        <!-- {% render_table book_table %} -->
+        <!--  -->
+        {% endif %}
+        <!--  -->
+        {% if book_date_table %}
+        <!--  -->
+        <div>
+            <p class="float-left">
+                <h1><strong>Booking Data for {{year}}-{{month}}-{{day}}</strong></h1>
+            </p>
+            <a class="btn btn-outline-dark" href="{% url 'booking:save_book' %}" type="button">Add New Appointment</a>
+            <form class="form-inline mt-2 mt-md-0 float-left" method="GET" action="{% url 'booking:date_table' year month day%}">
+                <input class="form-control mr-sm-2" type="text" name='pageno' placeholder="Edit pagination pages here..." 
+                value="{{request.GET.pageno}}" aria-label="Search">        
+                <button class="btn btn-secondary my-2 my-sm-0" type="submit" hidden>Search Patient</button>
+            </form>
+            <br>
+
+            {% render_table book_date_table %}
+        </div>
+            <!--  -->
+        {% endif %}
+
+
+    </div>
+<!-- </div> -->
+{% endblock %}
+
+{% block scripts %}
+    <!-- <script type="text/javascript ">
+        $(document).ready(function() {
+            $('#search-book').datepicker({
+                dateformat: "yy-mm-dd "
+            });
+        });
+    </script>   -->
+    <script>
+        var searchdiv = new Vue({
+            el:'#main-div',
+            // el:'#tables-div', 
+            delimiters:['[[', ']]'],
+            data: {
+                date:'',
+                inputvalue:'',
+            },
+        })
+    </script>
+{% endblock %}

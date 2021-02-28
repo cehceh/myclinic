@@ -1,0 +1,176 @@
+{% load static %}
+{% load i18n %}
+<!-- {% load i18n %} -->
+
+<!-- new nav -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <button type="button" id="sidebarCollapse" class="button is-primary">
+            <i class="fa fa-bars"></i>
+            <span class="sr-only">Toggle Menu</span>
+        </button>
+        <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fa fa-bars"></i>
+        </button>
+        
+    <!-- {% if mac == label %} -->
+               
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="nav navbar-nav ml-auto">
+                <!-- <li class="nav-item active">
+                    <a class="nav-link" href="#">
+                        <span class="fa fa-home"></span> Home</a>
+                </li> -->
+
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'patientdata:save_patient' %}">
+                    <span class="fa fa-user-plus"></span> 
+                     New Patient</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'patientdata:table_patient' %}"> 
+                    <i class="fa fa-medkit" aria-hidden="true" aria-hidden="true"></i>
+                     New Visit</a>
+                </li>
+                <li class="nav-item dropdown active">
+                    <a href="#navSubmenu" data-toggle="dropdown" aria-expanded="false" class="nav-link dropdown-toggle">
+                        <span class="fa fa-bed"></span> Patient Data</a>
+                    <ul class="collapse list-unstyled dropdown-menu" id="navSubmenu">
+                        <li class="nav-item">
+                        <a href="{% url 'patientdata:table_patient' %}" class="nav-link">
+                            <span class="fa fa-users" aria-hidden="true">
+                            </span> All Patients</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'visits:table_visits' %}" class="nav-link">
+                            <span class="fa fa-stethoscope"></span>
+                             All Visits</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'revisits:table_revisit' %}" class="nav-link">
+                            <span class="fa fa-user-md"></span>
+                             All Revisits</a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- {% get_current_language as code %} -->
+                <!-- <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'patientdata:table_patient' %}">
+                        <i class="fa fa-plus"></i>
+                         Add Past History</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'presenthistory:table_add_present_hist' %}">
+                        <i class="fa fa-address-book">
+                             Add Present History</i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fa fa-address-book"></i>
+                        </a>
+                </li> -->
+                <li class="nav-item dropdown active">
+                    <a href="#historySubmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">
+                        <span class="fa fa-heartbeat"></span> Add History</a>
+                    <ul class="collapse list-unstyled dropdown-menu" aria-labelledby="historySubmenu" id="historySubmenu">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'patientdata:table_patient' %}">
+                                <span class="fa fa-plus-square"></span>
+                                 Add Past History</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'presenthistory:table_add_present_hist' %}">
+                                <span class="fa fa-plus-circle"></span>
+                                     Add Present History
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown active">
+                    <a href="#navbookSubmenu" data-toggle="dropdown" aria-expanded="false" class="nav-link dropdown-toggle"><span class="fa fa-calendar-plus"></span>
+                         Booking A Date</a>
+                    <ul class="collapse list-unstyled dropdown-menu" aria-labelledby="navbookSubmenu" id="navbookSubmenu">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'booking:save_book' %}"><i class="fa fa-calendar-plus"></i>
+                                Add Appointment</a>
+                        </li>
+                        <li vclass="nav-item">
+                            <a class="nav-link" href="{% url 'booking:table_book' %}"><i class="fa fa-pencil-square"></i>
+                                    All Appointments</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown active">
+                    <a href="#navreportSubmenu" data-toggle="dropdown"  aria-expanded="false" class="nav-link dropdown-toggle">
+                        <span class="fa fa-line-chart"></span> Reports</a>
+                    <ul class="collapse list-unstyled dropdown-menu" aria-labelledby="navreportSubmenu" id="navreportSubmenu">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'patientdata:table_patient' %}">
+                                <span class="fa fa-pie-chart"></span>
+                                 Dialy Report</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'presenthistory:table_add_present_hist' %}">
+                                <span class="fa fa-bar-chart"></span>
+                                     Monthly Report</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'presenthistory:table_add_present_hist' %}">
+                                <span class="fa fa-area-chart"></span>
+                                     Yearly Report</a>
+                        </li>
+                    </ul>
+                </li>
+                {% url 'revisits:edit_revisit' query.id patient.id visit.id as edit_revisit_url %}
+                {% url 'revisits:save_revisit' patient.id visit.id as save_revisit_url %}
+                {% if request.path == edit_revisit_url or request.path == save_revisit_url %}                    
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'revisits:view_revisit' visit.id patient.id %}">
+                            <i class="fa fa-address-book"></i>
+                            All Revists</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">
+                            <i class="fa fa-edit"></i>
+                            Add Prescription</a>
+                    </li>
+                {% endif %}
+
+                <!-- {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                    <span class="fa fa-sign-out-alt">
+                    </span> {% trans 'Log out' %}</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                    <span class="fa fa-sign-in-alt">
+                    </span> {% trans 'Login' %}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                    <span class="fa fa-registered">
+                    </span> {% trans 'Register' %}</a>
+                </li>
+                {% endif %} -->
+            </ul>
+        </div>
+        <!-- {% else %}
+        {% endif %} -->
+
+    </div>
+</nav>
+
+
+
+{% block scripts %}
+  <script>
+    // var x = document.getElementById("myDropdown");
+    // x.selectedIndex = -1;
+    // document.getElementById("myDropdown").selectedIndex = -1;
+    // document.getElementsByName("language").selectedIndex = -1;
+  </script>
+{% endblock %}

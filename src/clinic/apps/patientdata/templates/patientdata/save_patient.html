@@ -1,0 +1,107 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container" style="background-color: white;" id="savePatient">
+
+    <article class="message is-{{ message.tags }}">                 
+        <div class="message-body alert {{ message.tags }}" style="color: red;" role="alert">
+            <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="color: red; margin: 5px; padding: 5px;">
+                <span aria-hidden="true">&times;</span>
+            </button> -->
+            {{ savepatform.non_field_errors }}
+        </div>
+    </article>
+    <h1>
+        <p style="color: black;">[[title]]</p>
+    </h1>
+    <hr>
+
+<!-- <a role="button" class="btn btn-primary" href='#' onclick='overlay()'>Click here to show the overlay</a> -->
+<!-- <a type="button" href='#' onclick='overlay()'>close</a> -->
+    
+   
+
+    <form method="post">{% csrf_token %}
+        <div class="float-left" id="left-savepat-div" style="overflow-x: auto; width: 45%; height: 100%;">
+            {{savepatform.id.label_tag}} {{savepatform.id}} <br>
+            <!-- <p></p><br> -->
+            <!--  -->
+            {{savepatform.name.label_tag}} {{savepatform.name}} <br />
+            <!--  -->
+            {{savepatform.address.label_tag}} {{savepatform.address}} <br />
+            <!--  -->
+            {{savepatform.birth_date.label_tag}} {{savepatform.birth_date}}
+            <hr>
+
+            <button type="submit" class="btn btn-dark" id="savepatform-btn">
+                {{lable2}}
+            </button>
+            
+        </div>
+        <div class="float-right" id="right-savepat-div" style="overflow-x: auto; width: 45%; height: 100%;">
+            {{savepatform.cardid.label_tag}} {{savepatform.cardid}} <br>
+            <!--  -->
+            {{savepatform.phone.label_tag}} {{savepatform.phone}} <br />
+            <!--  -->
+            {{savepatform.mobile.label_tag}} {{savepatform.mobile}} <br />
+            <!--  -->
+            {{savepatform.age.label_tag}} {{savepatform.age}}
+            <hr>
+        </div>
+
+    </form>
+    <!-- <p hidden>[[ counter ]]</p> -->
+</div>
+
+{% endblock %}
+
+<!-- Here you must write the script -->
+{% block scripts %}
+    <!-- <script type="text/javascript" src="{% static 'js/vue.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/axios.min.js' %}"></script> -->
+    <!-- Write javascript code Here -->
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#birth-date, #visitdate').datepicker({
+                dateFormat: "yy-mm-dd"
+            });
+
+            $('#birth-date').on('change', function() {
+                var dob = new Date($('#birth-date').val());
+                var today = new Date();
+                var age = Math.floor((today - dob) / (365.25 * 24 * 60 * 60 * 1000)); // $('#age').val(age); // });
+                $('#age').val(age);
+            });
+        })
+    </script>
+    <script>
+        // Using Vue.js Here
+        var savePatient = new Vue ({
+            el: '#savePatient',
+            delimiters: ['[[', ']]'],
+            // data () {
+            //     return 
+            data: {
+                patient_name: '' ,
+                title: "Add New Patient",
+                message:  '{{ non_field_errors }}' ,
+                // showDialog: false,
+                counter: 0,
+            },
+        })
+        // new instance of Vue.js
+        // var editVisit = new Vue({
+        //     el: '#edit-visit',
+        //     delimiters: ['[[', ']]'],
+        //     data: {
+        //         message: '',
+        //         // title: "Add Past History",
+        //     }
+        // });
+
+    </script>
+
+{% endblock  %}
