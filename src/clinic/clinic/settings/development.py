@@ -224,7 +224,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(SITE_ROOT, 'static_root') #(BASE_DIR, '../static_root') 
 # print('STATIC_ROOT= '+str(STATIC_ROOT))
 STATICFILES_DIRS =[
-    os.path.join(SITE_ROOT, 'static')##(BASE_DIR, '../static') # important to do '../static' instead of 'static'
+    os.path.join(SITE_ROOT, 'static')
 ]
 # print('STATICFILES_DIRS= '+str(STATICFILES_DIRS))
 
@@ -235,6 +235,7 @@ LOCALE_PATHS = [
    os.path.join(SITE_ROOT, "apps/home/locale"),
 ]
 #print(BASE_DIR,STATIC_URL,LOCALE_PATHS,STATIC_ROOT,os.path.join(SITE_ROOT, "templates"))
+
 LANGUAGES = (
     ('ar', _('Arabic')),
     ('en', _('English')),
@@ -245,11 +246,6 @@ MULTILINGUAL_LANGUAGES = (
     "en-us",
     "ar-eg",
 )
-
-# print('DJANGO_ROOT= '+str(DJANGO_ROOT))
-# print('SITE_ROOT= '+str(SITE_ROOT))
-# print('SITE_NAME= '+str(SITE_NAME))
-# print('Append= '+str(path.append(DJANGO_ROOT)))
 
 # for authentication by email
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

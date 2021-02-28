@@ -14,29 +14,23 @@
                 <div class="card-content">
                     <div class="media">
                         <div class="media-content">
-                            <img :src="image">
-                            <p class="title is-4"><a href="#">
-                                Patient Data</a>
-                            </p>
+                            <img :src="pdata">
                         </div>
                     </div>
 
                     <div class="content">
-                        
+                        <p class="title is-4">
+                            Patient Data
+                        </p>
                     </div> 
                 </div>
 
                 <footer class="card-footer">
                     <a class="button is-dark card-footer-item" href="#">
-                         </a>&nbsp;&nbsp;
+                        New Patient</a>&nbsp;&nbsp;
                     <a href="#" class="card-footer-item button is-primary">
-                         </a> &nbsp;&nbsp;
-                    <a class="button is-dark card-footer-item" href="#">
-                         </a>&nbsp;&nbsp;
-                    <a href="#" class="card-footer-item button is-primary">
-                         </a>
+                        New Visit</a> &nbsp;&nbsp; 
                 </footer>
-                
             </div>
         </div> <br>
 
@@ -47,25 +41,22 @@
                 <div class="card-content">
                     <div class="media">
                         <div class="media-content">
-                            <img :src="image">
-                            <p class="title is-4"><a href="#">
-                                Display Attended Events Of All Users</a>
-                            </p>
+                            <img :src="gyna">
                         </div>
                     </div>
 
                     <div class="content">
-                        
+                        <p class="title is-4">
+                            Gynecological Clinic
+                        </p>
                     </div> 
                 </div>
 
                 <footer class="card-footer">
                     <a class="button is-dark card-footer-item" href="#">
-                        Add New Event</a>&nbsp;&nbsp;
-                    <a class="card-footer-item button is-danger" href="#">
-                        Your Expire Event</a>&nbsp;&nbsp;
-                    <a href="#" class="card-footer-item button is-primary">
-                        Join Active Events</a>
+                        Add </a>&nbsp;&nbsp;
+                    <a href="#" class="button is-primary">
+                        Add </a>
                 </footer>
                 
             </div>
@@ -78,28 +69,22 @@
                 <div class="card-content">
                     <div class="media">
                         <div class="media-content">
-                            <img :src="image">
-                            <p class="title is-4">
-                                <a href="#">
-                                Display Your Withdraw Events</a>
-                            </p>
+                            <img :src="history">  
                         </div>
                     </div>
 
                     <div class="content">
+                        <p class="title is-4">
+                            History Data
+                        </p>
                     </div> 
                 </div>
 
                 <footer class="card-footer">
-                    <!-- <a class="button is-dark" href="#">
-                        Add New Event
-                    </a> &nbsp;&nbsp; -->
-                    <a class="card-footer-item button is-info" href="#">
-                        Edit Your Events
-                    </a>&nbsp;&nbsp;   
-                    <a href="#" class="card-footer-item button is-danger">
-                        Display All Expire Events
-                    </a>
+                    <a class="button is-dark card-footer-item" href="#">
+                        Add Past History</a>&nbsp;&nbsp;
+                    <a href="#" class="button is-primary">
+                        Add Present History</a>
                 </footer>
                 
             </div>
@@ -111,15 +96,14 @@
                 <div class="card-content">
                     <div class="media">
                         <div class="media-content">
-                            <img :src="image">
-                            <p class="title is-4"><a href="#">
-                                Display Your Deleted Events</a>
-                            </p>
+                            <img :src="followup">
                         </div>
                     </div>
 
                     <div class="content">
-                        
+                        <p class="title is-4">
+                            Follow Up
+                        </p>
                     </div> 
                 </div>
 
@@ -143,10 +127,9 @@
 {% endblock %}
 
 {% block scripts %}
-     <!-- scripts for VUE -->
-     <script src="{% static 'vue/vue.js' %}"></script>
-     <script src="https://cdnjs.cloudfare.com/ajax/libs/axios/0.19.2/axios.min.js">
-     </script>
+    <!-- scripts for VUE -->
+    <script src="{% static 'vue/vue.js' %}"></script>
+    <!-- <script src="https://cdnjs.cloudfare.com/ajax/libs/axios/0.19.2/axios.min.js"></script> -->
 
     <script>
         
@@ -154,7 +137,11 @@
             el: '#dashboard',
             delimiters: ['[', ']'],
             data: {
-                image: "{% static 'img/2.png' %}",
+                // images for dashbiard
+                pdata: "{% static 'img/pdata.jpg' %}",
+                gyna: "{% static 'img/gyna2.jpg' %}",
+                followup: "{% static 'img/gyna3.jpg' %}",
+                history: "{% static 'img/history.jpg' %}",
             },
         });
 

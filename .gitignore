@@ -115,9 +115,9 @@ ENV/
 .mypy_cache/
 
 # photos extension
-*.png
-*.jpeg
-*.jpg
-*.gif
+# *.png
+# *.jpeg
+# *.jpg
+# *.gif
 
 
