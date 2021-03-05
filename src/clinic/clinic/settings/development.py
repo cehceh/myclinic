@@ -90,6 +90,7 @@ INSTALLED_APPS = [
     'bootstrap4',
     'django_tables2',
     'jquery',
+    'widget_tweaks',
     # 'phonenumber_field',
 
     # My apps

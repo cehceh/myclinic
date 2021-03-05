@@ -1,0 +1,177 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+<div class="container" style="background-color: white;" id="addgyn">
+
+    <article class="message is-{{ message.tags }}">                 
+        <div class="message-body alert {{ message.tags }}" style="color: red;" role="alert">
+            {{ obs_form.non_field_errors }}
+        </div>
+    </article>
+    <h1>
+        <p style="color: black;">[[title]]</p>
+    </h1>
+    <hr>
+
+    <form method="post">{% csrf_token %}
+        <div class="float-left" id="left-savepat-div" style="overflow-x: auto; width: 45%; height: 100%;">
+            <!-- {{ obs_form | crispy }}  pattern="\d{4}-\d{2}-\d{2}":required -->
+            {{ obs_form.patient.label_tag }} 
+            {% render_field obs_form.patient type="text" %} 
+            <br>
+            {{ obs_form.obdate.label_tag }} 
+            {% render_field obs_form.obdate type="date" %} 
+            <br>
+            {{ obs_form.gyn.label_tag }} 
+            {% render_field obs_form.gyn %} 
+            <br>
+            {{ obs_form.g.label_tag }} 
+            {% render_field obs_form.g ::value="changeGinput" type="number" %}
+            <br>
+            {{ obs_form.p.label_tag }} 
+            {% render_field obs_form.p v-model="p" type="number" %} 
+            <br>
+            {{ obs_form.a.label_tag }}
+            {% render_field obs_form.a v-model="a" type="number" %} 
+            <br>
+
+            <hr>
+
+            <button type="submit" class="btn btn-dark" id="savepatform-btn">
+                Save
+            </button>
+            
+        </div>
+        <div class="float-right" id="right-savepat-div" style="overflow-x: auto; width: 45%; height: 100%;">
+            <!-- {{ men_form | crispy }} -->
+            {{ men_form.lmp.label_tag }}
+            {% render_field men_form.lmp v-model="lmp" v-on::change="calculateLMP" id="lmp" %} 
+            <br>
+            <!-- pattern="\d{4}-\d{2}-\d{2}":required v-model="lmp" v-on::change="calculateLMP" -->
+            {{ men_form.edd.label_tag }}
+            {% render_field men_form.edd ::value="this.edd" id="edd" %} 
+            <br>
+            <!-- ::value="calculateLMP" -->
+            <!-- {{ med_form | crispy }}
+            {{ sur_form | crispy }}
+            {{ gyn_form | crispy }}
+            {{ drg_form | crispy }} -->
+            <hr>
+        </div>
+        <br><br>
+
+        <!-- <div class="float-left" id="left-savepat-div" style="overflow-x: auto; width: 45%; height: 100%;">
+            <hr>
+        </div> -->
+        <!-- <div class="float-right" id="right-savepat-div" style="overflow-x: auto; width: 45%; height: 100%;">
+            <hr>
+        </div>
+        <br><br> -->
+
+        <!-- <div class="float-left" id="left-savepat-div" style="overflow-x: auto; width: 45%; height: 100%;">
+            <hr>
+        </div> -->
+        <!-- <div class="float-right" id="right-savepat-div" style="overflow-x: auto; width: 45%; height: 100%;">
+            <hr>
+        </div> -->
+
+    </form>
+</div>
+
+{% endblock %}
+
+<!-- Here you must write the script -->
+{% block scripts %}
+    <!-- <script type="text/javascript" src="{% static 'js/vue.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/axios.min.js' %}"></script> -->
+    <!-- Write javascript code Here -->
+    <script type="text/javascript">
+        // $(document).ready(function() {
+        //     $('#birth-date, #visitdate').datepicker({
+        //         dateFormat: "yy-mm-dd"
+        //     });
+
+        //     $('#birth-date').on('change', function() {
+        //         var dob = new Date($('#birth-date').val());
+        //         var today = new Date();
+        //         var age = Math.floor((today - dob) / (365.25 * 24 * 60 * 60 * 1000)); // $('#age').val(age); // });
+        //         $('#age').val(age);
+        //     });
+        // })
+    </script>
+    <script>
+        // Using Vue.js Here
+        var addgyn = new Vue ({
+            el: '#addgyn',
+            delimiters: ['[[', ']]'],
+            data: {
+                patient_name: '' ,
+                title: "Follow Up Visit",
+                // message:  '{{ non_field_errors }}' ,
+                // showDialog: false,
+                preg:'Pregnant',
+                notpreg:'Not Pregnant',
+                g: 0,
+                p: 0,
+                a: 0,
+                lmp:'',
+                edd:'',
+                obdate:"",
+                interval:0,
+            },
+            methods: {
+                // fixFormat(event){
+                //     return moment(event).format('YYYY-MM-DD');
+                // },
+                // formatDate(date) {
+                //     return dayjs(date).format('YYYY-MM-DD');
+                // },
+                // changeGinput(event) {
+                //     this.p = event.target.value;
+                //     this.a = event.target.value;
+                //     this.g = Number(this.p) + Number(this.a) + 1;
+                // }
+            },
+            computed:{
+                changeGinput: function(){
+                    let total = Number(this.p) + Number(this.a) + 1;
+                    this.g = total;
+                    return total;
+                },
+                calculateLMP: function(){
+                    this.lmp = document.getElementById('lmp').value;
+                    var dt = new Date(this.lmp);
+                    var newDate = new Date(dt);
+                    newDate.setDate(newDate.getDate() + 280);
+                    var dd = ('0' + newDate.getDate()).slice(-2);
+                    var mm = ('0' + (newDate.getMonth()+1)).slice(-2);
+                    var y = newDate.getFullYear();
+
+                    var someFormattedDate = y + '-' + mm + '-' + dd;
+                    this.edd = document.getElementById('edd').value;
+                    // document.getElementById('edd').value = someFormattedDate;
+                    this.edd =  someFormattedDate;
+                    // var newEdd = this.edd.setDate()
+                    console.log('dt=' + dt + ' && newDate=' + newDate + '&& someFormattedDate=' + someFormattedDate + ' && this.edd=' + this.edd);
+                    return this.edd;
+                },
+            },
+        })
+
+        // new instance of Vue.js
+        // var editVisit = new Vue({
+        //     el: '#edit-visit',
+        //     delimiters: ['[[', ']]'],
+        //     data: {
+        //         message: '',
+        //         // title: "Add Past History",
+        //     }
+        // });
+
+    </script>
+
+{% endblock  %}

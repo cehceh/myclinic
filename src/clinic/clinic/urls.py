@@ -21,17 +21,18 @@ from apps.home.views import frontpage, dashboard
 urlpatterns = [
     path('admin/', admin.site.urls),
     
-    # frontpage 
+    # Frontpage 
     path('', frontpage, name='frontpage'),
 
-    # frontpage 
+    # Dashboard 
     path('dashboard/', dashboard, name='dashboard'),
 
     path('booking/', include('apps.booking.urls', namespace='booking')),
+    path('gyn/', include('apps.gyno.urls', namespace='gyno')),
+    
     path('patientdata/', include('apps.patientdata.urls', namespace='patientdata')),
     path('pasthistory/', include('apps.pasthistory.urls', namespace='pasthistory')),
     path('presenthistory/', include('apps.presenthistory.urls', namespace='presenthistory')),
-    # path('reports', include('', namespace='')),
     path('revisitdrug/', include('apps.revisitdrug.urls', namespace='revisitdrug')),
     path('revisits/', include('apps.revisits.urls', namespace='revisits')),
     path('search/', include('apps.search.urls', namespace='search')),
