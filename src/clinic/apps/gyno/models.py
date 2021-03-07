@@ -18,7 +18,7 @@ class Obestetric(models.Model):
     hist    = models.TextField(max_length=250, verbose_name='History of previous obestetric complication(if any):', blank=True, null=True)
 
     def __str__(self):
-        return "Obestetric Date: {}".format(self.obdate)
+        return "{}, Obestetric Date: {}".format(self.id, self.obdate)
 
 
 class Menstrual(models.Model):

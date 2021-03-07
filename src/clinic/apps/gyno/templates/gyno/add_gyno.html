@@ -24,7 +24,7 @@
             {% render_field obs_form.patient type="text" %} 
             <br>
             {{ obs_form.obdate.label_tag }} 
-            {% render_field obs_form.obdate type="date" %} 
+            {% render_field obs_form.obdate %} 
             <br>
             {{ obs_form.gyn.label_tag }} 
             {% render_field obs_form.gyn %} 
@@ -53,7 +53,13 @@
             <br>
             <!-- pattern="\d{4}-\d{2}-\d{2}":required v-model="lmp" v-on::change="calculateLMP" -->
             {{ men_form.edd.label_tag }}
-            {% render_field men_form.edd ::value="this.edd" id="edd" %} 
+            {% render_field men_form.edd ::value="this.edd" id="edd"  readonly="readonly" %} 
+            <br>
+            {{ men_form.ga.label_tag }}
+            {% render_field men_form.ga ::value="weeksSpent" id="ga" %} 
+            <br>
+            {{ men_form.remain.label_tag }}
+            {% render_field men_form.remain ::value="this.remain" id="remain" readonly="readonly" %} 
             <br>
             <!-- ::value="calculateLMP" -->
             <!-- {{ med_form | crispy }}
@@ -121,7 +127,9 @@
                 lmp:'',
                 edd:'',
                 obdate:"",
-                interval:0,
+                ga: 0,
+                remain: 0,
+
             },
             methods: {
                 // fixFormat(event){
@@ -147,17 +155,36 @@
                     var dt = new Date(this.lmp);
                     var newDate = new Date(dt);
                     newDate.setDate(newDate.getDate() + 280);
+                    var currentDate = new Date();
+                    
                     var dd = ('0' + newDate.getDate()).slice(-2);
                     var mm = ('0' + (newDate.getMonth()+1)).slice(-2);
                     var y = newDate.getFullYear();
 
                     var someFormattedDate = y + '-' + mm + '-' + dd;
                     this.edd = document.getElementById('edd').value;
-                    // document.getElementById('edd').value = someFormattedDate;
+                    
                     this.edd =  someFormattedDate;
-                    // var newEdd = this.edd.setDate()
                     console.log('dt=' + dt + ' && newDate=' + newDate + '&& someFormattedDate=' + someFormattedDate + ' && this.edd=' + this.edd);
                     return this.edd;
+                },
+                weeksSpent: function() {
+                    this.lmp = document.getElementById('lmp').value;
+                    var dt = new Date(this.lmp);
+                    var newDate = new Date(dt);
+                    newDate.setDate(newDate.getDate());
+                    
+                    var currentDate = new Date();
+                    var newcurrentDate = new Date(currentDate);
+
+                    var diffDays = newcurrentDate.getTime() - newDate.getTime();
+                    var diffWeeks = Math.round((diffDays)/(7*24*60*60*1000)); 
+                    this.remain = 40 - diffWeeks; 
+                    console.log(' --diffWeeks='+diffWeeks)
+                    return diffWeeks;
+                },
+                weeksRemain: function() {
+                    
                 },
             },
         })

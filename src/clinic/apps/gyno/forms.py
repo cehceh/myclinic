@@ -27,6 +27,7 @@ class ObestetricForm(forms.ModelForm):
         widgets = {
             'obdate': forms.DateInput(
                 attrs={
+                    'type': "date",
                     'value': date.today(),
                     }),
             'gyn': forms.Select(
@@ -60,11 +61,11 @@ class MenstrualForm(forms.ModelForm):
                 # format=['%Y-%m-%d'],
                 attrs={
                     'type':'date',
-                    'format':'yy-MM-dd',
+                    # 'format':'yy-MM-dd',
                     'value': date.today(),
                 }),
             'edd': forms.DateInput( 
-                format=['%Y-%m-%d'],
+                # format=['%Y-%m-%d'],
                 attrs={
                     'type':'date',
                     # 'value': date.today(),
