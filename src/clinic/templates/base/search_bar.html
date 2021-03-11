@@ -59,7 +59,7 @@
         {% elif request.path == '/booking/create/booking/date/' %}
             <form class="form-inline mt-2 mt-md-0 float-right" method="GET" action="{% url 'booking:table_book' %}">
 
-                <input class="form-control mr-sm-2" type="text" name='d' placeholder="Search Booking Date(y-m-d)..." value="{{request.GET.d}}" aria-label="Search" id="search-book" v-model="date">
+                <input class="form-control mr-sm-2" type="date" name='d' placeholder="Search Booking Date..." value="{{request.GET.d}}" aria-label="Search" id="search-book" v-model="date">
                 
                 <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
                 

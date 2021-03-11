@@ -57,6 +57,9 @@ class PatientsTable(tables.Table):
     crdid = tables.TemplateColumn(
         '<a href="{% url \'patientdata:edit_patient\' record.id %}">{{ record.cardid }}</a>',
         verbose_name=u'Card_ID')
+    followup = tables.TemplateColumn(
+        '<a class="btn btn-outline-dark" href="{% url \'gyno:add_gyno\' record.id %}">Add Follow Up</a>',
+        verbose_name=u'Follow Up')
     addvis = tables.TemplateColumn(
         '<a class="btn btn-outline-dark" href="{% url \'visits:pass_patient_id\' record.id %}">Add New Visit</a>',
         verbose_name=u'New Visit')
@@ -76,6 +79,7 @@ class PatientsTable(tables.Table):
             'tele',
             'mob',
             'addr',
+            # 'followup',
             'crdid',
             'addpast',
         )

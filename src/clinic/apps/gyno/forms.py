@@ -22,16 +22,24 @@ class ObestetricForm(forms.ModelForm):
         fields = ('patient','obdate','gyn','g','p','a','nvd','cs','ld','lc','hist')
         GYNA = (
             (True, 'Not Pregnant'),
-            (False, 'Pregnant'),
-        )
+            (False, 'Pregnant'),)
         widgets = {
+            'patient': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                    # 'type': "date",
+                    }),
             'obdate': forms.DateInput(
                 attrs={
+                    'class': 'form-control',
                     'type': "date",
                     'value': date.today(),
                     }),
             'gyn': forms.Select(
                 choices=GYNA,
+                attrs={
+                    'class': 'form-control',
+                }
             ),
             'g': forms.NumberInput(
                 attrs={
@@ -41,8 +49,35 @@ class ObestetricForm(forms.ModelForm):
             'p': forms.NumberInput(
                 attrs={
                     'class': 'form-control',
-                    # 'readonly': 'readonly',
                 }),
+            'a': forms.NumberInput(
+                attrs={
+                    'class': 'form-control',
+                }),
+            'nvd':forms.CheckboxInput(
+                attrs={
+                    'class': 'form-control',
+                    "name":"rad",
+                    "color":"primary",
+                }),
+            'cs':forms.CheckboxInput(
+                attrs={
+                    'class': 'form-control',
+                    "name":"rad",
+                    "color":"danger",
+                }),
+            'ld':forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                }),
+            'lc':forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                }),
+            'hist':forms.Textarea(
+                attrs={
+                    'class': 'form-control',
+                }),                
         }
 
 
@@ -60,17 +95,28 @@ class MenstrualForm(forms.ModelForm):
             'lmp': forms.DateInput( 
                 # format=['%Y-%m-%d'],
                 attrs={
+                    'class': 'form-control',
                     'type':'date',
                     # 'format':'yy-MM-dd',
                     'value': date.today(),
                 }),
             'edd': forms.DateInput( 
-                # format=['%Y-%m-%d'],
                 attrs={
+                    'class': 'form-control',
                     'type':'date',
-                    # 'value': date.today(),
+                }),
+            'ga': forms.TextInput( 
+                attrs={
+                    'class': 'form-control',
+                    'type':'text',
+                }),
+            'remain': forms.TextInput( 
+                attrs={
+                    'class': 'form-control',
+                    'type':'text',
                 }),
         }
+
         # exclude = ('obestetric', 'patient',)
 
 

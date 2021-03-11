@@ -16,10 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from apps.home.views import frontpage, dashboard
+# from apps.gyno.views import api
+from apps.gyno.api import api
+# from ninja import NinjaAPI
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/', api.urls),
     
     # Frontpage 
     path('', frontpage, name='frontpage'),

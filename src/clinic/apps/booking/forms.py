@@ -39,7 +39,7 @@ class AppointmentForm(forms.ModelForm):
                                 attrs={
                                     'class': 'form-control',
                                     'id': 'bookdate',
-                                    'type':'text',
+                                    'type':'date',
                                     'value':date.today(),
                                     # 'placeholder':date.today(),
 

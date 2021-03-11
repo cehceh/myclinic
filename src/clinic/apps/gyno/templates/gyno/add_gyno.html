@@ -38,7 +38,25 @@
             {{ obs_form.a.label_tag }}
             {% render_field obs_form.a v-model="a" type="number" %} 
             <br>
-
+            {% render_field obs_form.nvd type="checkbox" class="p-default p-curve p-thick p-smooth" color="primary" %} 
+            {{ obs_form.nvd.label_tag }}
+            <br>
+            {% render_field obs_form.cs type="checkbox" class="p-default p-curve p-thick p-smooth" color="danger" %} 
+            {{ obs_form.cs.label_tag }}
+            <br>
+            <!-- <label class="switch" for="{{ obs_form.cs.id_for_label }}">
+                {{ obs_form.cs }}
+                <span class="slider round"></span>
+            </label><br> -->
+            {{ obs_form.ld.label_tag }} 
+            {% render_field obs_form.ld %}
+            <br>
+            {{ obs_form.lc.label_tag }} 
+            {% render_field obs_form.lc %} 
+            <br>
+            <!-- {{ obs_form.hist.label_tag }}
+            {% render_field obs_form.hist v-model="this.hist" %} 
+            <br> -->
             <hr>
 
             <button type="submit" class="btn btn-dark" id="savepatform-btn">
@@ -47,6 +65,7 @@
             
         </div>
         <div class="float-right" id="right-savepat-div" style="overflow-x: auto; width: 45%; height: 100%;">
+            
             <!-- {{ men_form | crispy }} -->
             {{ men_form.lmp.label_tag }}
             {% render_field men_form.lmp v-model="lmp" v-on::change="calculateLMP" id="lmp" %} 
@@ -60,6 +79,9 @@
             <br>
             {{ men_form.remain.label_tag }}
             {% render_field men_form.remain ::value="this.remain" id="remain" readonly="readonly" %} 
+            <br>
+            {{ obs_form.hist.label_tag }}
+            {% render_field obs_form.hist v-model="this.hist" %} 
             <br>
             <!-- ::value="calculateLMP" -->
             <!-- {{ med_form | crispy }}
@@ -110,6 +132,7 @@
         // })
     </script>
     <script>
+        // Vue.use(PrettyCheckbox);
         // Using Vue.js Here
         var addgyn = new Vue ({
             el: '#addgyn',
@@ -129,6 +152,8 @@
                 obdate:"",
                 ga: 0,
                 remain: 0,
+                nvd: false,
+                cs: false,
 
             },
             methods: {
@@ -188,16 +213,6 @@
                 },
             },
         })
-
-        // new instance of Vue.js
-        // var editVisit = new Vue({
-        //     el: '#edit-visit',
-        //     delimiters: ['[[', ']]'],
-        //     data: {
-        //         message: '',
-        //         // title: "Add Past History",
-        //     }
-        // });
 
     </script>
 

@@ -26,8 +26,8 @@ class Menstrual(models.Model):
     obestetric = models.ForeignKey(Obestetric, on_delete=models.CASCADE)
     lmp        = models.DateField(blank=True, null=True, verbose_name='LMP:')
     edd        = models.DateField(blank=True, null=True, verbose_name='EDD:')
-    ga         = models.IntegerField(default=0, blank=True, null=True, verbose_name='G.A:')
-    remain     = models.IntegerField(default=0, blank=True, null=True, verbose_name='Remaining:')
+    ga         = models.CharField(max_length=50, blank=True, null=True, verbose_name='G.A:')
+    remain     = models.CharField(max_length=50, blank=True, null=True, verbose_name='Remaining Weeks:')
 
     def __str__(self):
         return "{}".format(self.obestetric)
