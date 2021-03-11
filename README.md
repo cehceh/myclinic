@@ -1,4 +1,4 @@
-######### MYCLINIC APP. ##########
+# MYCLINIC APP. ##########
 
 - This application avoids some faults of saving sensitive data. 
 - My app. has some ideas for those who publish their application as offline 
