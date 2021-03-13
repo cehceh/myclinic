@@ -19,16 +19,17 @@ class ObestetricForm(forms.ModelForm):
     # )
     class Meta:
         model = Obestetric
-        fields = ('patient','obdate','gyn','g','p','a','nvd','cs','ld','lc','hist')
+        fields = ('obdate','gyn','g','p','a','nvd','cs','ld','lc','hist')
+        # 'patient',
+        # 'patient': forms.Select(
+        #     attrs={
+        #         'class': 'form-control',
+        #         # 'type': "date",
+        #         }),
         GYNA = (
             (True, 'Not Pregnant'),
             (False, 'Pregnant'),)
         widgets = {
-            'patient': forms.Select(
-                attrs={
-                    'class': 'form-control',
-                    # 'type': "date",
-                    }),
             'obdate': forms.DateInput(
                 attrs={
                     'class': 'form-control',

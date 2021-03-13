@@ -19,11 +19,12 @@ class PastHistoryForm(forms.ModelForm):
         widget=forms.TextInput(attrs={
                 'class': 'form-control',
                 'id': 'histdate',
-                'type': 'text',
-                'placeholder': date.today(),
+                'type': 'date',
+                'value': date.today(),
             }))
     pasthist = forms.CharField(
-        required=True, label='Past History',
+        required=True, 
+        label='Past History',
         widget=forms.TextInput(attrs={
             'class': 'form-control',
             'id': 'pasthist',

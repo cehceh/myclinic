@@ -12,17 +12,21 @@
             {{ obs_form.non_field_errors }}
         </div>
     </article>
-    <h1>
-        <p style="color: black;">[[title]]</p>
-    </h1>
-    <hr>
+    <!-- <div class="container" style="width: 100%; height: 100%;"> -->
+        <!-- <a href="{% url 'gyno:add_gyno' patient_id %}"><span class="fa fa-arrow-left"></span> Back </a>&nbsp;&nbsp;  -->
+        <h1>
+            <p style="color: black;">[[title]]</p>
+        </h1> &nbsp;&nbsp;
+        <!-- <a href="{% url 'gyno:add_gyno' patient_id %}"><span class="fa fa-arrow-left"></span> Back </a>  -->
+        <hr>
+    <!-- </div> -->
 
     <form method="post">{% csrf_token %}
         <div class="float-left" id="left-savepat-div" style="overflow-x: auto; width: 45%; height: 100%;">
             <!-- {{ obs_form | crispy }}  pattern="\d{4}-\d{2}-\d{2}":required -->
-            {{ obs_form.patient.label_tag }} 
+            <!-- {{ obs_form.patient.label_tag }} 
             {% render_field obs_form.patient %} 
-            <br>
+            <br> -->
             {{ obs_form.obdate.label_tag }} 
             {% render_field obs_form.obdate type="date" %} 
             <br>
@@ -38,7 +42,20 @@
             {{ obs_form.a.label_tag }}
             {% render_field obs_form.a v-model="a" type="number" %} 
             <br>
+            
+            {% render_field obs_form.nvd type="checkbox" class="p-default p-curve p-thick p-smooth" color="primary" %} 
+            {{ obs_form.nvd.label_tag }}
+            <br>
+            {% render_field obs_form.cs type="checkbox" class="p-default p-curve p-thick p-smooth" color="danger" %} 
+            {{ obs_form.cs.label_tag }}
+            <br>
 
+            {{ obs_form.ld.label_tag }} 
+            {% render_field obs_form.ld %}
+            <br>
+            {{ obs_form.lc.label_tag }} 
+            {% render_field obs_form.lc %} 
+            <br>
             <hr>
 
             <button type="submit" class="btn btn-dark" id="savepatform-btn">
@@ -51,7 +68,6 @@
             {{ men_form.lmp.label_tag }}
             {% render_field men_form.lmp v-model="lmp" v-on::change="calculateLMP" id="lmp" %} 
             <br>
-            <!-- pattern="\d{4}-\d{2}-\d{2}":required v-model="lmp" v-on::change="calculateLMP" -->
             {{ men_form.edd.label_tag }}
             {% render_field men_form.edd ::value="this.edd" id="edd"  readonly="readonly" %} 
             <br>
@@ -60,6 +76,9 @@
             <br>
             {{ men_form.remain.label_tag }}
             {% render_field men_form.remain ::value="this.remain" id="remain" readonly="readonly" %} 
+            <br>
+            {{ obs_form.hist.label_tag }}
+            {% render_field obs_form.hist %} 
             <br>
             <!-- ::value="calculateLMP" -->
             <!-- {{ med_form | crispy }}

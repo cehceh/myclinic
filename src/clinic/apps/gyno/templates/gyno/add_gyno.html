@@ -20,9 +20,7 @@
     <form method="post">{% csrf_token %}
         <div class="float-left" id="left-savepat-div" style="overflow-x: auto; width: 45%; height: 100%;">
             <!-- {{ obs_form | crispy }}  pattern="\d{4}-\d{2}-\d{2}":required -->
-            {{ obs_form.patient.label_tag }} 
-            {% render_field obs_form.patient type="text" %} 
-            <br>
+            
             {{ obs_form.obdate.label_tag }} 
             {% render_field obs_form.obdate %} 
             <br>
@@ -54,9 +52,6 @@
             {{ obs_form.lc.label_tag }} 
             {% render_field obs_form.lc %} 
             <br>
-            <!-- {{ obs_form.hist.label_tag }}
-            {% render_field obs_form.hist v-model="this.hist" %} 
-            <br> -->
             <hr>
 
             <button type="submit" class="btn btn-dark" id="savepatform-btn">
@@ -81,7 +76,7 @@
             {% render_field men_form.remain ::value="this.remain" id="remain" readonly="readonly" %} 
             <br>
             {{ obs_form.hist.label_tag }}
-            {% render_field obs_form.hist v-model="this.hist" %} 
+            {% render_field obs_form.hist %} 
             <br>
             <!-- ::value="calculateLMP" -->
             <!-- {{ med_form | crispy }}

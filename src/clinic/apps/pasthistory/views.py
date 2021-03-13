@@ -3,8 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.db.models import Max
 from django.db import connection, transaction
 from django.contrib import messages
-# from django.contrib.postgres.search import SearchVector
-# from clinic.forms import PatientsForm, VisitsForm
+
 from .forms import PastHistoryForm
 from .models import PastHistory
 from apps.patientdata.models import Patients
@@ -12,7 +11,6 @@ from apps.patientdata.tables import PatientsTable
 from apps.visits.tables import VisitsTable
 from apps.pasthistory.tables import PastHistoryTable
 from apps.presenthistory.tables import PresentHistoryTable
-
 
 #
 def save_pasthist(request, patient_id):
@@ -29,7 +27,7 @@ def save_pasthist(request, patient_id):
         form = PastHistoryForm(request.POST or None)
         if form.is_valid():
             form.save()
-            return redirect(reverse('patientdata:save_pasthist', kwargs={'patient_id': pat_id}))
+            return redirect(reverse('pasthistory:save_pasthist', kwargs={'patient_id': pat_id}))
     else:
         form = PastHistoryForm()
        
@@ -57,7 +55,7 @@ def edit_pasthist(request, patient_id, id):
     if form.is_valid():
         form.save()
         # print(query, pasthist)
-        return redirect(reverse('patientdata:edit_pasthist', kwargs={'patient_id': pat_id, 'id': id}))
+        return redirect(reverse('pasthistory:edit_pasthist', kwargs={'patient_id': pat_id, 'id': id}))
     # else:
     #     form = PastHistoryForm()
     context = {
@@ -74,10 +72,8 @@ def pasthist_table(request): # all past history record
     var = Patients.objects.all()
     # var = PastHistory.objects.values('patient', 'histdate', 'pasthist').distinct()
     # var = PastHistory.objects.select_related('patient').distinct().order_by('-id')
-    # print(var)
     page_no = request.GET.get('pageno')
     if page_no == None or page_no == '' or int(page_no) == 0:
-        # table = PastHistoryTable(var)
         table = PatientsTable(var, exclude='addr, age, birth, tele, mob')
         table.paginate(page=request.GET.get("page", 1), per_page=25)
     else:
@@ -89,7 +85,6 @@ def pasthist_table(request): # all past history record
     }
     return render(request, 'patientdata/tables.html', context)
 
-
 def delete_pasthist(request, id):
     query = PastHistory.objects.get(id=id)
 
@@ -97,5 +92,6 @@ def delete_pasthist(request, id):
     patid = pat['patient_id']
     query.delete()
 
-    # return HttpResponseRedirect(redirect_to='patientdata:save_pasthist', kwargs={'patient_id': patid})#redirect('patientdata:pasthist_table')
-    return redirect(reverse('patientdata:save_pasthist', kwargs={'patient_id': patid}))#redirect('patientdata:pasthist_table')
+    return redirect(reverse('pasthistory:save_pasthist', kwargs={'patient_id': patid}))
+
+

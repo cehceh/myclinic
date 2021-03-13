@@ -64,7 +64,7 @@ class PatientsTable(tables.Table):
         '<a class="btn btn-outline-dark" href="{% url \'visits:pass_patient_id\' record.id %}">Add New Visit</a>',
         verbose_name=u'New Visit')
     addpast = tables.TemplateColumn(
-        '<a class="btn btn-outline-dark" href="/data/create/past/history/patient/{{record.id}}/">Add Past History</a>',
+        '<a class="btn btn-outline-dark" href="{% url \'pasthistory:save_pasthist\' record.id %}">Add Past History</a>',
         verbose_name=u'Past History')
 
     class Meta:
@@ -79,7 +79,6 @@ class PatientsTable(tables.Table):
             'tele',
             'mob',
             'addr',
-            # 'followup',
             'crdid',
             'addpast',
         )

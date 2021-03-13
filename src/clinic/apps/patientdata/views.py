@@ -74,9 +74,6 @@ def edit_patient(request, id): # Making Update to a Patient
     table = VisitsTable(qs, exclude='patient, addpresent')
     table.paginate(page=request.GET.get("page", 1), per_page=10)
 
-    # patient_id = request.GET['id']#request.POST.get('id')
-    # myform = VisitsForm(data={'patient_id':id})  
-      
     query = Patients.objects.get(id=id)  # get(birth_date=birth_date)
     patient = Patients.objects.values('id').filter(id=id).first()
     # patient = Patients.objects.filter(id=id)
@@ -132,9 +129,7 @@ def edit_patient(request, id): # Making Update to a Patient
         #     return redirect(reverse('patientdata:edit_patient', kwargs={'id':id}))
         else:
             return redirect(reverse('patientdata:table_patient'))
-            
-        # return redirect('patientdata:table_patient')
-        # return redirect(query.get_absolute_url())
+
     context = { 
         'patient': patient,
         'patient_id': patient_id,

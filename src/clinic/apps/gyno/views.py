@@ -73,6 +73,8 @@ def add_gyno(request, patient_id):
         men = MenstrualForm(request.POST, prefix='men')
         if obs.is_valid() and men.is_valid():
             obs_form = obs.save(commit=False)
+            obs_form.patient_id = patient_id
+            # print(obs_form.patient_id)
             obs_form.save()
             obs_id = obs_form.id
             pat_id = obs_form.patient_id
@@ -86,10 +88,10 @@ def add_gyno(request, patient_id):
             # messages.success(request, 'Saving process done ....')
             return redirect(reverse('gyno:edit_gyno', kwargs={
                                                         'obs_id': obs_form.id,
-                                                        'patient_id': pat_id,}))
+                                                        'patient_id': patient_id,}))
         else:
             messages.success(request, 'Saving process failed ..!!')
-            return redirect(reverse('gyno:add_gyno'))
+            return redirect(reverse('gyno:add_gyno', kwargs={'patient_id': patient_id,}))
             print('Error')
     else:
         obs = ObestetricForm(prefix='obs')

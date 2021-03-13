@@ -1,21 +1,24 @@
-{% extends 'index.html' %} {% load crispy_forms_tags %} {% load render_table from django_tables2 %} {% load static %}
+{% extends 'index.html' %} 
+{% load crispy_forms_tags %}
+{% load static %}
+{% load render_table from django_tables2 %} 
 <!--  -->
 {% block content %}
 
 <solid>
-    <h1 style="color:black">Edit Past History for ({{patient}})</h1>
+    <h1 style="color:black">Edit Past History for Patient({{patient}})</h1>
 </solid>
 <hr>
-<!-- /clinic/create/visit/patient/{{ patient_id }}/ -->
-
-<a class="btn btn-primary" href="{{ patient.get_absolute_url }}" role="button">
-    Edit Patient Data
-</a>
-<a class="btn btn-dark" href="{% url 'patientdata:save_pasthist' patient.id %}" role="button">
-    Add Past History
-</a>
+<div class="container">
+    <a class="btn btn-primary" href="{{ patient.get_absolute_url }}" role="button">
+        Edit Patient Data
+    </a>
+    <a class="btn btn-dark" href="{% url 'pasthistory:save_pasthist' patient.id %}" role="button">
+        Add Past History
+    </a>
+</div>
 <!--  -->
-<!-- <form class="form-inline mt-2 mt-md-0 float-right" method="GET" action="{% url 'clinic:search_visit' %}" hidden>
+<!-- <form class="form-inline mt-2 mt-md-0 float-right" method="GET" action="#" hidden>
 
     <input class="form-control mr-sm-2" type="text" name='vis' placeholder="Search Visits ..." value="{{request.GET.vis}}" aria-label="Search">
     <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
@@ -60,11 +63,11 @@
 {% block scripts %}
 <!-- Write javascript code Here -->
 <script type="text/javascript">
-    $(document).ready(function() {
-        $('#histdate').datepicker({
-            dateFormat: "yy-mm-dd"
-        });
-    })
+    // $(document).ready(function() {
+    //     $('#histdate').datepicker({
+    //         dateFormat: "yy-mm-dd"
+    //     });
+    // })
 </script>
 <!-- <script type="text/javascript" src="{% static 'js/vue.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/axios.min.js' %}"></script> -->

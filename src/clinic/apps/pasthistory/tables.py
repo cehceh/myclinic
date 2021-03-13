@@ -28,21 +28,21 @@ def countrow(table):
 
 class PastHistoryTable(tables.Table):
     patient = tables.TemplateColumn(
-        '<a href="/data/past/history/patient/{{record.patient_id}}/edit/{{record.id}}/">{{ record.patient }}</a>',
+        '<a href="{% url \'pasthistory:edit_pasthist\' record.patient_id record.id %}">{{ record.patient }}</a>',
         # accessor='patient.pasthist',
         verbose_name=u'Patient Name')
     pasthist = tables.TemplateColumn(
-        '<a href="/data/past/history/patient/{{record.patient_id}}/edit/{{record.id}}/">{{ record.pasthist }}</a>',
+        '<a href="{% url \'pasthistory:edit_pasthist\' record.patient_id record.id %}">{{ record.pasthist }}</a>',
         # accessor='patient.pasthist',
         verbose_name=u'Past History')
     histdate = tables.TemplateColumn(
-        '<a href="/data/past/history/patient/{{record.patient_id}}/edit/{{record.id}}/">{{ record.histdate }}</a>',
+        '<a href="{% url \'pasthistory:edit_pasthist\' record.patient_id record.id %}">{{ record.histdate }}</a>',
         verbose_name=u'History Date')
     add = tables.TemplateColumn(
-        '<a class="btn btn-outline-dark" href="/data/create/past/history/patient/{{record.patient_id}}/">Add Past History</a>',
+        '<a class="btn btn-outline-dark" href="{% url \'pasthistory:edit_pasthist\' record.patient_id record.id %}">Add Past History</a>',
         verbose_name=u'Add Past History')
     delete = tables.TemplateColumn(
-        '<a class="btn btn-outline-danger" href="/data/delete/past/history/{{record.id}}/"'
+        '<a class="btn btn-outline-danger" href="{% url \'pasthistory:delete_pasthist\' record.id %}"'
         'onclick="return confirm(\'Are you sure you want to delete this item ?\')">Delete Record</a>',
         verbose_name=u'Delete Past History')
     class Meta:
