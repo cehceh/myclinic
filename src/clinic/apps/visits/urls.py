@@ -8,8 +8,6 @@ urlpatterns = [
     # for visit
     path('create/visit/patient/<int:id>/', 
         pass_patient_id, name='pass_patient_id'),
-    path('create/visit/', 
-        save_visits, name='save_visits'),
     path('edit/visit/<int:id>/patient/<int:patient_id>/', 
         visits_patient_id, name='visits_patient_id'),
     

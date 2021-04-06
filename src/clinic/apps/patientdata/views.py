@@ -17,8 +17,7 @@ from apps.visits.tables import VisitsTable
 
 #
 def save_patient(request):
-    """ Collecting data for patients function to save patient data to database """
-    
+    """ Collecting data for patients function to save patient data to database """ 
     if request.method == 'POST':
         form = PatientsForm(request.POST or None)
         if form.is_valid():
@@ -26,7 +25,7 @@ def save_patient(request):
             # card = request.POST.get('cardid')
             match = Patients.objects.filter(name=name).exists()
             # match_card = Patients.objects.filter(cardid=card).exists()
-            if not match:
+            if not match: #  match == None
                 save_form = form.save(commit=False)
                 save_form.save()
                 pat_id = save_form.id
@@ -42,7 +41,7 @@ def save_patient(request):
                 # # cursor.fetchall()
                 # transaction.commit
                 print('patient: ' + str(name))
-                messages.success(request, 'saving done ... ')
+                messages.success(request, 'Saving process done ... ')
                 return redirect('patientdata:table_patient')
             else:
                 print('what is wrong')

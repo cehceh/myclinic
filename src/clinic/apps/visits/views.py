@@ -34,20 +34,20 @@ def export_table(request):
     })
 
 # old save visit
-def save_visits(request): # save without
-    ''' Method for saving patient's visits '''
-    if request.method == 'POST':
-        form = VisitsForm(request.POST or None)
-        if form.is_valid():
-            # patient_id = form.cleaned_data['patient_id']
-            form.save()
-            return redirect('/clinic/table/visits/')
-    else:
-        form = VisitsForm()
-    context = {
-        'save_visits_form': form,
-    }
-    return render(request, 'clinic/forms.html', context)
+# def save_visits(request): # save without
+#     ''' Method for saving patient's visits '''
+#     if request.method == 'POST':
+#         form = VisitsForm(request.POST or None)
+#         if form.is_valid():
+#             # patient_id = form.cleaned_data['patient_id']
+#             form.save()
+#             return redirect('/clinic/table/visits/')
+#     else:
+#         form = VisitsForm()
+#     context = {
+#         'save_visits_form': form,
+#     }
+#     return render(request, 'clinic/forms.html', context)
 
 
 # new save visit
@@ -83,21 +83,6 @@ def pass_patient_id(request, id): # Making save to new visits
     }
     return render(request, 'visits/add_visit.html', context)
 
-
-
-# old edit visit
-# def edit_visits(request, id):  # Making Update to a visit
-#     query = Visits.objects.get(id=id)  # out put Visit ID
-#     form = VisitsForm(request.POST or None, instance=query)
-#     if form.is_valid():
-#         instance = form.save()
-#         instance.save()
-#         return redirect('clinic:table_visits')  # ('/clinic/table/')
-#         #  HTTPResponseRedirect(reverse('clinic:edit_patient', kwargs={'id': id}))
-#     context = {
-#         'edit_visits_form': form
-#     }
-#     return render(request, 'clinic/forms.html', context)
 
 # new edit visit
 def visits_patient_id(request, id, patient_id):  # Making Update to a visit with knowing the patient id
@@ -147,7 +132,7 @@ def visits_patient_id(request, id, patient_id):  # Making Update to a visit with
             instance = form.save(commit=False)
             instance.save()
             messages.success(request, 'Update visit no. (' + str(vis_id) + ') done successfully' )
-            return redirect(reverse('clinic:visits_patient_id', args=(vis_id, patientid)))  # ('/clinic/table/')
+            return redirect(reverse('visits:visits_patient_id', args=(vis_id, patientid)))  # ('/clinic/table/')
             #  HTTPResponseRedirect(reverse('clinic:edit_patient', kwargs={'id': id}))
         else:
             messages.success(request, 'The Patient Name Must Be : ' + \

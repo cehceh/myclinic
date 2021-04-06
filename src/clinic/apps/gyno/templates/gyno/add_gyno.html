@@ -5,19 +5,18 @@
 
 {% block content %}
 
-<div class="container" style="background-color: white;" id="addgyn">
-
-    <article class="message is-{{ message.tags }}">                 
-        <div class="message-body alert {{ message.tags }}" style="color: red;" role="alert">
-            {{ obs_form.non_field_errors }}
-        </div>
-    </article>
+<div class="container" id="addgyn">
     <h1>
         <p style="color: black;">[[title]]</p>
     </h1>
     <hr>
 
     <form method="post">{% csrf_token %}
+        <article class="message is-{{ message.tags }}">                 
+            <div class="message-body alert {{ message.tags }}" style="color: red;" role="alert">
+                {{ obs_form.non_field_errors }}
+            </div>
+        </article>
         <div class="float-left" id="left-savepat-div" style="overflow-x: auto; width: 45%; height: 100%;">
             <!-- {{ obs_form | crispy }}  pattern="\d{4}-\d{2}-\d{2}":required -->
             
@@ -25,7 +24,7 @@
             {% render_field obs_form.obdate %} 
             <br>
             {{ obs_form.gyn.label_tag }} 
-            {% render_field obs_form.gyn %} 
+            {% render_field obs_form.gyn ::value="this.gyn" id="gyn" %} 
             <br>
             {{ obs_form.g.label_tag }} 
             {% render_field obs_form.g ::value="changeGinput" type="number" %}
@@ -36,11 +35,11 @@
             {{ obs_form.a.label_tag }}
             {% render_field obs_form.a v-model="a" type="number" %} 
             <br>
-            {% render_field obs_form.nvd type="checkbox" class="p-default p-curve p-thick p-smooth" color="primary" %} 
             {{ obs_form.nvd.label_tag }}
+            {% render_field obs_form.nvd %} 
             <br>
-            {% render_field obs_form.cs type="checkbox" class="p-default p-curve p-thick p-smooth" color="danger" %} 
             {{ obs_form.cs.label_tag }}
+            {% render_field obs_form.cs type="checkbox" %} 
             <br>
             <!-- <label class="switch" for="{{ obs_form.cs.id_for_label }}">
                 {{ obs_form.cs }}
@@ -67,10 +66,16 @@
             <br>
             <!-- pattern="\d{4}-\d{2}-\d{2}":required v-model="lmp" v-on::change="calculateLMP" -->
             {{ men_form.edd.label_tag }}
-            {% render_field men_form.edd ::value="this.edd" id="edd"  readonly="readonly" %} 
+            {% render_field men_form.edd ::value="this.edd" id="edd" readonly="readonly" %} 
             <br>
-            {{ men_form.ga.label_tag }}
-            {% render_field men_form.ga ::value="weeksSpent" id="ga" %} 
+            <div class="field" v-if="showHide">
+                {{ men_form.ga.label_tag }}
+                {% render_field men_form.ga ::value="weeksSpent" id="ga" readonly="readonly" %} 
+            </div>
+            <div class="field" v-else>
+                {{ men_form.ga.label_tag }}
+                {% render_field men_form.ga ::value="weeksSpent" id="ga" readonly="readonly" :hidden='true' %} 
+            </div>
             <br>
             {{ men_form.remain.label_tag }}
             {% render_field men_form.remain ::value="this.remain" id="remain" readonly="readonly" %} 
@@ -136,9 +141,9 @@
                 patient_name: '' ,
                 title: "Follow Up Visit",
                 // message:  '{{ non_field_errors }}' ,
-                // showDialog: false,
-                preg:'Pregnant',
-                notpreg:'Not Pregnant',
+                preg: 'Not Pregnant',
+                gyn:'',
+                // notpreg:'Not Pregnant',
                 g: 0,
                 p: 0,
                 a: 0,
@@ -152,17 +157,7 @@
 
             },
             methods: {
-                // fixFormat(event){
-                //     return moment(event).format('YYYY-MM-DD');
-                // },
-                // formatDate(date) {
-                //     return dayjs(date).format('YYYY-MM-DD');
-                // },
-                // changeGinput(event) {
-                //     this.p = event.target.value;
-                //     this.a = event.target.value;
-                //     this.g = Number(this.p) + Number(this.a) + 1;
-                // }
+                
             },
             computed:{
                 changeGinput: function(){
@@ -203,8 +198,8 @@
                     console.log(' --diffWeeks='+diffWeeks)
                     return diffWeeks;
                 },
-                weeksRemain: function() {
-                    
+                showHide: function() {
+                    return this.gyn = 'Pregnant';
                 },
             },
         })

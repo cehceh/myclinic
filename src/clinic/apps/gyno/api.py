@@ -53,7 +53,7 @@ class ObesMenRelation(Schema):
     obestetric__cs: bool = False  #= models.BooleanField(default=False, verbose_name='CS:')
     obestetric__ld: str = "string"  # = models.CharField(max_length=150, blank=True, null=True, verbose_name='LD:')
     obestetric__lc: str = "string"  #= models.CharField(max_length=150, blank=True, null=True, verbose_name='LC:')
-    obestetric__hist: str = "string"
+    obestetric__hist: str 
     # obestetric__id: int  #= models.ForeignKey(Obestetric, on_delete=models.CASCADE)
     lmp: date = None        #= models.DateField(blank=True, null=True, verbose_name='LMP:')
     edd: date = None        #= models.DateField(blank=True, null=True, verbose_name='EDD:')
@@ -82,12 +82,13 @@ def create_gyno(request,
 
 from typing import List # Important import to get all objects without error
 @api.get('/all/obestetric/and/menstrual/', response=List[ObesMenRelation])
-def get_obestetric(request):
-    # obs = Obestetric.objects.all().order_by('-id')
-    obs = Menstrual.objects.select_related('obestetric') \
-                            .filter().order_by('-gyno_obestetric.obdate')
-    print(obs)
-    return obs
+def get_obsmen(request):
+    obs = Obestetric.objects.all().order_by('-id')
+    men = Menstrual.objects.select_related('obestetric')
+                            # .filter().order_by('-gyno_obestetric.obdate')
+    # men = Menstrual.objects.all().filter(obestetric__in=obs)
+    print(men)
+    return men
 
 @api.get('/all/obestetric/', response=List[ObestetricIn])
 def get_obestetric(request):

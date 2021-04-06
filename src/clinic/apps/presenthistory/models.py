@@ -13,15 +13,15 @@ from apps.visits.models import Visits
 class PresentHistory(models.Model):
     visitdate    = models.DateField(default=date.today, blank=True, null=True)
     temprature = models.DecimalField(decimal_places=2,
-                                     max_digits=3,
+                                     max_digits=5,
                                      default=00.00,
                                      blank=True)
     weight = models.DecimalField(decimal_places=2,
-                                 max_digits=3,
+                                 max_digits=5,
                                  default=000.00,
                                  blank=True)
     height = models.DecimalField(decimal_places=2,
-                                 max_digits=3,
+                                 max_digits=5,
                                  default=000.00,
                                  blank=True)
     cholestrol   = models.CharField(max_length=150, null=True, blank=True)

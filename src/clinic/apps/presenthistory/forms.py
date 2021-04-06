@@ -16,47 +16,47 @@ from datetime import date
 #             params={'value': '0'},
 #         )
 class PresentHistoryForm(forms.ModelForm):
-    id = forms.IntegerField(
-        required=False,
-        label='ID',
-        widget=forms.NumberInput(attrs={
-            'class': 'form-control',
-            'readonly': 'readonly',
-        }))
+    # id = forms.IntegerField(
+    #     required=False,
+    #     label='ID',
+    #     widget=forms.NumberInput(attrs={
+    #         'class': 'form-control',
+    #         'readonly': 'readonly',
+    #     }))
 
-    visitdate = forms.DateField(
-        required=True,
-        label='Visit Date',
-        widget=forms.TextInput(attrs={
-                'class': 'form-control',
-                'id': 'visitdate',
-                'type': 'text',
-                # 'name': '',
-                # 'placeholder': date.today(),
-                'readonly': 'readonly', # to make an input disabled
-            }))
+    # visitdate = forms.DateField(
+    #     required=True,
+    #     label='Visit Date',
+    #     widget=forms.TextInput(attrs={
+    #             'class': 'form-control',
+    #             'id': 'visitdate',
+    #             'type': 'text',
+    #             # 'name': '',
+    #             # 'placeholder': date.today(),
+    #             'readonly': 'readonly', # to make an input disabled
+    #         }))
 
-    patient = forms.ModelChoiceField(
-        queryset=Patients.objects.all(),
-        required=True,
-        label='Patient Name',
-        widget=forms.Select(
-            attrs={
-                'class': 'form-control',
-                'id': 'patient',
-                # 'disabled':'disabled',
-                'readonly': 'readonly',
-            }))
+    # patient = forms.ModelChoiceField(
+    #     queryset=Patients.objects.all(),
+    #     required=True,
+    #     label='Patient Name',
+    #     widget=forms.Select(
+    #         attrs={
+    #             'class': 'form-control',
+    #             'id': 'patient',
+    #             # 'disabled':'disabled',
+    #             'readonly': 'readonly',
+    #         }))
 
-    visit = forms.ModelChoiceField(
-        queryset=Visits.objects.all(),
-        required=True,
-        label='Visit No.',
-        widget=forms.Select(attrs={
-            'class': 'form-control',
-            'id': 'visit-id',
-            'readonly':'readonly'
-        }))
+    # visit = forms.ModelChoiceField(
+    #     queryset=Visits.objects.all(),
+    #     required=True,
+    #     label='Visit No.',
+    #     widget=forms.Select(attrs={
+    #         'class': 'form-control',
+    #         'id': 'visit-id',
+    #         'readonly':'readonly'
+    #     }))
 
     temprature = forms.CharField(
         required=False, empty_value='0.00',
@@ -158,5 +158,6 @@ class PresentHistoryForm(forms.ModelForm):
 
     class Meta:
         model = PresentHistory
-        fields = ('__all__')
-    
+        fields = ('temprature', 'weight', 'height', 
+                'cholestrol', 'bloodpr', 'hb', 'pulse', 'bsl') #('__all__')
+        # exclude = ['patient', 'visitdate', 'visit']

@@ -29,18 +29,26 @@ def save_present_hist(request, patient_id, visit_id):
 
     match_visit = Medicine.objects.filter(visit=vis_id, patient=pat_id).exists()
 
-    bound_form = PresentHistoryForm(data={'visitdate':vis_date,
-                                            'visit':vis_id,
-                                            'patient':patient_name,})
+    bound_form = PresentHistoryForm(
+                                data={
+                                        'visitdate':vis_date,
+                                        'visit':vis_id,
+                                        'patient':patient_name,
+                                    })
     if request.method == 'POST':
         form = PresentHistoryForm(request.POST or None)
         if form.is_valid():
-            form.save()
+            present_form= form.save()
+            present_form.visitdate = vis_date
+            present_form.patient_id = pat_id
+            present_form.visit_id = vis_id
+            present_form.save()
             return redirect(
-                reverse('clinic:visits_patient_id',
+                reverse('presenthistory:edit_present_hist',
                         args=(
-                            visit_id,
                             patient_id,
+                            visit_id,
+                            present_form.id,                            
                     )))
     else:
         form = PresentHistoryForm()
@@ -51,7 +59,7 @@ def save_present_hist(request, patient_id, visit_id):
         'visit': visit,
         'medicine': match_visit,
     }
-    return render(request, 'patientdata/forms.html', context)
+    return render(request, 'presenthistory/add_presenthistory.html', context)
 
 
 def edit_present_hist(request, patient_id, visit_id, id):
@@ -74,10 +82,19 @@ def edit_present_hist(request, patient_id, visit_id, id):
 
     form = PresentHistoryForm(request.POST or None, instance=present)
     if form.is_valid():
-        form.save()
-        # return redirect(reverse('', args=()
-        #         ))
-
+        present_form= form.save()
+        present_form.visitdate = vis_date
+        present_form.patient_id = pat_id
+        present_form.visit_id = vis_id
+        present_form.save()
+        return redirect(
+                reverse('presenthistory:edit_present_hist',
+                        args=(
+                            patient_id,
+                            visit_id,
+                            present_form.id,                            
+                    )))
+        
     context= {
             'edit_present_hist_form': form,
             'match_medicine': match_medicine,
@@ -86,7 +103,7 @@ def edit_present_hist(request, patient_id, visit_id, id):
             'patient': patient_name,
             'visit': visit,
             }
-    return render(request, 'patientdata/forms.html', context)
+    return render(request, 'presenthistory/edit_presenthistory.html', context)
 
 
 def patient_history_table(request, patient_id):
@@ -196,26 +213,26 @@ def delete_history(request, id):
     del_hist = PresentHistory.objects.get(id=id)
     del_hist.delete()
 
-    return redirect(reverse('patientdata:table_present_hist'))
+    return redirect(reverse('presenthistory:table_present_hist'))
 
 
 
 # get mac address
-def compare(request):
-    '''  '''
-    import re, uuid 
+# def compare(request):
+#     '''  '''
+#     import re, uuid 
 
-    # joins elements of getnode() after each 2 digits. 
-    # using regex expression 
-    label = "The MAC address in formatted and less complex way is : "
-    print (label, end="") 
-    mac = ':'.join(re.findall('..', '%012x' % uuid.getnode()))
-    print (mac) 
+#     # joins elements of getnode() after each 2 digits. 
+#     # using regex expression 
+#     label = "The MAC address in formatted and less complex way is : "
+#     print (label, end="") 
+#     mac = ':'.join(re.findall('..', '%012x' % uuid.getnode()))
+#     print (mac) 
 
-    context = {
-        'label': label,
-        'mac': mac,
-    }
-    return render(request, 'presenthistory/mac.html', context)
+#     context = {
+#         'label': label,
+#         'mac': mac,
+#     }
+#     return render(request, 'presenthistory/mac.html', context)
 
 

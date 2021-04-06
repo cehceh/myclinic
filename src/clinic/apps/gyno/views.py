@@ -9,63 +9,13 @@ from .models import (Obestetric, Menstrual, MedHistory,
 from .forms import (ObestetricForm, MenstrualForm, MedHistoryForm,
                     SurHistoryForm, GynHistoryForm, DrugHistoryForm)
 
-# from ninja import NinjaAPI, Schema, Form
-# api = NinjaAPI()
-
+from apps.patientdata.tables import PatientsTable
+from apps.patientdata.models import Patients
 
 # Create your views here.
 
 
-# class ObestetricIn(Schema):
-#     # id: int #= models.ForeignKey(Patients, verbose_name='Patient Name:', on_delete=models.CASCADE)
-#     patient: int #= models.ForeignKey(Patients, verbose_name='Patient Name:', on_delete=models.CASCADE)
-#     obdate: date = None # = models.DateField(blank=True, null=True, verbose_name='Follow Up Date:')
-#     gyn: bool     #= models.BooleanField(verbose_name='Gyn:', default=False)
-#     g: int       #= models.IntegerField(default=0, blank=True, null=True, verbose_name='G:')
-#     p: int      # = models.IntegerField(default=0, blank=True, null=True, verbose_name='P:')
-#     a: int      # = models.IntegerField(default=0, blank=True, null=True, verbose_name='A:')
-#     nvd: bool  #     = models.BooleanField(default=False, verbose_name='NVD:')
-#     cs: bool   #= models.BooleanField(default=False, verbose_name='CS:')
-#     ld: str    # = models.CharField(max_length=150, blank=True, null=True, verbose_name='LD:')
-#     lc: str    #= models.CharField(max_length=150, blank=True, null=True, verbose_name='LC:')
-#     hist: str
-
-# class MenstrualIn(Schema):
-#     patient: int    #= models.ForeignKey(Patients, on_delete=models.CASCADE)
-#     obestetric: int #= models.ForeignKey(Obestetric, on_delete=models.CASCADE)
-#     lmp: date = None        #= models.DateField(blank=True, null=True, verbose_name='LMP:')
-#     edd: date = None        #= models.DateField(blank=True, null=True, verbose_name='EDD:')
-#     ga: str         #= models.CharField(max_length=50, blank=True, null=True, verbose_name='G.A:')
-#     remain: str     #= models.CharField(max_length=50, blank=True, null=True, verbose_name='Remaining Weeks:')
-
-
-# @api.get("/add")
-# def followup(request, name: str, followupdate: str):
-#     context = {
-#         'name': name, 
-#         'result': ObestetricForm,
-#         'followupdate': followupdate,
-#     }
-#     return context#{name, followupdate}
-
-# @api.get("/gyn/add_gyno/")
-# def get_gyno_form(request, obsApi: ObestetricIn = Form(...)):
-#     context = {
-#         'obs_form': ObestetricForm, 
-#         # 'men_form': MenstrualForm,
-#         'id': obsApi.id,
-#         # 'patient': obsApi.patient, 'obdate': obsApi.obdate, 'gyn': obsApi.gyn,
-#         # 'g': obsApi.g, 'p': obsApi.p, 'a': obsApi.a, 'nvd': obsApi.obdatenvd,
-#         # 'cs': obsApi.cs, 'ld': obsApi.ld, 'lc': obsApi.lc,
-#         # 'anystring': obsApi.hist,
-#     }
-#     return render(request, 'gyno/add_gyno.html', context)
-
-
 # Add gyn data with more than one form 
-# @api.api_operation(["POST", "GET"], "/gyn/add_gyno")
-# @api.post("/gyn/add_gyno/")
-# def add_gyno(request, obsApi: ObestetricIn = Form(...)): #, menApi: MenstrualIn = Form(...)
 def add_gyno(request, patient_id):
     '''  '''
     if request.method == 'POST':
@@ -101,25 +51,18 @@ def add_gyno(request, patient_id):
         # 'formset': formset,
         'obs_form': obs,
         'men_form': men,
-        # 'obsApi': obsApi,
-        # 'menApi': menApi.obestetric,
         
-        # 'patient': obsApi.patient, 'obdate': obsApi.obdate, 'gyn': obsApi.gyn,
-        # 'g': obsApi.g, 'p': obsApi.p, 'a': obsApi.a, 'nvd': obsApi.obdatenvd,
-        # 'cs': obsApi.cs, 'ld': obsApi.ld, 'lc': obsApi.lc,
-        # 'anystring': obsApi.hist,
     }
     return render(request, 'gyno/add_gyno.html', context)
 
 
-# @api.api_operation(["POST", "GET"], "/gyn/edit_gyno/{obs_id}/{patient_id}")
 def edit_gyno(request, obs_id: int, patient_id: int):
     '''  '''
     obestetric = Obestetric.objects.get(id=obs_id)
     menstrual = Menstrual.objects.get(obestetric_id=obs_id)
-    obs = ObestetricForm(request.POST or None, 
-                            instance=obestetric, 
-                            prefix='obs')
+    obs = ObestetricForm(
+                request.POST or None, 
+                instance=obestetric, prefix='obs')
     men = MenstrualForm(request.POST or None, instance=menstrual, prefix='men')
     if obs.is_valid() and men.is_valid():
         obs_form = obs.save(commit=False)
@@ -136,10 +79,7 @@ def edit_gyno(request, obs_id: int, patient_id: int):
         return redirect(reverse('gyno:edit_gyno', kwargs={
                                                         'obs_id': obs_id,
                                                         'patient_id': pat_id,}))
-    # else:
-    #     messages.success(request, 'Saving changes failed ..!!')
-        # return redirect(reverse('gyno:edit_gyno', kwargs={'obs_id': obs_id}))
-        # return redirect('gyno:add_gyno')
+   
     context = {
         'obs_form': obs,
         'men_form': men,
@@ -149,11 +89,19 @@ def edit_gyno(request, obs_id: int, patient_id: int):
     return render(request, 'gyno/edit_gyno.html', context)
 
 
-def table_gyno(request):
+def add_followup_table(request):
     '''  '''
-
+    qs = Patients.objects.all().order_by('-id')
+    page_no = request.GET.get('pageno')
+    if page_no == None or page_no == '' or int(page_no) == 0:
+        table = PatientsTable(qs, exclude='addr, addpast, addvis')
+        table.paginate(page=request.GET.get("page", 1), per_page=10)
+    else:
+        table = PatientsTable(qs, exclude='addr, addpast, addvis')
+        table.paginate(page=request.GET.get("page", 1), per_page=page_no)
+    
     context = {
-
+        'add_followup_table':table,
     }
     return render(request, 'gyno/tables.html', context)
 

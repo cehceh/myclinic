@@ -1,0 +1,20 @@
+# Order of makemigrations and migrate to apps to database 
+# In order to what app depends on another 
+
+# 1-
+D:\Django\projects\myclinic>python src\clinic\manage.py makemigrations accounts --settings=clinic.settings.development
+D:\Django\projects\myclinic>python src\clinic\manage.py migrate accounts --settings=clinic.settings.development
+
+# 2-
+D:\Django\projects\myclinic>python src\clinic\manage.py makemigrations patientdata --settings=clinic.settings.development
+D:\Django\projects\myclinic>python src\clinic\manage.py migrate patientdata --settings=clinic.settings.development
+
+# 3-
+D:\Django\projects\myclinic>python src\clinic\manage.py makemigrations visits --settings=clinic.settings.development
+D:\Django\projects\myclinic>python src\clinic\manage.py migrate visits --settings=clinic.settings.development
+
+# 4-
+D:\Django\projects\myclinic>python src\clinic\manage.py makemigrations gyno --settings=clinic.settings.development
+D:\Django\projects\myclinic>python src\clinic\manage.py migrate gyno --settings=clinic.settings.development
+
+

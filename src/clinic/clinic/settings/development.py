@@ -91,7 +91,7 @@ INSTALLED_APPS = [
     'django_tables2',
     'jquery',
     'widget_tweaks',
-    # 'phonenumber_field',
+    'phonenumber_field',
 
     # My apps
     'apps.accounts',
@@ -102,7 +102,7 @@ INSTALLED_APPS = [
     'apps.pasthistory',
     'apps.patientdata',
     'apps.presenthistory',
-    # 'apps.reports',
+    'apps.reports',
     'apps.revisitdrug',
     'apps.revisits',
     'apps.search',
@@ -166,16 +166,9 @@ DATABASES = {
         # 'ENGINE': 'django.db.backends.sqlite3',
         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 
-        # for postgresql database
-        # 'ENGINE': 'django.db.backends.postgresql',#config('DATABASE_ENGINE'),#
-        # 'NAME': 'kmadb',#config('DATABASE_NAME'),  # Name of the database itself
-        # 'USER': 'postgres',#config('DATABASE_USER'),
-        # 'PASSWORD':#config('DATABASE_PASSWORD'),
-        # 'HOST': 'localhost',#config('DATABASE_HOST'),
-        # 'PORT': '5432',#config('DATABASE_PORT'), #'5432',
         ################################################
         'ENGINE': os.environ.get('DATABASE_ENGINE'), #config('DATABASE_ENGINE'),
-        'NAME': os.environ.get('CLINICDB'),#config('KMADB'),# Name of the database itself
+        'NAME': os.environ.get('CLINICDB'),# Name of the database itself
         'USER': os.environ.get('DATABASE_USER'),# config('DATABASE_USER'),
         'PASSWORD': os.environ.get('DATABASE_PASSWORD'),##config('DATABASE_PASSWORD'),#
         'HOST': os.environ.get('DATABASE_HOST'),#config('DATABASE_HOST'),

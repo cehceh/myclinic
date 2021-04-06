@@ -11,7 +11,7 @@ def countrow(table):
     return len(table.rows)
 
 
-class PatientsTable(tables.Table):
+class AddGynTable(tables.Table):
     idno = tables.TemplateColumn(
         '<a href="{% url \'patientdata:edit_patient\' record.id %}">{{ record.id }}</a>',
         verbose_name=u'Patient ID')
@@ -44,7 +44,7 @@ class PatientsTable(tables.Table):
         '<a class="btn btn-outline-dark" href="{% url \'visits:pass_patient_id\' record.id %}">Add New Visit</a>',
         verbose_name=u'New Visit')
     addpast = tables.TemplateColumn(
-        '<a class="btn btn-outline-dark" href="/data/create/past/history/patient/{{record.id}}/">Add Past History</a>',
+        '<a class="btn btn-outline-dark" href="{% \'pasthistory:save_pasthist\' record.id %}">Add Past History</a>',
         verbose_name=u'Past History')
 
     class Meta:

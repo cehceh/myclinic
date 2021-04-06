@@ -38,4 +38,4 @@ class Medicine(models.Model):
     def get_absolute_url(self):
         # return reverse('clinic:save_medicine',
         #                 kwargs={'patient_id':self.patient, 'visit':self.visit})
-        return reverse('clinic:save_medicine', args=(self.patient, self.visit))
+        return reverse('visitdrug:save_medicine', args=(self.patient, self.visit))

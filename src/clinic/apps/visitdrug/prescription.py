@@ -3,18 +3,19 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 from django.views.generic import View
 from django.template.loader import get_template
-from myproject.utils import render_to_pdf # for Justin code
+from clinic.utils import render_to_pdf # Justin code
 import time
 from django.contrib import messages
 
-from ..models import Medicine, Patients, Visits
-from ..forms import MedicineForm, PatientsForm, VisitsForm
-from myproject.tables.table_clinic import MedicineTable
+from .models import Medicine, Patients, Visits
+from .forms import MedicineForm
+from apps.patientdata.forms import PatientsForm
+from apps.visits.forms import VisitsForm
+from .tables import MedicineTable
 
 # import pyarabic.araby as araby #, normalize_ligature
 # import pyarabic.number as number
 # from pyarabic.araby import strip_diacritics, normalize_ligature 
-
 
 
 # This method to print prescription
@@ -46,55 +47,10 @@ def print_html(request, visit_id):
         'date': visitdate,
         # 'var': 'بسم الله الرحمن الرحيم'
     }
-    return render(request, 'clinic/print.html', context)
+    return render(request, 'visitdrug/print.html', context)
 
 
-# Justin code to render html to pdf
-class GeneratePdf(View):
-    # def get(self, request, *args, **kwargs):
-    #     billtable = LaundryBillTable(LaundryBill.objects.all().order_by('-id'))
-    #     template = get_template('laundry/pdf.html')
-    #     context = {
-    #         "billtable":billtable,
-    #         "invoice_id": 123,
-    #         "customer_name": "John Cooper",
-    #         "amount": 1399.99,
-    #         "today": "Today",
-    #     }
-    #     html = template.render(context)
-    #     pdf = render_to_pdf('laundry/pdf.html', context)
-    #     if pdf:
-    #         response = HttpResponse(pdf, content_type='application/pdf')
-    #         filename = "Invoice_%s.pdf" %("12341231")
-    #         content = "inline; filename='%s'" %(filename)
-    #         download = request.GET.get("download")
-    #         if download:
-    #             content = "attachment; filename='%s'" %(filename)
-    #         response['Content-Disposition'] = content
-    #         return response
-    #     return HttpResponse(pdf, content_type='application/pdf')
-
-    def get(self, request, *args, **kwargs):
-        zero_remain = LaundryBill.objects.filter(sumtotal__gt=0, returns=False, remain=0).order_by('-id')
-        template = get_template('laundry/zero_remain.html')
-        context = {
-            "zero_remain":zero_remain,
-        }
-        html = template.render(context)
-        pdf = render_to_pdf('laundry/zero_remain.html', context)
-        if pdf:
-            response = HttpResponse(pdf, content_type='application/pdf')
-            filename = "Invoice_%s.pdf" %("12341231")
-            content = "inline; filename='%s'" %(filename)
-            download = request.GET.get("download")
-            if download:
-                content = "attachment; filename='%s'" %(filename)
-            response['Content-Disposition'] = content
-            return response
-        return HttpResponse(pdf, content_type='application/pdf')
-
-
-#This is func based to render to pdf
+# This is func based to render to pdf
 def get_pdf(request, visit_id, *args, **kwargs):
     vis_id = Visits.objects.get(id=visit_id)
     qs = Medicine.objects.filter(visit=visit_id).order_by('-id')
@@ -156,27 +112,27 @@ def pdf_view(request, *args, **kwargs):
 
 import io
 from django.http import FileResponse
-from reportlab.pdfgen import canvas
+# from reportlab.pdfgen import canvas
 
-def some_view(request):
-    # Create a file-like buffer to receive PDF data.
-    buffer = io.BytesIO()
+# def some_view(request):
+#     # Create a file-like buffer to receive PDF data.
+#     buffer = io.BytesIO()
 
-    # Create the PDF object, using the buffer as its "file."
-    p = canvas.Canvas(buffer)
+#     # Create the PDF object, using the buffer as its "file."
+#     p = canvas.Canvas(buffer)
 
-    # Draw things on the PDF. Here's where the PDF generation happens.
-    # See the ReportLab documentation for the full list of functionality.
-    p.drawString(100, 100, "Hello world.")
+#     # Draw things on the PDF. Here's where the PDF generation happens.
+#     # See the ReportLab documentation for the full list of functionality.
+#     p.drawString(100, 100, "Hello world.")
 
-    # Close the PDF object cleanly, and we're done.
-    p.showPage()
-    p.save()
+#     # Close the PDF object cleanly, and we're done.
+#     p.showPage()
+#     p.save()
 
-    # FileResponse sets the Content-Disposition header so that browsers
-    # present the option to save the file.
-    buffer.seek(0)
-    return FileResponse(buffer, as_attachment=True, filename='hello.pdf')
+#     # FileResponse sets the Content-Disposition header so that browsers
+#     # present the option to save the file.
+#     buffer.seek(0)
+#     return FileResponse(buffer, as_attachment=True, filename='hello.pdf')
 
 
 # from django.core.files.storage import FileSystemStorage

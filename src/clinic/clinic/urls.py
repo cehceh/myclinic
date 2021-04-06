@@ -16,9 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from apps.home.views import frontpage, dashboard
-# from apps.gyno.views import api
+
 from apps.gyno.api import api
-# from ninja import NinjaAPI
+
 
 
 urlpatterns = [
@@ -33,6 +33,7 @@ urlpatterns = [
 
     path('booking/', include('apps.booking.urls', namespace='booking')),
     path('gyn/', include('apps.gyno.urls', namespace='gyno')),
+    path('lab/', include('apps.labs.urls', namespace='labs')),
     
     path('patientdata/', include('apps.patientdata.urls', namespace='patientdata')),
     path('pasthistory/', include('apps.pasthistory.urls', namespace='pasthistory')),
@@ -40,7 +41,6 @@ urlpatterns = [
     path('revisitdrug/', include('apps.revisitdrug.urls', namespace='revisitdrug')),
     path('revisits/', include('apps.revisits.urls', namespace='revisits')),
     path('search/', include('apps.search.urls', namespace='search')),
-    # path('', include('', namespace='')),
     # path('', include('', namespace='')),
     path('visits/', include('apps.visits.urls', namespace='visits')),
     path('visitdrug/', include('apps.visitdrug.urls', namespace='visitdrug')),

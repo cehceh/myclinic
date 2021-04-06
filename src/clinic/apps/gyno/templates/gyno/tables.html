@@ -7,16 +7,16 @@
 
 <!-- <div class="align-content-center" style="background-color:transparent; width: 1300px; height: 900px; margin: 20px; padding: 10px; border-style: outset; border-radius: 20px; border-color: #aab5af; box-shadow: 2px 2px 4px 4px grey; display: grid;" id="save-visits-div"> -->
   <p class="float-left">
-    <h1><strong>All Patinets Data</strong></h1>
+    <h1><strong>Add Follow Up Visit For Patients</strong></h1>
   </p>
-  <form class="form-inline mt-2 mt-md-0" method="GET" action="{% url 'gyno:table_gyno' %}">
+  <form class="form-inline mt-2 mt-md-0" method="GET" action="{% url 'gyno:add_followup_table' %}">
 
     <input class="form-control mr-sm-2" type="number" name='pageno' placeholder="Edit pagination pages here.." value="{{request.GET.pageno}}" aria-label="Search">
     <button class="btn btn-secondary my-2 my-sm-0" type="submit" hidden>Search</button>
     
   </form>
   <br><br>
-  {% render_table table_gyno %}
+  {% render_table add_followup_table %}
 <!-- </div> -->
   
 {% endblock %}

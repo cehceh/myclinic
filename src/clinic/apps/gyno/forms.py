@@ -29,6 +29,10 @@ class ObestetricForm(forms.ModelForm):
         GYNA = (
             (True, 'Not Pregnant'),
             (False, 'Pregnant'),)
+        CHOICES = (
+            (True, 'YES'),
+            (False, 'NO')
+        )
         widgets = {
             'obdate': forms.DateInput(
                 attrs={
@@ -55,19 +59,21 @@ class ObestetricForm(forms.ModelForm):
                 attrs={
                     'class': 'form-control',
                 }),
-            'nvd':forms.CheckboxInput(
+            'nvd': forms.Select(
+                choices=CHOICES,
                 attrs={
                     'class': 'form-control',
-                    "name":"rad",
-                    "color":"primary",
+                    # "name":"rad",
+                    # "color":"primary",
                 }),
-            'cs':forms.CheckboxInput(
+            'cs': forms.Select(
+                choices=CHOICES,
                 attrs={
                     'class': 'form-control',
-                    "name":"rad",
-                    "color":"danger",
+                    # "name":"rad",
+                    # "color":"danger",
                 }),
-            'ld':forms.TextInput(
+            'ld': forms.TextInput(
                 attrs={
                     'class': 'form-control',
                 }),
@@ -94,11 +100,9 @@ class MenstrualForm(forms.ModelForm):
         fields = ('lmp', 'edd', 'ga', 'remain',)
         widgets = {
             'lmp': forms.DateInput( 
-                # format=['%Y-%m-%d'],
                 attrs={
                     'class': 'form-control',
                     'type':'date',
-                    # 'format':'yy-MM-dd',
                     'value': date.today(),
                 }),
             'edd': forms.DateInput( 
