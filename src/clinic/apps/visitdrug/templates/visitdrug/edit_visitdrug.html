@@ -8,8 +8,9 @@
         <h1 style="color:black">Edit Medicine</h1>
     </solid>
     <br><br> -->
-    <div class="float-left" style="background-color: transparent; width: 500px; height: 50px;">
-        <h1 style="color: black;"><strong>Update Prescription</strong></h1>
+    <div class="float-left" style="width: 100%; height: 100%;">
+        <h1 style="color: black;"><strong>Edit Prescription</strong>
+        </h1>
         <!-- <input class="float-right" type="text" name="pages" id="pages"> -->
         <p>
             <h3 style="color: black;">Visit Date : {{ vis_date }}</h3>
@@ -17,18 +18,21 @@
         <br>
     </div>
 
-    <div class="float-right" style="background-color: transparent; width: 500px; height: 50px;">
+    <div class="float-right" style="width: 100%; height: 100%;">
         <!-- <input type="text" value="{{vis_date}}" name="vis-date" id="vis-date"> -->
-        <a class="btn btn-secondary" href="/clinic/create/visit/patient/{{ patid }}/" role="button" id="new-visit">
+        <a class="btn btn-outline-dark" href="{% url 'visitdrug:save_medicine' patient.id visit.id %}" role="button">
+            Back To Prescription
+        </a>
+        <a class="btn btn-outline-dark" href="{% url 'visits:pass_patient_id' patient.id %} " role="button" id="new-visit">
             New Visit
         </a>
-        <a class="btn btn-primary" href="{% url 'clinic:edit_patient' patient.id %}" role="button" id="edit-patient">
+        <a class="btn btn-outline-primary" href="{% url 'patientdata:edit_patient' patient.id %}" role="button" id="edit-patient">
             Edit Patient
         </a>
-        <a class="btn btn-secondary" href="/clinic/edit/visit/{{ visid }}/patient/{{ patid }}/" role="button">
+        <a class="btn btn-outline-primary" href="{% url 'visits:visits_patient_id' visit.id patient.id %}" role="button">
             Edit This Visit
         </a>
-        <a class="btn btn-primary float-right" href="{% url 'clinic:print_html' visit.id %}" role="button">
+        <a class="btn btn-outline-success float-right" href="{% url 'visitdrug:print_html' visit.id %}" role="button">
             Print Perview
         </a>
         <br>
@@ -37,15 +41,15 @@
 
     <form method="POST">{% csrf_token %}
         
-        <div class="float-left" style="background-color:transparent;width:400px;height: 500px;">
-            <hr>
+        <div class="float-left" style="width:30%; height:100%;">
+            <!-- <hr> -->
             {{ edit_medicine_form.name.label_tag }} {{ edit_medicine_form.name }} <br>
-            <!--  -->
+            
             {{ edit_medicine_form.plan.label_tag }} {{ edit_medicine_form.plan}} <br>
-            <!--  -->
-            {{ edit_medicine_form.patient.label_tag }} {{ edit_medicine_form.patient }} <br>
-            <!--  -->
-            {{ edit_medicine_form.visit.label_tag }} {{ edit_medicine_form.visit }} <br>
+            
+            <!-- {{ edit_medicine_form.patient.label_tag }} {{ edit_medicine_form.patient }} <br>
+            
+            {{ edit_medicine_form.visit.label_tag }} {{ edit_medicine_form.visit }} <br> -->
 
             <button type="submit" class="btn btn-outline-danger" id="save_medicine_form-btn">Update</button>
             <hr>

@@ -220,6 +220,10 @@ STATIC_ROOT = os.path.join(SITE_ROOT, 'static_root') #(BASE_DIR, '../static_root
 STATICFILES_DIRS =[
     os.path.join(SITE_ROOT, 'static')
 ]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(SITE_ROOT, 'media_root')
+
 # print('STATICFILES_DIRS= '+str(STATICFILES_DIRS))
 
 from django.utils.translation import gettext_lazy as _

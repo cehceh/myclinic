@@ -60,39 +60,33 @@ def save_medicine(request, patient_id, visit_id):
     # print('after check visit= ' + str(visit), str(v), str(p))
     if request.method == 'POST':# and form.is_valid():
         form = MedicineForm(request.POST or None)
-        print('form POST')
+        # print('form POST')
         if form.is_valid():
             pat = request.POST.get('patient') #request.POST.get('patient')
             vis = request.POST.get('visit')
             match = Visits.objects.filter(id=vis, patient=pat).exists()
-            # match = Medicine.objects.filter(visit=vis, patient=pat).exists()
-            # print(str(pat) + ' - ' + str(vis) + ' - ' + str(match))
-            # print(pat,vis,match)
-            if match: #match_row < 2:#(vis == vis_id) and (pat == pat_id)
-                match_row = len(table.rows)
-                print(match_row)
-                if match_row < 3:
-                    form.save()
-                    # instance = form.save()
-                    # instance.save()
-                    bound_form = MedicineForm(data={'visit':vis_id, 'patient':patient,})
-                    # print('what is going on here2')
-                    return HttpResponseRedirect(
-                        reverse('visitdrug:save_medicine',
-                                args=(pat_id, vis_id)))  # that's it()
-                else:
-                    messages.success(request, 'You can\'t add more drugs, You are in a DEMO mode, For full version contact Eng. Amr Aly on 01067174141')
+            # if match: 
+            match_row = len(table.rows)
+                # print(match_row)
+            if match_row < 3:
+                save_form = form.save(commit=False)
+                save_form.patient_id = patient_id
+                save_form.visit_id = visit_id
+                save_form.save()
+                bound_form = MedicineForm(data={'visit':vis_id, 'patient':patient,})
+            
+                return HttpResponseRedirect(
+                    reverse('visitdrug:save_medicine',
+                            args=(pat_id, vis_id)))  # that's it()
             else:
-                messages.success(
-                    request, 'Visit No. must be ' + str(vis_id) +
-                    ', and Patient name must be ' + str(patient))
+                messages.success(request, 'You can\'t add more drugs, You are in a DEMO mode, For full version contact Eng. Amr Aly on 01067174141')
+            # else:
+            #     messages.success(
+            #         request, 'Visit No. must be ' + str(vis_id) +
+            #         ', and Patient name must be ' + str(patient))
     else:
         form = MedicineForm()
-        # bound_form = MedicineForm(data={
-        #                                 'visit': vis_id,
-        #                                 'patient': patient,
-        #                                 'presc': (last['presc'])
-        #                             })
+       
     context = {
         'page_no': page_no,
         'present': match_present,
@@ -142,16 +136,18 @@ def edit_medicine(request, patient_id, visit_id, id):  # Making Update to a Medi
     query = Medicine.objects.get(id=id)  # outt put is the medicine ID
     form = MedicineForm(request.POST or None, instance=query)
     if form.is_valid():
-        vis = request.POST.get('visit')
-        pat = request.POST.get('patient')
-        match = Visits.objects.filter(id=vis, patient=pat).exists()
-        if match:
-            instance = form.save()
-            instance.save()
-            return redirect(reverse('visitdrug:save_medicine', args=(pat_id, vis_id)))
-            #  HTTPResponseRedirect(reverse('patientdata:edit_patient', kwargs={'id': id}))
-        else:
-            messages.success(request, 'Visit No must be ' + str(vis_id) + ', And patient name must be ' + str(patient))
+        # vis = request.POST.get('visit')
+        # pat = request.POST.get('patient')
+        # match = Visits.objects.filter(id=vis, patient=pat).exists()
+        # if match:
+        save_form = form.save(commit=False)
+        save_form.patient_id = patient_id
+        save_form.visit_id = visit_id
+        save_form.save()
+        return redirect(reverse('visitdrug:save_medicine', args=(pat_id, vis_id)))
+        #  HTTPResponseRedirect(reverse('patientdata:edit_patient', kwargs={'id': id}))
+        # else:
+        #     messages.success(request, 'Visit No must be ' + str(vis_id) + ', And patient name must be ' + str(patient))
     context = {
         'drug': query,
         'patient': patient,

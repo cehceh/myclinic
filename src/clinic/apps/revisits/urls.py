@@ -16,7 +16,7 @@ urlpatterns = [
         table_revisit, 
         name='table_revisit'),
     #
-    path('table/revisits/for/visit/<int:visit_id>/patient/<int:patient_id>/', 
+    path('table/for/visit/<int:visit_id>/patient/<int:patient_id>/', 
         view_revisit, 
         name='view_revisit'),
     #

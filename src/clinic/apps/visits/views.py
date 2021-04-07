@@ -142,7 +142,7 @@ def visits_patient_id(request, id, patient_id):  # Making Update to a visit with
         # 'saveDone': match,
         'patient': patient,
         'patient_id': patientid,
-        'query': query,
+        'visit': query,
         'vis_id': vis_id,
         'qs':qs,
         'medicine': match_medicine,

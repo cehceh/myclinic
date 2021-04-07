@@ -1,14 +1,16 @@
 {% extends 'index.html' %} {% load crispy_forms_tags %} 
 {% load render_table from django_tables2 %} 
 {% load static %}
+{% load widget_tweaks %}
 <!--  -->
 {% block content %}
 
 <!--  -->
 
+<div class="container" style="background-color: white;" id="editPatient">
 
     <solid>
-        <h1 style="color:black">Update Patient</h1>
+        <h1 style="color:black">Edit Patient</h1>
     </solid>
     <hr>
     <div class="container">
@@ -20,29 +22,35 @@
     <hr>
     
     <br><br>
-    <form method="POST" style="background-color:transparent;" id="edit-pat-form">{% csrf_token %}
+    <form enctype="multipart/form-data" method="POST" id="edit-pat-form">{% csrf_token %}
         
         <div class="float-left" style="background-color:transparent;height: 100%; width: 35%;" id="left-editpat-div">
-            <!-- {{editpatform.id.label_tag}} {{editpatform.id}} <br>
-          
-            {{editpatform.name.label_tag.disabled}}
-            {{editpatform.name.disabled}} <br />
             
-            {{editpatform.address.label_tag}} {{editpatform.address}} <br />
+            <!-- {{ editpatform|crispy }} <br><br> -->
+            {{editpatform.name.label_tag}} {{editpatform.name}} <br>
             
-            {{editpatform.birth_date.label_tag}} {{editpatform.birth_date}}
+            {{editpatform.address.label_tag}} {{editpatform.address}} 
+            <br>
+
+            {{editpatform.birth_date.label_tag}}
+            {% render_field editpatform.birth_date v-model="dob" id="dob" %}
+
+            {{editpatform.age.label_tag}}
+            {% render_field editpatform.age ::value="getAge" id="age" %}
             
-            {{editpatform.cardid.label_tag.hidden}}
-            {{editpatform.cardid.hidden}} <br>
+            {{editpatform.phone.label_tag}} {{editpatform.phone}} <br>
            
-            {{editpatform.phone.label_tag}} {{editpatform.phone}} <br />
+            {{editpatform.mobile.label_tag}} {{editpatform.mobile}} <br>
             
-            {{editpatform.mobile.label_tag}} {{editpatform.mobile}} <br />
+            {{editpatform.cardid.label_tag}} {{editpatform.cardid}} <br>
             
-            {{editpatform.age.label_tag}} {{editpatform.age}} -->
+            {{editpatform.barcode.label_tag}}
+            {% render_field editpatform.barcode %} <br>
 
-
-            {{ editpatform|crispy }} <br><br>
+            <!-- {{editpatform.barimg.label_tag}} -->
+            {% render_field editpatform.barimg %} <br>
+            <!-- <img class="image" src="{{ Patients.barimg.url }}"> -->
+            <br>
             <button type="submit" class="button is-primary">Update</button>
             
             <hr>
@@ -53,6 +61,7 @@
         </div>
        
     </form>
+</div>
 
 {% endblock %}
 
@@ -129,6 +138,129 @@
         //     })
         // });
     </script>
+    <script>
+        // Using Vue.js Here
+        var editPatient = new Vue ({
+            el: '#editPatient',
+            delimiters: ['[[', ']]'],
+            // data () {
+            //     return 
+            data: {
+                patient_name: '' ,
+                title: "Add New Patient",
+                message:  '{{ non_field_errors }}' ,
+                dob: new Date(),
+                age: '',
+            },
+            computed: {
+                calculateAge(){
+                    this.dob = document.getElementById('dob').value;
+                    var dt = new Date(this.dob);
+                    
+                    const today = new Date();
+                    
+                    let diff = today.getTime() - dt.getTime();
+                    
+                    var elapsed = new Date(diff);
+                    var year = elapsed.getYear(); // -70
+                    var month = elapsed.getMonth();
+                    var day = elapsed.getDay();
+                    
+                    let ageYear = Math.floor(diff / (365.25 * 24 * 60 * 60 * 1000));
+                    let ageMonth = Math.round(month);
+                    
+                    let ageDay = Math.round(day);
+                    
+                    var newAge = ageYear + ' Years, ' + ageMonth + ' Months, ' + ageDay + ' Days' 
+                    
+                    console.log("ageYear==::"+ ageYear + ', ageMonth==:: '+ ageMonth + ', ageDay==:: '+ ageDay + " age:=: " + age)
+                    return newAge;
+                },
+                getAge() { // Get Age in years,months and days
+                    this.dob = document.getElementById('dob').value;
+                    
+                    var newDate = new Date(this.dob);
+                    var now = new Date();
+                    var today = new Date(now.getYear(),now.getMonth(),now.getDate());
 
+                    var yearNow = now.getYear();
+                    var monthNow = now.getMonth();
+                    var dateNow = now.getDate();
+                    
+                    var dd = ('0' + newDate.getDate()).slice(-2);
+                    var mm = ('0' + (newDate.getMonth()+1)).slice(-2);
+                    var y = newDate.getFullYear();
+
+                    var formattedDate = y + '-' + mm + '-' + dd;
+                    var dob = new Date(formattedDate);
+                   
+                    var yearDob = dob.getYear();
+                    var monthDob = dob.getMonth();
+                    var dateDob = dob.getDate();
+                    var age = {};
+                    var ageString = "";
+                    var yearString = "";
+                    var monthString = "";
+                    var dayString = "";
+                    
+                    yearAge = yearNow - yearDob;
+
+                    if (monthNow >= monthDob)
+                        var monthAge = monthNow - monthDob;
+                    else {
+                        yearAge--;
+                        var monthAge = 12 + monthNow - monthDob;
+                    }
+
+                    if (dateNow >= dateDob)
+                        var dateAge = dateNow - dateDob;
+                    else {
+                        monthAge--;
+                        var dateAge = 31 + dateNow - dateDob;
+
+                        if (monthAge < 0) {
+                        monthAge = 11;
+                        yearAge--;
+                        }
+                    }
+
+                    age = {
+                        years: yearAge,
+                        months: monthAge,
+                        days: dateAge
+                        };
+
+                    if ( age.years > 1 ) yearString = " years";
+                    else yearString = " year";
+                    if ( age.months> 1 ) monthString = " months";
+                    else monthString = " month";
+                    if ( age.days > 1 ) dayString = " days";
+                    else dayString = " day";
+
+                    if ( (age.years > 0) && (age.months > 0) && (age.days > 0) )
+                        ageString = age.years + yearString + ", " + age.months + monthString + ", and " + age.days + dayString + " old.";
+                    else if ( (age.years == 0) && (age.months == 0) && (age.days > 0) )
+                        ageString = "Only " + age.days + dayString + " old!";
+                    else if ( (age.years > 0) && (age.months == 0) && (age.days == 0) )
+                        ageString = age.years + yearString + " old. Happy Birthday!!";
+                    else if ( (age.years > 0) && (age.months > 0) && (age.days == 0) )
+                        ageString = age.years + yearString + " and " + age.months + monthString + " old.";
+                    else if ( (age.years == 0) && (age.months > 0) && (age.days > 0) )
+                        ageString = age.months + monthString + " and " + age.days + dayString + " old.";
+                    else if ( (age.years > 0) && (age.months == 0) && (age.days > 0) )
+                        ageString = age.years + yearString + " and " + age.days + dayString + " old.";
+                    else if ( (age.years == 0) && (age.months > 0) && (age.days == 0) )
+                        ageString = age.months + monthString + " old.";
+                    else ageString = "Oops! Could not calculate age!";
+
+                    console.log('yearAge=:'+yearAge,
+                    'monthDob=:'+monthDob,'dateDob=:'+dateDob, 'ageString=:'+ageString)
+
+                    return ageString;
+                }
+            }
+        })
+        
+    </script>
 
 {% endblock %}

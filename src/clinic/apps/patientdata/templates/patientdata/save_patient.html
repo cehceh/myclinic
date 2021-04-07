@@ -23,12 +23,10 @@
 
 <!-- <a role="button" class="btn btn-primary" href='#' onclick='overlay()'>Click here to show the overlay</a> -->
 <!-- <a type="button" href='#' onclick='overlay()'>close</a> -->
-    
-   
 
-    <form method="post">{% csrf_token %}
+    <form method="POST" enctype="multipart/form-data">{% csrf_token %}
         <div class="float-left" id="left-savepat-div" style="overflow-x: auto; width: 45%; height: 100%;">
-            {{savepatform.id.label_tag}} {{savepatform.id}} <br>
+            <!-- {{savepatform.id.label_tag}} {{savepatform.id}} <br> -->
 
             {{savepatform.name.label_tag}} {{savepatform.name}} <br>
             <!--  -->
@@ -37,9 +35,9 @@
             <!--  -->
             {{savepatform.birth_date.label_tag}}
             {% render_field savepatform.birth_date v-model="dob" id="dob" %}
-
-            {{saveform.barcode.label_tag}}
-            {% render_field saveform.barcode %}
+            <br>
+            {{savepatform.barcode.label_tag}}
+            {% render_field savepatform.barcode %}
             <hr>
 
             <button type="submit" class="btn btn-dark" id="savepatform-btn">
@@ -50,20 +48,22 @@
         <div class="float-right" id="right-savepat-div" style="overflow-x: auto; width: 45%; height: 100%;">
             {{savepatform.cardid.label_tag}} {{savepatform.cardid}} <br>
             <!--  -->
-            {{savepatform.phone.label_tag}} {{savepatform.phone}} <br />
+            {{savepatform.phone.label_tag}} {{savepatform.phone}} <br>
             <!--  -->
-            {{savepatform.mobile.label_tag}} {{savepatform.mobile}} <br />
+            {{savepatform.mobile.label_tag}} {{savepatform.mobile}} <br>
             <!--  -->
             {{savepatform.age.label_tag}}
             {% render_field savepatform.age ::value="getAge" id="age" %}
-
-            {{saveform.barimg.label_tag}}
-            {% render_field saveform.barimg %}
+            <br>
+            {{savepatform.barimg.label_tag}}
+            {% render_field savepatform.barimg %}
+            
+            <!-- <img class="image" src="{{ Patients.barimg.url }}"> -->
             <hr>
         </div>
 
     </form>
-    <!-- <p hidden>[[ counter ]]</p> -->
+
 </div>
 
 {% endblock %}
@@ -98,8 +98,6 @@
                 patient_name: '' ,
                 title: "Add New Patient",
                 message:  '{{ non_field_errors }}' ,
-                // showDialog: false,
-                // counter: 0,
                 dob: new Date(),
                 age: '',
             },
@@ -107,33 +105,23 @@
                 calculateAge(){
                     this.dob = document.getElementById('dob').value;
                     var dt = new Date(this.dob);
-                    // var newDate = new Date(dt);
-                    // newDate.setDate(newDate.getDate());
                     
-                    // var today = new Date();
-                    // var age = Math.round((today.getTime() - newDate.getTime()) / (365.25 * 24 * 60 * 60 * 1000));
-                    // 
                     const today = new Date();
-                    // let age = today.getFullYear() - dt.getFullYear();
+                    
                     let diff = today.getTime() - dt.getTime();
-                    // let diff = today.getFullYear() - dt.getFullYear();
+                    
                     var elapsed = new Date(diff);
                     var year = elapsed.getYear(); // -70
                     var month = elapsed.getMonth();
                     var day = elapsed.getDay();
                     
-                    // let age = Math.floor(diff / (365.25 * 24 * 60 * 60 * 1000));
                     let ageYear = Math.floor(diff / (365.25 * 24 * 60 * 60 * 1000));
                     let ageMonth = Math.round(month);
-                    //(diff / (30 * 24 * 60 * 60 * 1000));
+                    
                     let ageDay = Math.round(day);
-                    //(diff / (24 * 60 * 60 * 1000));
-                    // const m = today.getMonth() - dt.getMonth();
-                    // if (m < 0 || (m === 0 && today.getDate() < dt.getDate())) {
-                    //     age = age - 1;
-                    // }
+                    
                     var newAge = ageYear + ' Years, ' + ageMonth + ' Months, ' + ageDay + ' Days' 
-                    // this.age = age;
+                    
                     console.log("ageYear==::"+ ageYear + ', ageMonth==:: '+ ageMonth + ', ageDay==:: '+ ageDay + " age:=: " + age)
                     return newAge;
                 },

@@ -86,7 +86,17 @@ class PatientsForm(forms.ModelForm):
                     'readonly': 'readonly', # to make an input disabled
                 }
             ))
-
+    barcode = forms.CharField(required=False,
+            widget=forms.TextInput(
+                attrs={
+                    'class':'form-control',
+                    # 'id': 'age',
+                    'type': 'text',
+                    # 'name': 'age',
+                    # 'readonly': 'readonly', # to make an input disabled
+                }
+            ))
+   
     # def clean(self):
     #     cleaned_data = super().clean()
     #     patid = cleaned_data.get('id')
@@ -110,3 +120,13 @@ class PatientsForm(forms.ModelForm):
 
 
 
+ # barimg = forms.ImageField(required=False,
+    #         widget=forms.ClearableFileInput(
+    #             # attrs={
+    #             #     'class':'form-control',
+    #             #     # 'id': 'age',
+    #             #     # 'type': 'text',
+    #             #     # 'name': 'age',
+    #             #     # 'readonly': 'readonly', # to make an input disabled
+    #             # }
+    #         ))

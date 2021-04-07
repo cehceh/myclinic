@@ -86,7 +86,7 @@ class VisitsForm(forms.ModelForm):
                                     'placeholder':'Click here to enter the visit date ...',
                                     'value': date.today(),
                                     'id': 'visitdate',
-                                    'type':'text',
+                                    'type':'date',
                                     # 'readonly': 'readonly'
                                }
                            ))

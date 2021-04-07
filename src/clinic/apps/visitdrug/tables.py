@@ -5,27 +5,28 @@ from .models import Medicine
 
 class MedicineTable(tables.Table):
     vit = tables.TemplateColumn(
-        '<a href="/clinic/patient/{{record.patient_id}}/visit/{{record.visit}}/drug/{{record.id}}/">\
+        '<a href="{% url \'visitdrug:edit_medicine\' record.patient_id record.visit record.id %}">\
                                 {{ record.visit }}</a>'                                                       ,
         verbose_name=u'Visit ID',
         visible=False)
 
     pat = tables.TemplateColumn(
-        '<a href="/clinic/patient/{{record.patient_id}}/visit/{{record.visit}}/drug/{{record.id}}/">\
+        '<a href="{% url \'visitdrug:edit_medicine\' record.patient_id record.visit record.id %}">\
                                 {{ record.patient }}</a>'                                                         ,
         verbose_name=u'Patient')
 
     drug = tables.TemplateColumn(
-        '<a href="/clinic/patient/{{record.patient_id}}/visit/{{record.visit}}/drug/{{record.id}}/">\
+        '<a href="{% url \'visitdrug:edit_medicine\' record.patient_id record.visit record.id %}">\
                                 {{ record.name }}</a>'                                                      ,
         verbose_name=u'Drug')
 
     plan = tables.TemplateColumn(
-        '<a href="/clinic/patient/{{record.patient_id}}/visit/{{record.visit}}/drug/{{record.id}}/">\
+        '<a href="{% url \'visitdrug:edit_medicine\' record.patient_id record.visit record.id %}">\
                                 {{ record.plan }}</a>'                                                      ,
         verbose_name=u'Plan')
+
     delete = tables.TemplateColumn(
-        '<a class="btn btn-outline-danger" href="/clinic/patient/{{record.patient_id}}/visit/{{record.visit}}/delete/drug/{{record.id}}/" '
+        '<a class="btn btn-outline-danger" href="{% url \'visitdrug:delete_medicine\' record.patient_id record.visit record.id %}" '
         'onclick="return confirm(\'Are you sure you want to delete this Drug ?\')">Delete</a>',
         verbose_name='Delete Drug',
     )

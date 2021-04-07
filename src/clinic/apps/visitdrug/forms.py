@@ -12,31 +12,23 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 
-
 class MedicineForm(forms.ModelForm):
-    patient = forms.ModelChoiceField(queryset=Patients.objects.all(), required=True, label='Patient Name',
-                           widget=forms.Select(
-                               attrs={
-                                   'class': 'form-control',
-                                   'id': 'patient',
-                                #    'v-model': "patient_name",
-                                    # 'disabled':'disabled'
-                               }))
-
-    # visit = forms.CharField(required=True, label='Visit ID No.',
-    #                        widget=forms.TextInput(
+    # patient = forms.ModelChoiceField(queryset=Patients.objects.all(), required=True, label='Patient Name',
+    #                        widget=forms.Select(
     #                            attrs={
-    #                                 'class': 'form-control',
-    #                                 'id': 'visit_id',
-    #                                 'readonly':'readonly'
+    #                                'class': 'form-control',
+    #                                'id': 'patient',
+    #                             #    'v-model': "patient_name",
+    #                                 # 'disabled':'disabled'
     #                            }))
-    visit = forms.ModelChoiceField(queryset=Visits.objects.all(), required=True, label='Visit No.',
-                           widget=forms.Select(
-                               attrs={
-                                   'class': 'form-control',
-                                   'id': 'visit-id',
-                                    # 'readonly':'readonly'
-                               }))
+    
+    # visit = forms.ModelChoiceField(queryset=Visits.objects.all(), required=True, label='Visit No.',
+    #                        widget=forms.Select(
+    #                            attrs={
+    #                                'class': 'form-control',
+    #                                'id': 'visit-id',
+    #                                 # 'readonly':'readonly'
+    #                            }))
 
     name = forms.CharField(error_messages={'required':"Please fill this field ..."}, label='Drug',
                                widget=forms.TextInput(
@@ -56,44 +48,26 @@ class MedicineForm(forms.ModelForm):
                                         'placeholder':'Type Your Plan ...',
                                    }))
 
-    presc = forms.CharField(required=False,
-                           label='Pre ID',
-                           widget=forms.TextInput(
-                               attrs={
-                                   'class': 'form-control',
-                                #    'id': '',
-                                #    'lang': 'arabisk',
-                                #    'placeholder': 'Type Your Plan ...',
-                                # 'readonly':
-                               }))
-    # def clean(self):  # this method for prevent save or update the field 'amount' if it is None
-    #     cleaned_data = super().clean()
-    #     pat = cleaned_data.get('patient')
-    #     vis = cleaned_data.get('visit')
-    #     print('visit: ' + str(vis) + ', pat: ' + str(pat))
-    #     # drug = cleaned_data.get('name')
-    #     # plan = cleaned_data.get('plan')
-    #     match_drug = Medicine.objects.filter(visit=vis, patient=pat).exists()
-    # match = Visits.objects.filter(id=vis, patient=pat).exists()
-    # # row = countrow
-    # if match == False:
-    #     self.add_error('patient', 'patient is not allowed'
-    #                    )  # the error as outline (red line) of the input
-    #     self.add_error('visit', 'visit is not allowed'
-    #                    )  # the error as outline (red line) of the input
-    #     raise ValidationError('Please don\'t change patient name or visit')
-    # if not match_drug:
-    #     raise ValidationError('Add drugs to this prescription')
-    # return cleaned_data
-
-    # def countrow(self, table):
-    #     return len(table.rows)
-
+    # presc = forms.CharField(required=False,
+    #                        label='Pre ID',
+    #                        widget=forms.TextInput(
+    #                            attrs={
+    #                                'class': 'form-control',
+    #                             #    'id': '',
+    #                             #    'lang': 'arabisk',
+    #                             #    'placeholder': 'Type Your Plan ...',
+    #                             # 'readonly':
+    #                            }))
+    
     class Meta:
         model = Medicine
-        fields = ('__all__')
+        fields = ('name', 'plan')#('__all__')
         # fields = ('__str__', 'address', )
 
+    # init function is importanat in saving user automatically in create() function
+    def __init__(self, *args, **kwargs):
+        # self.user = user
+        super(MedicineForm, self).__init__(*args, **kwargs)
     # def clean(self):
     #     cleaned = super().clean()
     #     visit_id = cleaned.get('visit')

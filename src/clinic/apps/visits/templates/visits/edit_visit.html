@@ -30,42 +30,42 @@
     <a class="btn btn-outline-dark" href="{% url 'visits:pass_patient_id' patient_id %}/" role="button" id="new-visit">
         Add New Visit
     </a>
-    <!-- <a class="btn btn-outline-primary" href="{% url 'revisits:save_revisit' patient.id query.id %}" role="button" id="edit-patient">
+    <!-- <a class="btn btn-outline-primary" href="{% url 'revisits:save_revisit' patient.id visit.id %}" role="button" id="edit-patient">
         Add Revisit
     </a> -->
     <!--  -->
     {% if match_revisit %}
-    <a class="btn btn-outline-dark" href="{% url 'revisits:save_revisit' patient.id query.id %}" role="button">
+    <a class="btn btn-outline-dark" href="{% url 'revisits:save_revisit' patient.id visit.id %}" role="button">
         Add Revisit
     </a> 
     <!--  -->
     {% else %}
-    <a class="btn btn-outline-danger" href="{% url 'revisits:save_revisit' patient.id query.id %}" role="button">
+    <a class="btn btn-outline-danger" href="{% url 'revisits:save_revisit' patient.id visit.id %}" role="button">
         Add Revisit
     </a> {% endif %}
-    <a class="btn btn-outline-primary" href="{{ patient.get_absolute_url }}" role="button" id="edit-patient">
+    <a class="btn btn-outline-primary" href="{{ patient.edit_patient_url }}" role="button" id="edit-patient">
         Edit Patient Data
     </a>
     <!--  -->
     {% if match_present %}
-    <a class="btn btn-outline-primary" href="{% url 'presenthistory:edit_present_hist' patient.id query.id present_id.id %}" role="button" id="present-history">
+    <a class="btn btn-outline-primary" href="{% url 'presenthistory:edit_present_hist' patient.id visit.id present_id.id %}" role="button" id="present-history">
             Update Present History
     </a> {% else %}
-    <a class="btn btn-outline-danger" href="{% url 'presenthistory:save_present_hist' patient.id query.id %}" role="button" id="present-history">
+    <a class="btn btn-outline-danger" href="{% url 'presenthistory:save_present_hist' patient.id visit.id %}" role="button" id="present-history">
             Add Present History
     </a>
     {% endif %}
     <!--  -->
-    {% if medicine %}
-    <a class="btn btn-secondary" href="/clinic/drug/patient/{{patient_id}}/visit/{{query}}/" role="button">
+    <!-- {% if medicine %}
+    <a class="btn btn-secondary" href="/clinic/drug/patient/{{patient_id}}/visit/{{visit}}/" role="button">
         See Prescription 
     </a> {% else %}
-    <a class="btn btn-outline-danger" href="/clinic/drug/patient/{{patient_id}}/visit/{{query}}/" role="button">
+    <a class="btn btn-outline-danger" href="/clinic/drug/patient/{{patient_id}}/visit/{{visit}}/" role="button">
         Add Prescription
-    </a> {% endif %}
-    <a class="btn btn-outline-success float-right" href="{% url 'revisits:view_revisit' query.id patient.id %}" role="button">
-        All Revists for Visit No. {{query}}
-    </a>
+    </a> {% endif %} -->
+    <!-- <a class="btn btn-outline-success float-right" href="{% url 'revisits:view_revisit' visit.id patient.id %}" role="button">
+        All Revists for Visit No. {{visit}}
+    </a> -->
     <!-- <form class="form-inline mt-2 mt-md-0 float-right" method="GET" action="#">
 
         <input class="form-control mr-sm-2" type="text" name='vis' placeholder="Search Visits ..." value="{{request.GET.vis}}" aria-label="Search">
@@ -74,16 +74,7 @@
         
     </form> -->
     <hr>
-    <!--  -->
-    <!-- {% if messages %}
-    <div class="align-content-center" style="background-color: lightpink; height: 30px;">
-        <ul class="messages">
-            {% for message in messages %}
-            <li {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
-            {% endfor %}
-        </ul>
-    </div>
-    {% endif %} -->
+    
     <form method="POST">{% csrf_token %}
         <!--  -->
         <div style="background-color: pink;">

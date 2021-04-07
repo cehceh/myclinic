@@ -123,9 +123,11 @@
                         </li>
                     </ul>
                 </li>
+                <!-- URL -->
                 {% url 'revisits:edit_revisit' query.id patient.id visit.id as edit_revisit_url %}
                 {% url 'revisits:save_revisit' patient.id visit.id as save_revisit_url %}
-                {% if request.path == edit_revisit_url or request.path == save_revisit_url %}                    
+                {% url 'visits:visits_patient_id' visit.id patient.id as edit_visit_url %}
+                {% if request.path == edit_revisit_url or request.path == save_revisit_url or request.path == edit_visit_url %}                    
                     <li class="nav-item active">
                         <a class="nav-link" href="{% url 'revisits:view_revisit' visit.id patient.id %}">
                             <i class="fa fa-address-book"></i>

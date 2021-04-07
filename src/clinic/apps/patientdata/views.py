@@ -19,16 +19,17 @@ from apps.visits.tables import VisitsTable
 def save_patient(request):
     """ Collecting data for patients function to save patient data to database """ 
     if request.method == 'POST':
-        form = PatientsForm(request.POST or None)
+        form = PatientsForm(request.POST or None, request.FILES or None)
         if form.is_valid():
             name = request.POST.get('name')
-            # card = request.POST.get('cardid')
+            image = request.POST.get('barimg')
             match = Patients.objects.filter(name=name).exists()
             # match_card = Patients.objects.filter(cardid=card).exists()
             if not match: #  match == None
                 save_form = form.save(commit=False)
                 save_form.save()
                 pat_id = save_form.id
+                barimg = save_form.barimg
                 Visits.objects.create(patient_id=pat_id, visitdate=date.today(),
                                 complain="any comp", sign="any sign", 
                                 amount=0, intervention="any intervention")
@@ -40,18 +41,15 @@ def save_patient(request):
                 # # print('done')
                 # # cursor.fetchall()
                 # transaction.commit
-                print('patient: ' + str(name))
+                print('barimg: ' + str(barimg)+',, image'+str(image))
                 messages.success(request, 'Saving process done ... ')
                 return redirect('patientdata:table_patient')
             else:
-                print('what is wrong')
+                # print('what is wrong')
                 messages.success(request, 'Patient Name already exsits and can\'t be repeated')
-                # return redirect('patientdata:save_patient')
-                # raise Http404("try again this name is taken before")
     else:
+        print('EOFError')
         form = PatientsForm()
-
-    # lastcardid = int(Patients.objects.latest('id').cardid) + 1
 
     # label = "_Save_"
     label2 = "Save"
@@ -82,35 +80,34 @@ def edit_patient(request, id): # Making Update to a Patient
     # if match_pasthist:
     #     pasthist = PastHistory.objects.values('id').filter(patient=patient_id).first()
     
-    form = PatientsForm(request.POST or None, instance=query)
+    form = PatientsForm(request.POST or None, request.FILES or None, instance=query)
     if form.is_valid():
         save_form= form.save(commit=False)
         save_form.save()
         name = save_form.name
         card = save_form.cardid 
         dup_name = Patients.objects\
-                            .values('name')\
-                            .annotate(ncount=Count('name'))\
-                            .filter(name=name, ncount__gt=1)
+                        .values('name')\
+                        .annotate(ncount=Count('name'))\
+                        .filter(name=name, ncount__gt=1)
         records = Patients.objects\
-                            .filter(name__in=[item['name'] for item in dup_name])
+                        .filter(name__in=[item['name'] for item in dup_name])
         # print('rec_edit = '+ str(records) + str(name))#(dup_name, records)
         rec = [item.name for item in records]
         reco = any(rec.count(element) > 1 for element in rec)
         print('patname= '+str(name), 'rec_edit= '+str(rec), 'dupname_edit= ' +str(dup_name),reco)
         
         # check duplicate for cardid
-        dup_num = Patients.objects\
-                            .values('cardid')\
-                            .annotate(bcount=Count('cardid'))\
+        dup_num = Patients.objects \
+                            .values('cardid') \
+                            .annotate(bcount=Count('cardid')) \
                             .filter(cardid=card, bcount__gt=1)
         records_num = Patients.objects.filter(cardid__in=[item['cardid'] for item in dup_num])
         # print('recnum_edit = '+ str(records_num) + str(num))#(dup_name, records)
         rec_num = [item.cardid for item in records_num]
         reco_num = any(rec_num.count(element) > 1 for element in rec_num)
         # print(rec_num, 'reco_num= ' + str(reco_num))
-        # top_booknum = Patients.objects.filter(bookdate=bookdt).aggregate(Max('booknum'))
-        # booknum_top = top_booknum['booknum__max'] + 1
+        
         if reco or reco_num:
             # messages.success(request, 'Patient and Card ID must be unique change them ..!')
             # return redirect(reverse('patientdata:edit_patient', kwargs={'id': id}))

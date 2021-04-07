@@ -21,7 +21,7 @@
     <br>
 
     <div class="float-left">
-        <h1 style="color: black;"><strong>Prescription</strong></h1>
+        <h1 style="color: black;"><strong>Add Prescription</strong></h1>
         <!-- <input class="float-right" type="text" name="pages" id="pages"> -->
         <p>
             <h3 style="color: black;">Visit Date : {{ vis_date }}</h3>
@@ -32,16 +32,16 @@
 
     <div class="container float-right" style="width: 100%; height: 100%;">
         <!-- <input type="text" value="{{vis_date}}" name="vis-date" id="vis-date"> -->
-        <a class="btn btn-outline-dark" href="{% url 'visitdrug:save_medicine' patid visid %}" role="button">
+        <!-- <a class="btn btn-outline-dark" href="{% url 'visitdrug:save_medicine' patid visid %}" role="button">
             Add New Prescription
-        </a>
+        </a> -->
         <a class="btn btn-outline-dark" href="{% url 'visits:pass_patient_id' patid %}" role="button" id="new-visit">
             New Visit
         </a>
         <a class="btn btn-outline-primary" href="{% url 'patientdata:edit_patient' patient.id %}" role="button" id="edit-patient">
             Edit Patient
         </a>
-        <a class="btn btn-outline-primary" href="{% url 'visits:visits_patient_id' visid patid %}" role="button">
+        <a class="btn btn-outline-primary" href="{% url 'visits:visits_patient_id' visit.id patid %}" role="button">
             Edit This Visit
         </a>
         <!--  -->
@@ -53,7 +53,7 @@
         {% else %}
         <!--  -->
         <a class="btn btn-outline-primary float-right" href="#add_drugs_to_prescription" role="button">
-                Print Not View 
+                Please Add Drugs 
             </a>
         <!--  -->
         {% endif %}
@@ -76,16 +76,16 @@
             <!--  -->
             {{ save_medicine_form.name.label_tag }} 
             {% render_field save_medicine_form.name v-model="this.name" v-on::change="changeLanguage" %} 
-            <br>
-            <!--  -->
+            <br> 
+
             {{ save_medicine_form.plan.label_tag }} 
             {% render_field save_medicine_form.plan %} <br>
-            <!--  v-model='this.plan' -->
-            {{ save_medicine_form.patient.label_tag }} 
+            
+            <!-- {{ save_medicine_form.patient.label_tag }} 
             {{ visit_form.patient }} <br>
-            <!--  -->
+            
             {{ save_medicine_form.visit.label_tag }}
-            {{ visit_form.visit }} <br>
+            {{ visit_form.visit }} <br> -->
 
             <button type="submit" class="btn btn-outline-danger" id="save_medicine_form-btn">Add Drug</button>
             <!-- <input type="submit" class="btn btn-outline-danger" id="save_medicine_form-btn" value="Add Drug"> -->
