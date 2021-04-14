@@ -25,7 +25,6 @@ from apps.gyno.api import api
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', api.urls),
     
     # Frontpage 
     path('', frontpage, name='frontpage'),
@@ -51,5 +50,6 @@ urlpatterns = [
     # path('', include('', namespace='')),
     # path('', include('', namespace='')),
     # path('', include('', namespace='')),
+    path('api/', api.urls),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

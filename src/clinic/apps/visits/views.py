@@ -61,16 +61,16 @@ def pass_patient_id(request, id): # Making save to new visits
     match_pasthist = PastHistory.objects.filter(patient=id).exists()
 
     bound_form = VisitsForm(data={'patient':patient})
-    # bound_form = VisitsForm(request.POST, instance=qs)
+    
     if request.method == 'POST':
         form = VisitsForm(request.POST or None)
         if form.is_valid():
-            save_visit = form.save(commit=False)
-            save_visit.save()
-            
-            # save_visit.patient
-            name = save_visit.patient
-            messages.success(request, 'Saving new visit for (' + str(name) + ') done')
+            save_form = form.save(commit=False)
+            save_form.patient_id = var
+            save_form.save()
+
+            # name = save_form.patient
+            messages.success(request, 'Saving new visit for (' + str(patient) + ') done')
             return redirect('visits:table_visits')#('/clinic/table/visits/')
     else:
         form = VisitsForm()
@@ -109,34 +109,32 @@ def visits_patient_id(request, id, patient_id):  # Making Update to a visit with
         presentid = present['id']
     else:
         presentid = 0
-    print(present, presentid)
+    # print(present, presentid)
     if presentid == 0:
         present_qs = 0
     else:
         present_qs = PresentHistory.objects.get(id=presentid)
 
     match_revisit = Revisits.objects.filter(visit=id).exists()
-    # if not match_revisit:
-    #     revisit = None
-    # else:
-    #     revisit = Revisits.objects.get(visit=id)
-
+   
     patient = Patients.objects.get(id=patient_id) # Use it with get_absolute_url()
     patientid = qs['patient_id'] # out put is Patient ID
     form = VisitsForm(request.POST or None, instance=query)
     if form.is_valid():
-        patid = request.POST.get('patient')
-        # print('patid : ' + str(patid))
-        match = Visits.objects.filter(patient_id=patid, id=id).exists()
-        if match:
-            instance = form.save(commit=False)
-            instance.save()
-            messages.success(request, 'Update visit no. (' + str(vis_id) + ') done successfully' )
-            return redirect(reverse('visits:visits_patient_id', args=(vis_id, patientid)))  # ('/clinic/table/')
-            #  HTTPResponseRedirect(reverse('clinic:edit_patient', kwargs={'id': id}))
-        else:
-            messages.success(request, 'The Patient Name Must Be : ' + \
-            str(patient) + ', With Patient ID : ' + str(patient_id) + ' Not Ptient ID : ' + str(patid))
+        # patid = request.POST.get('patient')
+        # # print('patid : ' + str(patid))
+        # match = Visits.objects.filter(patient_id=patid, id=id).exists()
+        # if match:
+        save_form = form.save(commit=False)
+        save_form.patient_id = patient_id
+        # save_form.visit_id = id
+        save_form.save()
+        messages.success(request, 'Update visit no. (' + str(vis_id) + ') done successfully' )
+        return redirect(reverse('visits:visits_patient_id', args=(vis_id, patientid)))  # ('/clinic/table/')
+        #  HTTPResponseRedirect(reverse('clinic:edit_patient', kwargs={'id': id}))
+        # else:
+        #     messages.success(request, 'The Patient Name Must Be : ' + \
+        #     str(patient) + ', With Patient ID : ' + str(patient_id) + ' Not Ptient ID : ' + str(patid))
 
     context = {
         # 'saveDone': match,
@@ -144,7 +142,7 @@ def visits_patient_id(request, id, patient_id):  # Making Update to a visit with
         'patient_id': patientid,
         'visit': query,
         'vis_id': vis_id,
-        'qs':qs,
+        'qs': qs,
         'medicine': match_medicine,
         # 'medicine_id': medicine,
         'match_present': match_present,

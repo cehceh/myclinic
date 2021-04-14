@@ -44,7 +44,7 @@ class LabVisit(models.Model):
                                 help_text="Add analysis Here Please ....")
     result  = models.CharField(max_length=150, null=True, blank=True)
     resdate = models.DateField(default=now)
-    image   = models.ImageField(upload_to=upload_image_path, null=True, blank=True)
+    image   = models.ImageField(upload_to='labs', null=True, blank=True)
     updated = models.DateTimeField(auto_now=True)
     patient = models.ForeignKey(Patients, on_delete=models.CASCADE)
     visit   = models.ForeignKey(Visits, on_delete=models.CASCADE)
@@ -55,6 +55,7 @@ class LabVisit(models.Model):
     def edit_labvisit_url(self):
         # kwargs={'patient_id':self.patient, 'visit':self.visit})
         return reverse('visitdrug:save_medicine', args=(self.patient, self.visit))
+
 
 class LabFollowup(models.Model):
     name     = models.CharField(max_length=100,

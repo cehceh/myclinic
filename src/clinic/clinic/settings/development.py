@@ -237,12 +237,13 @@ LOCALE_PATHS = [
 LANGUAGES = (
     ('ar', _('Arabic')),
     ('en', _('English')),
-    ('de', _('German')),
+    # ('de', _('German')),
 )
 
 MULTILINGUAL_LANGUAGES = (
     "en-us",
     "ar-eg",
+    # "de-gr"
 )
 
 # for authentication by email

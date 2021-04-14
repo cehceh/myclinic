@@ -43,7 +43,8 @@ class Patients(models.Model):
     # mobile     = PhoneNumberField(blank=True, null=True)
     mobile     = models.CharField(max_length=150, blank=True, null=True)
     cardid     = models.CharField(max_length=20, blank=True, null=True)
-    barcode    = models.CharField(max_length=20, blank=True, null=True)
+    barcode    = models.CharField(max_length=100, blank=True, null=True, unique=True)
+    barurl     = models.CharField(max_length=200, blank=True, null=True)
     barimg     = models.ImageField(upload_to="patients", null=True, blank=True)
 
     def __str__(self):

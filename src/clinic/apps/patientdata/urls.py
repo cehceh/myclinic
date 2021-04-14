@@ -1,12 +1,11 @@
 from django.urls import path  # defs
 # from clinic.views.home import homepage
-from .views import save_patient, edit_patient, table_patient
+from .views import (save_patient, edit_patient, 
+                    table_patient, patient_details)
 # from clinic.views import visits, medicine, prescription
 # from clinic.views.search import search_patient, search_visit, search_date, search_only
 # from clinic.views.calculations import (calculate_income, calculate_day_income, 
 #                                         calculate_month_income, calculate_year_income)
-
-
 
 app_name = 'patientdata'
 urlpatterns = [
@@ -16,9 +15,9 @@ urlpatterns = [
     path('create/patient/', save_patient, name='save_patient'),
     path('edit/patient/<int:id>/', edit_patient, name='edit_patient'),
     path('table/patients/', table_patient, name='table_patient'),
+    path('patient/details/by/barcode/<str:barcode>/', patient_details, name='patient_details'),
     
     # for visit
-    # path('create/visit/patient/<int:id>/', visits.pass_patient_id, name='pass_patient_id'),
     # path('create/visit/', visits.save_visits, name='save_visits'),
     # path('edit/visit/<int:id>/patient/<int:patient_id>/', visits.visits_patient_id, name='visits_patient_id'),
     

@@ -8,6 +8,14 @@
 <!--  -->
 
 <div class="container" style="background-color: white;" id="editPatient">
+    <article class="message is-{{ message.tags }}">                 
+        <div class="message-body alert {{ message.tags }}" style="color: red;" role="alert">
+            <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="color: red; margin: 5px; padding: 5px;">
+                <span aria-hidden="true">&times;</span>
+            </button> -->
+            {{ savepatform.non_field_errors }}
+        </div>
+    </article>
 
     <solid>
         <h1 style="color:black">Edit Patient</h1>
@@ -42,14 +50,23 @@
            
             {{editpatform.mobile.label_tag}} {{editpatform.mobile}} <br>
             
-            {{editpatform.cardid.label_tag}} {{editpatform.cardid}} <br>
+            {{editpatform.cardid.label_tag}} 
+            {% render_field editpatform.cardid v-model="cardid" %} <br>
             
             {{editpatform.barcode.label_tag}}
-            {% render_field editpatform.barcode %} <br>
+            {% render_field editpatform.barcode ::value="this.id + this.sign + this.dob + this.sign + this.cardid" %} <br>
 
-            <!-- {{editpatform.barimg.label_tag}} -->
-            {% render_field editpatform.barimg %} <br>
-            <!-- <img class="image" src="{{ Patients.barimg.url }}"> -->
+            <!-- {{editpatform.barimg.label_tag}}
+            {% render_field editpatform.barimg %} -->
+            {% render_field editpatform.barurl ::value="this.url + this.id + this.sign + this.dob + this.sign + this.cardid" %} 
+            <br>
+            {% if query.barimg %}
+                <div>
+                    <a href="{% url 'patientdata:patient_details' barcode %}">
+                        <img class="image" src="{{ query.barimg.url }}"> 
+                    </a>
+                </div> <br>
+            {% endif %}  
             <br>
             <button type="submit" class="button is-primary">Update</button>
             
@@ -68,76 +85,17 @@
 {% block scripts %}
 
     <script type="text/javascript">
-        $('#birth-date, #visitdate').datepicker({
-            dateFormat: "yy-mm-dd",
-        });
-        $('#birth-date').on('change', function() {
-            var dob = new Date($('#birth-date').val());
-            var today = new Date();
-            var age = Math.floor((today - dob) / (365.25 * 24 * 60 * 60 * 1000)); // $('#age').val(age); // });
-            $('#age').val(age);
-        });
-
-        $('#plan').bind('input propertychange', function(ev) {
-            var text = ev.target.value;
-            if (arabicPattern.test(text)) {
-                // arabic;
-                $('#plan').css('direction', 'rtl')
-            }
-        });
-        //
-        $(document).on('focus', '.plan', function() {
-            $('#plan').attr('lang', 'arabisk');
-        });
-        $(document).on('outfocus', '.plan', function() {
-            $('#plan').attr('lang', 'eng');
-        });
-
-        // for open popup window
-        // function overlay() {
-        //     el = document.getElementById("overlay");
-        //     el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
-        // }
-        /// 
-        // function printDiv() {
-        //     //
-        //     var divToPrint = document.getElementById("medicine-table");
-        //     var newWin = window.open('', 'Print-Window');
-        //     newWin.document.write(divToPrint.innerHTML);
-        //     newWin.print();
-        //     newWin.close();
-        //
-        // var divToPrint = document.getElementById('medicine-table');
-        // var newWin = window.open('', 'Print-Window');
-        // newWin.document.open();
-        // newWin.document.write('<html > <body onload = "window.print()"> ' + divToPrint.innerHTML + '</body></html>');
-
-        // newWin.document.close();
-        // setTimeout(function() {
-        //     newWin.close();
-        // }, 10);
-        // }
-        // $('#btn-print').on('click', function() {
-        //         printDiv();
-        //     })
-        // $(document).ready(function() {
-        //     $('#btn').on('click', function() {
-        //         $('#medicine-table').tableExport({
-        //             type: 'pdf',
-        //             // escape: 'false',
-        //             separator: ',',
-        //             ignoreColumn: [2, 3],
-        //             // tableName: 'yourTableName',
-        //             // type: 'csv',
-        //             pdfFontSize: 14,
-        //             pdfLeftMargin: 20,
-        //             escape: 'true',
-        //             htmlContent: 'false',
-        //             consoleLog: 'false',
-        //         })
-        //     })
+        // $('#birth-date, #visitdate').datepicker({
+        //     dateFormat: "yy-mm-dd",
+        // });
+        // $('#birth-date').on('change', function() {
+        //     var dob = new Date($('#birth-date').val());
+        //     var today = new Date();
+        //     var age = Math.floor((today - dob) / (365.25 * 24 * 60 * 60 * 1000)); // $('#age').val(age); // });
+        //     $('#age').val(age);
         // });
     </script>
+
     <script>
         // Using Vue.js Here
         var editPatient = new Vue ({
@@ -149,11 +107,17 @@
                 patient_name: '' ,
                 title: "Add New Patient",
                 message:  '{{ non_field_errors }}' ,
+                id:'{{ patient_id }}',
+                name:'',
+                cardid:'',
                 dob: new Date(),
                 age: '',
+                url:'http://192.168.1.120:8000/patientdata/patient/details/by/barcode/',
+                barcode:'',
+                sign:'_',
             },
             computed: {
-                calculateAge(){
+                calculateAge(){ // Not use
                     this.dob = document.getElementById('dob').value;
                     var dt = new Date(this.dob);
                     

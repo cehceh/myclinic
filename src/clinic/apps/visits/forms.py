@@ -18,50 +18,23 @@ def validate_none(value):
         )
 
 class VisitsForm(forms.ModelForm):
-    # query = Visits.objects.filter(id=id).exists()
-    # def match_id():
-    #     cleaned_data = super().clean()
-    #     vid = cleaned_data.get('id')
-    #     return Visits.objects.filter(id=vid).exists()
-
-    # print(match_id(id))
-    # id = 0
-    # if match_id:
-    #     id = forms.IntegerField(required=False, label='Visit No.',
+    
+    # id = forms.IntegerField(required=False, label='Visit No.',
     #                        widget=forms.NumberInput(
     #                            attrs={
     #                                'class': 'form-control',
     #                                'readonly': 'readonly',
-    #                                'style':('background-color', 'lightgreen')
+    #                             #    'style': ('background-color:lightgreen')
     #                            })
     #                        )
-    # else:
-    #     id = forms.IntegerField(required=False, label='Visit No.',
-    #                        widget=forms.NumberInput(
+    # patient = forms.ModelChoiceField(queryset=Patients.objects.all(), required=True, label='Name',
+    #                        widget=forms.Select(
     #                            attrs={
     #                                'class': 'form-control',
-    #                                'readonly': 'readonly',
-    #                                'style':{'background-color': 'pink'}
-    #                            })
-    #                        )
-    # print(match_id(id))
-
-    id = forms.IntegerField(required=False, label='Visit No.',
-                           widget=forms.NumberInput(
-                               attrs={
-                                   'class': 'form-control',
-                                   'readonly': 'readonly',
-                                #    'style': ('background-color:lightgreen')
-                               })
-                           )
-    patient = forms.ModelChoiceField(queryset=Patients.objects.all(), required=True, label='Name',
-                           widget=forms.Select(
-                               attrs={
-                                   'class': 'form-control',
-                                    'id': 'patient',
-                                    # 'disabled':'disabled'
-                               }
-                           ))
+    #                                 'id': 'patient',
+    #                                 # 'disabled':'disabled'
+    #                            }
+    #                        ))
 
     complain = forms.CharField(required=False, label='Complain',
                            widget=forms.Textarea(
@@ -135,9 +108,9 @@ class VisitsForm(forms.ModelForm):
         fields = ('__all__')#('id', 'patient')#('__all__')
         # fields = ('__str__', 'address', )
         
-    # def __init__(self, *args, **kwargs):
-    #     super(VisitsForm, self).__init__(*args, **kwargs)
-    #     # self.id = self.fields['id']
-    #     # self.fields['id'].widget.attrs['class'] = 'input'
+    def __init__(self, *args, **kwargs):
+        super(VisitsForm, self).__init__(*args, **kwargs)
+        # self.id = self.fields['id']
+        # self.fields['id'].widget.attrs['class'] = 'input'
         
    

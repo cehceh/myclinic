@@ -28,7 +28,8 @@
         <div class="float-left" id="left-savepat-div" style="overflow-x: auto; width: 45%; height: 100%;">
             <!-- {{savepatform.id.label_tag}} {{savepatform.id}} <br> -->
 
-            {{savepatform.name.label_tag}} {{savepatform.name}} <br>
+            {{savepatform.name.label_tag}}
+            {% render_field savepatform.name v-model="name" %} <br>
             <!--  -->
             {{savepatform.address.label_tag}} {{savepatform.address}} 
             <br>
@@ -36,8 +37,9 @@
             {{savepatform.birth_date.label_tag}}
             {% render_field savepatform.birth_date v-model="dob" id="dob" %}
             <br>
-            {{savepatform.barcode.label_tag}}
-            {% render_field savepatform.barcode %}
+            {{savepatform.age.label_tag}}
+            {% render_field savepatform.age ::value="getAge" id="age" %}
+            <br>
             <hr>
 
             <button type="submit" class="btn btn-dark" id="savepatform-btn">
@@ -46,17 +48,19 @@
             
         </div>
         <div class="float-right" id="right-savepat-div" style="overflow-x: auto; width: 45%; height: 100%;">
-            {{savepatform.cardid.label_tag}} {{savepatform.cardid}} <br>
-            <!--  -->
+            {{savepatform.cardid.label_tag}} 
+            {% render_field savepatform.cardid v-model="cardid" %} <br>
+            
             {{savepatform.phone.label_tag}} {{savepatform.phone}} <br>
-            <!--  -->
+            
             {{savepatform.mobile.label_tag}} {{savepatform.mobile}} <br>
-            <!--  -->
-            {{savepatform.age.label_tag}}
-            {% render_field savepatform.age ::value="getAge" id="age" %}
+            
+            {{savepatform.barcode.label_tag}}
+            {% render_field savepatform.barcode ::value="this.id + this.sign + this.dob + this.sign + this.cardid" %}
             <br>
-            {{savepatform.barimg.label_tag}}
-            {% render_field savepatform.barimg %}
+            <!-- {{savepatform.barimg.label_tag}} -->
+            <!-- {% render_field savepatform.barimg %} -->
+            {% render_field savepatform.barurl ::value="this.url + this.id + this.sign + this.dob + this.sign + this.cardid" %}
             
             <!-- <img class="image" src="{{ Patients.barimg.url }}"> -->
             <hr>
@@ -98,8 +102,14 @@
                 patient_name: '' ,
                 title: "Add New Patient",
                 message:  '{{ non_field_errors }}' ,
+                id:'{{ lastid }}',
+                name:'',
+                cardid:'',
                 dob: new Date(),
                 age: '',
+                url:'http://192.168.1.120:8000/patientdata/patient/details/by/barcode/',
+                barcode:'',
+                sign:'_',
             },
             computed: {
                 calculateAge(){

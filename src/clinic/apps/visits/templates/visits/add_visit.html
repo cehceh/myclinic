@@ -54,24 +54,27 @@
         <div style="background-color: pink;">
             {{save_visits_form.non_field_errors}}
         </div>
-        <!--  -->
-        {{save_visits_form.id.label_tag}} {{save_visits_form.id}} <br />
-        <!--  -->
-        {{save_visits_form.patient.label_tag}} {{bound_form.patient}} <br />
-        <!--  -->
-        {{save_visits_form.complain.label_tag}} {{save_visits_form.complain}} <br />
-        <!--  -->
-        {{save_visits_form.amount.label_tag}} {{save_visits_form.amount}}
+        
+        <!-- {{save_visits_form.id.label_tag}} {{save_visits_form.id}} <br>
+        {{save_visits_form.patient.label_tag}} {{bound_form.patient}}<br>
+         -->
+        {{save_visits_form.visitdate.label_tag}} 
+        {{save_visits_form.visitdate}} <br>
+
+        {{save_visits_form.complain.label_tag}} 
+        {{save_visits_form.complain}} <br>
+        
+        {{save_visits_form.amount.label_tag}} 
+        {{save_visits_form.amount}}
         <hr>
         <button type="submit" class="btn btn-outline-dark" id="vis-form-btn">Save</button>
         
     </div>
     <div class="float-right" style="width:45%; height: 100%;" id="right">
         <hr>
-        
-        {{save_visits_form.visitdate.label_tag}} {{save_visits_form.visitdate}} <br />
-       
-        {{save_visits_form.diagnosis.label_tag}} {{save_visits_form.diagnosis}} <br />
+               
+        {{save_visits_form.diagnosis.label_tag}}
+        {{save_visits_form.diagnosis}} <br>
         
         {{save_visits_form.sign.label_tag}} {{save_visits_form.sign}} <br />
         

@@ -133,7 +133,7 @@ def edit_medicine(request, patient_id, visit_id, id):  # Making Update to a Medi
     match = Medicine.objects.filter(visit=vis_id, patient=pat_id).exists()
     # print(str(patientid)+ ', ' + 'match in medicine= ' + str(match) + ' , ' + str(vis_id) + ' , ' + str(name))
 
-    query = Medicine.objects.get(id=id)  # outt put is the medicine ID
+    query = Medicine.objects.get(id=id)  # The output is the medicine ID
     form = MedicineForm(request.POST or None, instance=query)
     if form.is_valid():
         # vis = request.POST.get('visit')

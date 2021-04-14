@@ -27,20 +27,20 @@ class RevisitsForm(forms.ModelForm):
     #                            })
     #                        )
 
-    visit = forms.ModelChoiceField(queryset=Visits.objects.all(), required=False, label='Visit No',
-                           widget=forms.Select(
-                               attrs={
-                                   'class': 'form-control',
-                                    #    'id': '',
-                                    # 'disabled':'disabled'
-                               }))
-    patient = forms.ModelChoiceField(queryset=Patients.objects.all(), required=False, label='Name',
-                           widget=forms.Select(
-                               attrs={
-                                   'class': 'form-control',
-                                    #    'id': '',
-                                    # 'disabled':'disabled'
-                               }))
+    # visit = forms.ModelChoiceField(queryset=Visits.objects.all(), required=False, label='Visit No',
+    #                        widget=forms.Select(
+    #                            attrs={
+    #                                'class': 'form-control',
+    #                                 #    'id': '',
+    #                                 # 'disabled':'disabled'
+    #                            }))
+    # patient = forms.ModelChoiceField(queryset=Patients.objects.all(), required=False, label='Name',
+    #                        widget=forms.Select(
+    #                            attrs={
+    #                                'class': 'form-control',
+    #                                 #    'id': '',
+    #                                 # 'disabled':'disabled'
+    #                            }))
 
     complain = forms.CharField(required=False, label='Complain',
                            widget=forms.Textarea(
@@ -59,10 +59,10 @@ class RevisitsForm(forms.ModelForm):
                            widget=forms.TextInput(
                                attrs={
                                     'class': 'form-control',
-                                    'placeholder':'Click here to enter the visit date ...',
+                                    # 'placeholder':'Click here to enter the visit date ...',
                                     'value': date.today(),
                                     'id': 'visitdate',
-                                    'type':'text',
+                                    'type':'date',
                                     # 'readonly': 'readonly'
                                }
                            ))
@@ -97,9 +97,9 @@ class RevisitsForm(forms.ModelForm):
         if amount == None:
             self.add_error('amount', 'can not be empty') # the error as outline (red line) of the input
             raise ValidationError('Amount Can Not Be Empty')
-        if visitdate == None:
-            self.add_error('visitdate', 'Date can\'t be Empty')
-            raise ValidationError('Revisit Date Can Not Be Empty')
+        # if visitdate == None:
+        #     self.add_error('visitdate', 'Date can\'t be Empty')
+        #     raise ValidationError('Revisit Date Can Not Be Empty')
             # return msg
         return cleaned_data
 

@@ -1,0 +1,73 @@
+{% extends 'index.html' %}
+{% load static %}
+
+
+
+{% block content %}
+
+<div class="container" style="position: relative; display: inline-block; height:100%; width:100%" id="dashboard">
+    <h1 class="title">Details For Patient ({{ qs.name }}) </h1> 
+    <br>
+
+    <!-- <form class="form-inline mt-2 mt-md-0" method="GET" action="#">
+
+        <input class="form-control mr-sm-2" type="text" name='code' placeholder="Write Barcode Here..." value="{{request.GET.code}}" aria-label="Search">
+        
+        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+        
+    </form> -->
+    <hr>
+    
+    <div class="row">  
+    <!-- card -->
+        <div class="column is-6">
+            <div class="card card-link">
+                
+                <div class="card-content">
+                    <!-- <div class="media">
+                        <div class="media-content">
+                            <img src="">
+                        </div>
+                    </div> -->
+
+                    <div class="content">
+                        <p class="title is-4">
+                        <span class="fa fa-address-book"></span> 
+                        | Patient Data <br>
+                        <hr>
+                        </p>
+                        <p class="content is-6">
+                            <span class="fa fa-user"></span> 
+                        | Patient Name: {{ qs.name }} <br><br>
+                            <span class="fa fa-map-marker"></span> 
+                        | Address : {{ qs.address }} <br><br>
+                            <span class="fa fa-birthday-cake"></span> 
+                        | Birth Date : {{ qs.birth_date }} <br><br>
+                            <span class="fa fa-hourglass-2"></span> 
+                        | Age : {{ qs.age }} <br><br>
+                            <span class="fa fa-phone"></span> 
+                        | Phone : {{ qs.phone }} <br><br>
+                            <span class="fa fa-mobile"></span> 
+                        | Mobile : {{ qs.mobile }}
+                        </p>
+                    </div> 
+                </div>
+
+                <footer class="card-footer">
+                    <a class="button is-dark card-footer-item" href="#">
+                        New Patient</a>&nbsp;&nbsp;
+                    <a href="#" class="card-footer-item button is-primary">
+                        New Visit</a> &nbsp;&nbsp; 
+                </footer>
+            </div>
+        </div> 
+        <br>
+
+
+
+    </div>
+</div>
+
+  
+{% endblock  %}
+  

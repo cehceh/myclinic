@@ -1,9 +1,14 @@
 from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.db.models import Sum, Max, Count
+from django.db.models import Q, Sum, Max, Count
 from django.db import connection, transaction
 from django.contrib import messages
 from datetime import date
+# from django.db.models import Q
+import os
+import pyqrcode
+from pyzbar.pyzbar import decode
+from PIL import Image
 # from django.contrib.postgres.search import SearchVector
 from .forms import PatientsForm
 from .models import Patients
@@ -21,41 +26,40 @@ def save_patient(request):
     if request.method == 'POST':
         form = PatientsForm(request.POST or None, request.FILES or None)
         if form.is_valid():
-            name = request.POST.get('name')
-            image = request.POST.get('barimg')
-            match = Patients.objects.filter(name=name).exists()
-            # match_card = Patients.objects.filter(cardid=card).exists()
-            if not match: #  match == None
-                save_form = form.save(commit=False)
-                save_form.save()
-                pat_id = save_form.id
-                barimg = save_form.barimg
-                Visits.objects.create(patient_id=pat_id, visitdate=date.today(),
-                                complain="any comp", sign="any sign", 
-                                amount=0, intervention="any intervention")
-                #
-                # cursor = connection.cursor()
-                # cursor.execute('''INSERT INTO clinic_visits(patient_id, visitdate, amount)
-                #                 SELECT id, NOW(), 0
-                #                 FROM clinic_patients''')
-                # # print('done')
-                # # cursor.fetchall()
-                # transaction.commit
-                print('barimg: ' + str(barimg)+',, image'+str(image))
-                messages.success(request, 'Saving process done ... ')
-                return redirect('patientdata:table_patient')
-            else:
-                # print('what is wrong')
-                messages.success(request, 'Patient Name already exsits and can\'t be repeated')
+            barcode_value = request.POST.get('barurl')
+            if barcode_value == None or barcode_value == '':
+                messages.success(request, 'Create barcode without value is not valid')
+            elif barcode_value != None:
+                qr = pyqrcode.create(barcode_value)
+                name = request.POST.get('name')
+                file_path = 'media_root/patients/' + str(name) + '.png'
+                # print(file_path)
+                match = Patients.objects.filter(name=name).exists()
+                if not os.path.exists(file_path) and not match:
+                    qr.png('media_root/patients/' + str(name) + '.png', scale=10)
+                    save_form = form.save(commit=False)
+                    save_form.barimg = 'patients/' + str(name) + '.png' 
+                    save_form.barurl = barcode_value
+                    save_form.save()
+                    pat_id = save_form.id
+                    Visits.objects.create(patient_id=pat_id, visitdate=date.today(),
+                                    complain="any comp", sign="any sign", 
+                                    amount=0, intervention="any intervention")
+                    messages.success(request, 'Saving process done ... ')
+                    return redirect('patientdata:table_patient')
+                else:
+                    messages.success(request, 'Barcode is already exists or Patient name is repeated')
+                    return redirect(reverse('patientdata:save_patient'))
     else:
-        print('EOFError')
         form = PatientsForm()
 
-    # label = "_Save_"
+    lastid = Patients.objects.values('id').last()
+    patid = lastid['id'] + 1
+    # print(patid)
     label2 = "Save"
     context = {
         'savepatform': form,
-        # 'last': lastcardid,
+        'lastid': patid,
         # 'button_lable': label,
         'lable2': label2,
 
@@ -67,14 +71,15 @@ def edit_patient(request, id): # Making Update to a Patient
     qs = Visits.objects.filter(patient=id).order_by('-id')
     # print('qs = '+str(qs))
     # match_presenthist = PresentHistory.objects.filter(patient=id, visit=1).exists()
-    
     table = VisitsTable(qs, exclude='patient, addpresent')
     table.paginate(page=request.GET.get("page", 1), per_page=10)
 
     query = Patients.objects.get(id=id)  # get(birth_date=birth_date)
     patient = Patients.objects.values('id').filter(id=id).first()
+    barcode = Patients.objects.values('barcode').filter(id=id).first()
     # patient = Patients.objects.filter(id=id)
     patient_id = patient['id']
+    bar = barcode['barcode']
     # print(query, patient)
     match_pasthist = PastHistory.objects.filter(patient=id).exists()
     # if match_pasthist:
@@ -109,28 +114,23 @@ def edit_patient(request, id): # Making Update to a Patient
         # print(rec_num, 'reco_num= ' + str(reco_num))
         
         if reco or reco_num:
-            # messages.success(request, 'Patient and Card ID must be unique change them ..!')
-            # return redirect(reverse('patientdata:edit_patient', kwargs={'id': id}))
             if reco:
                 messages.success(request, 'Patient (' +str(name)+ ') is already exists change the name ..!')
                 return redirect(reverse('patientdata:edit_patient', kwargs={'id': id}))
             elif reco_num:
                 messages.success(request, 'Card ID is already exists !, It must not be duplicated')
                 return redirect(reverse('patientdata:edit_patient', kwargs={'id':id}))
-        # elif reco:
-        #     messages.success(request, 'Patient (' +str(name)+ ') is already exists change the name ..!')
-        #     return redirect(reverse('patientdata:edit_patient', kwargs={'id': id}))
-        # elif reco_num:
-        #     messages.success(request, 'Card ID is already exists !, It must not be duplicated')
-        #     return redirect(reverse('patientdata:edit_patient', kwargs={'id':id}))
         else:
             return redirect(reverse('patientdata:table_patient'))
-
+    
+    # lastid = Patients.objects.values('id').last()
+    # patid = lastid['id'] + 1
     context = { 
         'patient': patient,
         'patient_id': patient_id,
         'editpatform': form,
         'query': query,
+        'barcode': bar,
         'match_pasthist': match_pasthist,
         'patient_visits_table':table,
     }
@@ -140,31 +140,63 @@ def edit_patient(request, id): # Making Update to a Patient
 def table_patient(request):
     qs = Patients.objects.all().order_by('-id')
 
+    # search_name = request.GET.get('patname')
+    # search_id = request.GET.get('patid')
+    # result = Patients.objects.filter(Q(name__icontains=search_name))
+    # result_id = Patients.objects.filter(Q(id=search_id))
+    
     page_no = request.GET.get('pageno')
+    # if search_name != '':
+    #     table = PatientsTable(result)
+    #     table.paginate(page=request.GET.get("page", 1), per_page=10)
+    # elif search_id != None or search_id != '' or int(search_id) != 0:
+    #     table = PatientsTable(result_id)
+    # elif search_id == None or search_id == '' or int(search_id) == 0:
+    #     table = PatientsTable(qs)
+    #     table.paginate(page=request.GET.get("page", 1), per_page=10)
+    # elif page_no == None or page_no == '' or int(page_no) == 0:
+    #     table = PatientsTable(qs)
+    #     table.paginate(page=request.GET.get("page", 1), per_page=10)
+   
+    # elif search_name == '':
+    #     table = PatientsTable(qs)
+    #     table.paginate(page=request.GET.get("page", 1), per_page=10)
+    # elif search_name == '' and  page_no == '' and search_id == '':
+    #     table = PatientsTable(result)
+    #     table.paginate(page=request.GET.get("page", 1), per_page=2)
     if page_no == None or page_no == '' or int(page_no) == 0:
         table = PatientsTable(qs)
-        # table = VisitsTable(results, exclude='addrevis, addpresent')
         table.paginate(page=request.GET.get("page", 1), per_page=10)
+    elif page_no != None or page_no != '' or int(page_no) != 0:
+        table = PatientsTable(qs)
+        table.paginate(page=request.GET.get("page", 1), per_page=page_no)
     else:
         table = PatientsTable(qs)
-        # table = VisitsTable(results, exclude='addrevis, addpresent')
-        table.paginate(page=request.GET.get("page", 1), per_page=page_no)
+        table.paginate(page=request.GET.get("page", 1), per_page=10) 
     
-    # table = PatientsTable(qs)
-    # table.paginate(page=request.GET.get("page", 1), per_page=10)
     context = {
         'table_patient': table
     }
     return render(request, 'patientdata/tables.html', context)
-  # HttpResponse for http direct write
 
 
-# def table_visits(requset, id):
-#     qs = Visits.objects.filter(id=id).order_by('-id')
-#     print(qs)
-#     table = PatientsTable(qs)
-#     table.paginate(page=request.GET.get("page", 1), per_page=10)
-#     context = {
-#         'table_patient': table
-#     }
-#     return render(request, 'tables.html', context)
+def patient_details(request, barcode):
+    qs = Patients.objects.get(barcode=barcode)
+    patient = Patients.objects.get(id=qs.id)
+    
+    context = {
+        'qs': qs,
+    }
+    return render(request, 'patientdata/patient_details.html', context)
+
+
+def barcode_redirect(request, barcode):
+    qs = Patients.objects.get(barcode=barcode)
+    
+    
+    return redirect(reverse('patientdata:edit_patient', args=(qs.id)))
+
+
+
+
+

@@ -1,14 +1,11 @@
 {% extends 'index.html' %} {% load crispy_forms_tags %}
 {% load render_table from django_tables2 %} 
 {% load static %}
-<!--  -->
-
 
 {% block content %}
 
-
 <div id="edit-visit">
-    
+  
     {% if  match %}
         {% if messages %}
             {% for message in messages %}
@@ -27,7 +24,7 @@
         <h1 style="color:black">Update Visit</h1>
     </solid>
     <hr>
-    <a class="btn btn-outline-dark" href="{% url 'visits:pass_patient_id' patient_id %}/" role="button" id="new-visit">
+    <a class="btn btn-outline-dark" href="{% url 'visits:pass_patient_id' patient_id %}" role="button" id="new-visit">
         Add New Visit
     </a>
     <!-- <a class="btn btn-outline-primary" href="{% url 'revisits:save_revisit' patient.id visit.id %}" role="button" id="edit-patient">
@@ -83,25 +80,25 @@
         <!-- {{edit_visits_form | crispy }} -->
         <div class="float-left" style="width: 45%; height: 100%;" id="left">
             <!-- <div class="float-left" id="left"> -->
-            {{edit_visits_form.id.label_tag}} {{edit_visits_form.id}} <br />
-            <!--  -->
-            {{edit_visits_form.patient.label_tag}} {{edit_visits_form.patient}} <br/>
-            <!--  -->
-            {{edit_visits_form.complain.label_tag}} {{edit_visits_form.complain}} <br />
-            <!--  -->
+            <!-- {{edit_visits_form.id.label_tag}} {{edit_visits_form.id}} <br>
+            {{edit_visits_form.patient.label_tag}} {{edit_visits_form.patient}} <br> -->
+            {{edit_visits_form.visitdate.label_tag}} {{edit_visits_form.visitdate}} <br>
+
+            {{edit_visits_form.complain.label_tag}} {{edit_visits_form.complain}} <br>
+            
             {{edit_visits_form.amount.label_tag}} {{edit_visits_form.amount}}
             <hr>
-            <!-- <button type="submit" class="btn btn-outline-danger" id="vis-form-btn">Update</button> -->
+
             <input type="submit" class="btn btn-outline-dark" value="Update" id="vis-form-btn" />
         </div>
         <div class="float-right" style="width: 45%; height: 100%;" id="right">
-            {{edit_visits_form.visitdate.label_tag}} {{edit_visits_form.visitdate}} <br/>
-            <!--  -->
-            {{edit_visits_form.diagnosis.label_tag}} {{edit_visits_form.diagnosis}} <br />
-            <!--  -->
-            {{edit_visits_form.sign.label_tag}} {{edit_visits_form.sign}} <br />
-            <!--  -->
-            {{edit_visits_form.intervention.label_tag}} {{edit_visits_form.intervention}}
+            
+            {{edit_visits_form.diagnosis.label_tag}} {{edit_visits_form.diagnosis}} <br>
+            
+            {{edit_visits_form.sign.label_tag}} {{edit_visits_form.sign}} <br>
+            
+            {{edit_visits_form.intervention.label_tag}} 
+            {{edit_visits_form.intervention}}
             <hr>
         </div>
     </form>

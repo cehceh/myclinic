@@ -114,6 +114,9 @@ ENV/
 # mypy
 .mypy_cache/
 
+# media_root
+media_root/
+
 # photos extension
 # *.png
 # *.jpeg

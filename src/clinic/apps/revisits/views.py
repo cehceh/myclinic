@@ -52,7 +52,10 @@ def save_revisit(request, patient_id, visit_id): # Making save to new visits
     if request.method == 'POST':
         form = RevisitsForm(request.POST or None)
         if form.is_valid():
-            form.save()
+            save_form = form.save(commit=False)
+            save_form.patient_id = patient_id
+            save_form.visit_id = visit_id
+            save_form.save()
             return redirect(reverse('revisits:view_revisit',  args=(visit_id, patient_id)))#kwargs={'visit':visit_id, 'patient':patient_id}))
     else:
         form = RevisitsForm()
@@ -96,18 +99,20 @@ def edit_revisit(request, patient_id, visit_id, id):
 
     form = RevisitsForm(request.POST or None, instance=query)
     if form.is_valid():
-        patid = request.POST.get('patient')
-        # print('patid : ' + str(patid))
-        match = Visits.objects.filter(patient_id=patid, id=visit_id).exists()
-        if match:
-            instance = form.save(commit=False)
-            instance.save()
-            # print(patid)
-            return redirect(reverse('revisits:edit_revisit', args=(query, patientid, visit_id)))  # ('/clinic/table/')
-            #  HTTPResponseRedirect(reverse('patientdata:edit_patient', kwargs={'id': id}))
-        else:
-            messages.success(request, 'The Patient Name Must Be : ' + \
-            str(patient) + ', With Patient ID : ' + str(patient_id) + ' Not Ptient ID : ' + str(patid))
+        # patid = request.POST.get('patient')
+        # # print('patid : ' + str(patid))
+        # match = Visits.objects.filter(patient_id=patid, id=visit_id).exists()
+        # if match:
+        save_form = form.save(commit=False)
+        save_form.patient_id = patient_id
+        save_form.visit_id = visit_id
+        save_form.save()
+        # print(patid)
+        return redirect(reverse('revisits:edit_revisit', args=(query, patientid, visit_id)))  # ('/clinic/table/')
+        #  HTTPResponseRedirect(reverse('patientdata:edit_patient', kwargs={'id': id}))
+        # else:
+        #     messages.success(request, 'The Patient Name Must Be : ' + \
+        #     str(patient) + ', With Patient ID : ' + str(patient_id) + ' Not Ptient ID : ' + str(patid))
 
     context = {
         'patient': patient,

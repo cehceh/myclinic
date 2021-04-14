@@ -36,15 +36,15 @@ class LabVisitForm(forms.ModelForm):
                             widget=forms.TextInput(
                                 attrs={
                                    'class': 'form-control',
-                                #    'id': '',
-                                #    'lang': 'arabisk',
+                                   'type': 'date',
+                                    'value': date.today(),
                                 #    'placeholder': 'Type Your Plan ...',
                                 # 'readonly':
                                }))
     
     class Meta:
         model = LabVisit
-        fields = ('name', 'result', 'resdate', )
+        fields = ('name', 'result', 'resdate', 'image')
 
 
 
@@ -67,12 +67,12 @@ class LabFollowupForm(forms.ModelForm):
                                     # 'placeholder':'Type Your Plan ...',
                             }))
 
-    resdate = forms.DateField(required=False,
+    resdate = forms.DateField(required=True,
                             label='Result Date',
                             widget=forms.TextInput(
                                 attrs={
                                    'class': 'form-control',
-                                #    'id': '',
+                                   'value': date.today(),
                                 #    'lang': 'arabisk',
                                 #    'placeholder': 'Type Your Plan ...',
                                 # 'readonly':

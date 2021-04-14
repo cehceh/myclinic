@@ -8,39 +8,39 @@
  <h1 style="color: black;"><strong>Add Revisit for ({{patient}})</strong></h1>
  <hr>
  <div class="container">
-    <a class="btn btn-dark" href="{% url 'visits:pass_patient_id' pat_id %}" role="button" id="new-visit">
+    <a class="btn btn-outline-dark" href="{% url 'visits:pass_patient_id' pat_id %}" role="button" id="new-visit">
         Add New Visit
     </a>
-    <a class="button is-info" href="{% url 'visits:visits_patient_id' visit.id patient.id %}" role="button" id="edit-patient">
+    <a class="btn btn-outline-primary" href="{% url 'visits:visits_patient_id' visit.id patient.id %}" role="button" id="edit-patient">
         Edit Visit No. {{visit}}
     </a>
-    <a class="btn btn-primary" href="{{ patient.get_absolute_url}}" role="button" id="edit-patient">
+    <a class="btn btn-outline-primary" href="{{ patient.edit_patient_url}}" role="button" id="edit-patient">
         Edit Patient Data
     </a>
     <!--  -->
     {% if present %}
-        <a class="btn btn-primary" href="{% url 'presenthistory:edit_present_hist' patient.id visit.id present_id.id %}" role="button" id="present-history">
+        <a class="btn btn-outline-primary" href="{% url 'presenthistory:edit_present_hist' patient.id visit.id present_id.id %}" role="button" id="present-history">
             Edit Present History
         </a>
     {% else %}
-        <a class="btn btn-danger" href="{% url 'presenthistory:save_present_hist' patient.id visit.id  %}" role="button" id="present-history">
+        <a class="btn btn-outline-danger" href="{% url 'presenthistory:save_present_hist' patient.id visit.id  %}" role="button" id="present-history">
             Add Present History
         </a>
     {% endif %}
     <!--  -->
-    {% if medicine %}
+    <!-- {% if medicine %}
     <a class="btn btn-info" href="{% url 'visitdrug:save_medicine' patient.id visit.id %}" role="button">
         Show Prescription
     </a> {% else %}
 
     <a class="btn btn-danger" href="{% url 'visitdrug:save_medicine' patient.id visit.id %}" role="button">
         Add Prescription
-    </a> {% endif %}
+    </a> {% endif %} -->
     
-    <a class="button is-primary float-right" href="{% url 'revisits:view_revisit' visit.id patient.id %}" role="button">
+    <!-- <a class="button is-primary float-right" href="{% url 'revisits:view_revisit' visit.id patient.id %}" role="button">
         All Revists for Visit No. {{visit}}
-    </a>
-    <!-- <a class="btn btn-primary" href="{{ query.get_absolute_url }}" role="button">
+    </a> -->
+    <!-- <a class="btn btn-primary" href="{{ query.edit_patient_url }}" role="button">
             Prescription function
         </a> -->
 </div>
@@ -55,9 +55,9 @@
      <!--  -->
      <!-- {{ save_visits_form|crispy }} <br><br> -->
      <div class="float-left" style="width: 45%; height: 45%;" id="left-saverevis-div">
-         {{save_revisits_form.visit.label_tag}} {{bound_form.visit}} <br>
-         <!--  -->
-         {{save_revisits_form.patient.label_tag}} {{bound_form.patient}} <br> 
+         <!-- {{save_revisits_form.visit.label_tag}} {{bound_form.visit}} <br>
+         
+         {{save_revisits_form.patient.label_tag}} {{bound_form.patient}} <br>  -->
          
          {{save_revisits_form.visitdate.label_tag}} {{save_revisits_form.visitdate}} <br>
          <!--  -->

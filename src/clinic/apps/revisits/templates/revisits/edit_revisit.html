@@ -12,21 +12,21 @@
 <!-- <div class="align-content-center float-left" style="background-color:transparent; width: 100%; height: 100%; margin: 10px; padding: 10px; border-style: outset; border-radius: 20px; border-color: #aab5af; box-shadow: 2px 2px 4px 4px grey;"> -->
     
 <div class="container">
-    <a class="btn btn-dark" href="{% url 'visits:pass_patient_id' patient_id %}" role="button" id="new-visit">
+    <a class="btn btn-outline-dark" href="{% url 'visits:pass_patient_id' patient_id %}" role="button" id="new-visit">
         Add New Visit
     </a>
-    <a class="btn btn-dark" href="{% url 'revisits:save_revisit' patient.id visit.id %}" role="button" id="edit-patient">
+    <a class="btn btn-outline-dark" href="{% url 'revisits:save_revisit' patient.id visit.id %}" role="button" id="edit-patient">
         Add New Revisit
     </a>
-    <a class="btn btn-info" href="{{ patient.get_absolute_url}}" role="button" id="edit-patient">
+    <a class="btn btn-outline-primary" href="{{ patient.get_absolute_url}}" role="button" id="edit-patient">
         Edit Patient Data
     </a>
-    <a class="btn btn-info" href="{% url 'visits:visits_patient_id' visit.id patient.id %}" role="button" id="edit-patient">
+    <a class="btn btn-outline-primary" href="{% url 'visits:visits_patient_id' visit.id patient.id %}" role="button" id="edit-patient">
         Edit Visit No. {{visit}}
     </a>
     <!--  -->
     {% if present %}
-    <a class="btn btn-info" href="{% url 'presenthistory:edit_present_hist' patient.id visit.id present_id.id %}" role="button" id="present-history">
+    <a class="btn btn-outline-primary" href="{% url 'presenthistory:edit_present_hist' patient.id visit.id present_id.id %}" role="button" id="present-history">
         Edit Present History
     </a>
     <!--  -->
@@ -36,9 +36,9 @@
     </a>
     <!--  -->
     {% endif %}
-    <a class="btn btn-secondary" href="#under construction" role="button">
+    <!-- <a class="btn btn-secondary" href="#under construction" role="button">
         Prescription
-    </a>
+    </a> -->
     
     <!-- <a class="btn btn-success float-right" href="{% url 'revisits:view_revisit' visit.id patient.id %}" role="button">
         All Revists for Visit No. {{visit}}
@@ -68,24 +68,22 @@
     <!-- {{ save_visits_form|crispy }} <br><br> -->
     <!-- <hr> -->
     <div class="float-left" style="width:45%; height:45%;" id="left-saverevis-div">
-        {{edit_revisits_form.visit.label_tag}} {{bound_form.visit}} <br>
+        <!-- {{edit_revisits_form.visit.label_tag}} {{bound_form.visit}} <br>
+        {{edit_revisits_form.patient.label_tag}} {{bound_form.patient}} <br> -->
+        {{edit_revisits_form.visitdate.label_tag}} {{edit_revisits_form.visitdate}} <br>
         
-        {{edit_revisits_form.patient.label_tag}} {{bound_form.patient}} <br>
-
-        <!--  -->
         {{edit_revisits_form.complain.label_tag}} {{edit_revisits_form.complain}} <br>
-        <!--  -->
+        
         {{edit_revisits_form.amount.label_tag}} {{edit_revisits_form.amount}}
         <hr>
-        <!-- <input type="button" value=""> -->
-        <!-- <input type="submit" class="btn btn-outline-light" role="button" value="Save" id="vis-form-btn" /> -->
+        
         <button type="submit" class="btn btn-dark id="savepatform-btn">
             Update
         </button>
 
     </div>
     <div class="float-right" style="width:45%; height:45%;" id="right-saverevis-div">
-        {{edit_revisits_form.visitdate.label_tag}} {{edit_revisits_form.visitdate}} <br>
+        
         <!--  -->
         {{edit_revisits_form.diagnosis.label_tag}} {{edit_revisits_form.diagnosis}} <br>
         <!--  -->

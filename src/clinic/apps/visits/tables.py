@@ -13,24 +13,9 @@ class VisitsTable(tables.Table):
     # def render_id(self, **kwargs):
     #     return kwargs['value'].id
 
-    # def render(self, record):
-    #     # return "{} {}".format(record.first_name, record.last_name)
-    #     match = PresentHistory.objects.filter(visit=record.id).exists()
-    #     return match
-        #"{}".format(record.id)
     # def render_forid(self, value, record):
     #     return mark_safe('''<a href=%s>%s</a>''' % (record['id'], value))
         # return "%s" % value
-
-    # def check_column(self, record):
-    #     match = PresentHistory.objects.filter(visit=record.id).exists()
-    #     print(match)
-        # if match_presenthist:
-            # history = tables.TemplateColumn(
-            #             '<a class="btn btn-outline-primary" href="/data/present/history/patient/{{record.patient_id}}/visit/{{record.id}}/">Add Present History</a>',
-            #             verbose_name=u'Show Present History', visible=False)
-        # return match
-    # print(check_column)
 
     id = tables.TemplateColumn(
         '<a href="{% url \'visits:visits_patient_id\' record.id record.patient_id %}">{{ record.id }}</a>',
@@ -57,9 +42,9 @@ class VisitsTable(tables.Table):
         verbose_name=u'Amount',
         footer=render_footer)
 
-    # prn = tables.TemplateColumn(
-    #     '<a class="btn btn-outline-secondary" href="/clinic/drug/patient/{{record.patient_id}}/visit/{{record.id}}/">Add Prescription</a>',
-    #     verbose_name=u'Add Prescription')
+    addlab = tables.TemplateColumn(
+        '<a class="btn btn-outline-dark" href="{% url \'labs:add_lab_visit\' record.patient_id record.id %}">Add Analysis</a>',
+        verbose_name=u'Add Analysis')
 
     addpresent = tables.TemplateColumn(
         '<a class="btn btn-outline-primary" href="{% url \'presenthistory:save_present_hist\' record.patient_id record.id %}">Add Present History</a>',
@@ -74,7 +59,7 @@ class VisitsTable(tables.Table):
         attrs = {"id": "visits-table",}
         template_name = 'django_tables2/bootstrap4.html'
         fields = ('id', 'patient', 'visitdate', 'diagnosis', 'amount',
-                  'addrevis',)
+                  'addrevis', 'addlab')
         # exclude columns while creating the TableExport instance:
         # exporter = TableExport("csv", table, exclude_columns=("image", "buttons"))
 

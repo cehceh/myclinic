@@ -76,6 +76,7 @@ class PatientsForm(forms.ModelForm):
                     'id': 'mobile',
                 }
             ))
+    
     age = forms.CharField(required=True,
             widget=forms.TextInput(
                 attrs={
@@ -86,31 +87,37 @@ class PatientsForm(forms.ModelForm):
                     'readonly': 'readonly', # to make an input disabled
                 }
             ))
-    barcode = forms.CharField(required=False,
+      
+    barcode = forms.CharField(required=True,
             widget=forms.TextInput(
                 attrs={
                     'class':'form-control',
                     # 'id': 'age',
                     'type': 'text',
                     # 'name': 'age',
-                    # 'readonly': 'readonly', # to make an input disabled
+                    'readonly': 'readonly', # to make an input disabled
                 }
             ))
    
-    # def clean(self):
+    barurl = forms.CharField(required=True,
+            widget=forms.TextInput(
+                attrs={
+                    'class':'form-control',
+                    # 'id': 'age',
+                    'type': 'text',
+                    # 'name': 'age',
+                    'readonly': 'readonly', # to make an input disabled
+                }
+            ))
+
+    # def clean_card(self):
     #     cleaned_data = super().clean()
-    #     patid = cleaned_data.get('id')
-    #     match_id = Patients.objects.filter(id=patid).exists()
     #     cardid = cleaned_data.get('cardid')
     #     match = Patients.objects.filter(cardid=cardid).exists()
-    #     # lastcardid = int(Patients.objects.latest('id').cardid) + 1 #all().order_by('-cardid')[0]
-    #     # print(lastcardid)
-    #     if not match_id:
-    #         if match == True or cardid == None:
-    #             self.add_error('cardid', 'Card ID must not be Empty or Repeated') # the error as outline (red line) of the input
-    #             raise ValidationError('Card ID must not be Empty or Repeated')
-    #     # else:
-    #     #     raise ValidationError('Card ID must not be Empty or Repeated')
+    #     # if not match_id:
+    #     if match:
+    #         self.add_error('cardid', 'Card ID must not be Empty or Repeated') # the error as outline (red line) of the input
+    #         raise ValidationError('Card ID must not be Empty or Repeated')
     #     return cleaned_data
 
     class Meta:
@@ -118,7 +125,21 @@ class PatientsForm(forms.ModelForm):
         fields = ('__all__')
         # fields = ('__str__', 'address', )
 
-
+    # def clean_name(self):
+    #     cleaned_data = super().clean()
+    #     # patid = cleaned_data.get('id')
+    #     # print(patid)
+    #     # match_id = Patients.objects.filter(id=Patients.id).exists()
+    #     name = cleaned_data.get('name')
+    #     match_name = Patients.objects.filter(name=name).exists()
+    #     if match_id == False:
+    #         if match_name:
+    #         # self.add_error('name', 'Patient name must be unique') # the error as outline (red line) of the input
+    #         # self.add_error('cardid', 'Card ID must not be Empty or Repeated') # the error as outline (red line) of the input
+    #             raise ValidationError('Patient name must be unique')
+    #     # else:
+    #     #     raise ValidationError('Card ID must not be Empty or Repeated')
+    #     return cleaned_data
 
  # barimg = forms.ImageField(required=False,
     #         widget=forms.ClearableFileInput(
