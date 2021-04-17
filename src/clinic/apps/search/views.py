@@ -33,24 +33,24 @@ def search_patient(request):
         # messages.success(request, 'ID None Is Not Allowed')
         # return redirect('clinic:search')
     elif search_id != None:   # ('pid' in request.GET) and request.GET['pid']:
-        result_id = Patients.objects.filter(Q(id=search_id)) # | Q(cardid__icontains=patient_search)
+        result_id = Patients.objects.filter(Q(id=search_id)).all() # | Q(cardid__icontains=patient_search)
         table_search = PatientsTable(result_id)
     elif ('card' in request.GET) and request.GET['card']:#search_id != None:   # ('pid' in request.GET) and request.GET['pid']:
-        result_id = Patients.objects.filter(Q(cardid=search_card)) # | Q(cardid__icontains=patient_search)
+        result_id = Patients.objects.filter(Q(cardid=search_card)).all() # | Q(cardid__icontains=patient_search)
         table_search = PatientsTable(result_id)
     elif ('q' in request.GET) and request.GET['q'].strip():
         search_id = ''
         patient_search = request.GET.get('q')
         result_id = Patients.objects.filter(#Q(id=int(patient_search)) | 
                                             Q(name__icontains=str(patient_search)) |
-                                            Q(address__icontains=str(patient_search))
-        ) # | Q(cardid__icontains=patient_search)
+                                            Q(address__icontains=str(patient_search))).all()
+        # | Q(cardid__icontains=patient_search)
         table_search = PatientsTable(result_id)
         table_search.paginate(page=request.GET.get("page", 1), per_page=page_no)
         # print('ps not equal None ')
     elif search_ph:
         result_search = Patients.objects.filter(
-            Q(phone__icontains=int(search_ph)) | Q(mobile__icontains=int(search_ph)))
+            Q(phone__icontains=int(search_ph)) | Q(mobile__icontains=int(search_ph))).all()
         table_search = PatientsTable(result_search)
         table_search.paginate(page=request.GET.get("page", 1), per_page=page_no)
         # pass
@@ -91,7 +91,7 @@ def search_visit(request):
         # patient_search = request.GET.get('q') # represent the text input in our form
         visit_search = request.GET.get('vis')      
         if visit_search.isnumeric():
-            result_visit = Visits.objects.filter(Q(id=visit_search))
+            result_visit = Visits.objects.filter(Q(id=visit_search)).all()
             table_search = VisitsTable(result_visit, exclude='addpresent, addrevis')
             table_search.paginate(page=request.GET.get("page", 1), per_page=5)
         elif visit_search == None:
@@ -115,7 +115,7 @@ def search_date(request):
     elif (search_to) == '':
         return redirect('search:search_date')
     elif search_from != '' and search_to != '':
-        date_search = Visits.objects.filter(Q(visitdate__range=[search_from, search_to])).order_by('-visitdate')
+        date_search = Visits.objects.filter(Q(visitdate__range=[search_from, search_to])).all().order_by('-visitdate')
         date_table_search = VisitsTable(date_search, exclude='addpresent, addrevis')
         date_table_search.paginate(page=request.GET.get("page", 1), per_page=5)
     # elif search_to != '':
@@ -133,24 +133,23 @@ def search_date(request):
     return render(request, 'search/tables.html', context)
 
 
-def search_only(request): # We need toknow what this function do
+def search_only(request): # We need to know what this function do
     today = date.today()
     search_day = request.GET.get('day')
     search_month = request.GET.get('month')
     search_year = request.GET.get('year')
     if (search_day) == '' and (search_month) == '' and (search_year) == '':
-        # pass
         return redirect('search:search_date')
     elif search_day != '' and search_month != '' and search_year != '':
-        date_search = Visits.objects.filter(Q(visitdate__year=search_year, visitdate__month=search_month, visitdate__day=search_day)).order_by('-id')
+        date_search = Visits.objects.filter(Q(visitdate__year=search_year, visitdate__month=search_month, visitdate__day=search_day)).all().order_by('-id')
         date_table_search = VisitsTable(date_search, exclude='addpresent, addrevis')
         date_table_search.paginate(page=request.GET.get("page", 1), per_page=5)
     elif search_month != '' and search_year != '':
-        date_search = Visits.objects.filter(Q(visitdate__year=search_year, visitdate__month=search_month)).order_by('-visitdate')
+        date_search = Visits.objects.filter(Q(visitdate__year=search_year, visitdate__month=search_month)).all().order_by('-visitdate')
         date_table_search = VisitsTable(date_search, exclude='addpresent, addrevis')
         date_table_search.paginate(page=request.GET.get("page", 1), per_page=5)
     elif search_year != '':
-        date_search = Visits.objects.filter(Q(visitdate__year=search_year)).order_by('-visitdate')
+        date_search = Visits.objects.filter(Q(visitdate__year=search_year)).all().order_by('-visitdate')
         date_table_search = VisitsTable(date_search, exclude='addpresent, addrevis')
         date_table_search.paginate(page=request.GET.get("page", 1), per_page=5)
     elif (search_year) == '':

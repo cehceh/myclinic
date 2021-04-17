@@ -1,8 +1,8 @@
 .DS_STORE
 
 .env
-notes/email-activation.py
-src/ecommerce/aws/ignore2.py
+# notes/email-activation.py
+# src/ecommerce/aws/ignore2.py
 
 # Virtualenv related
 bin/
@@ -35,10 +35,11 @@ lib64/
 parts/
 sdist/
 var/
-wheels/
+# myclinic_wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+*.whl
 
 # PyInstaller
 #  Usually these files are written by a python script from a template

@@ -1,6 +1,5 @@
 {% load static %}
 {% load i18n %}
-<!-- {% load i18n %} -->
 
 <!-- new nav -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -15,10 +14,6 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="nav navbar-nav ml-auto">
-                <!-- <li class="nav-item active">
-                    <a class="nav-link" href="#">
-                        <span class="fa fa-home"></span> Home</a>
-                </li> -->
 
                 <li class="nav-item active">
                     <a class="nav-link" href="{% url 'patientdata:save_patient' %}">
@@ -51,23 +46,7 @@
                         </li>
                     </ul>
                 </li>
-                <!-- {% get_current_language as code %} -->
-                <!-- <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'patientdata:table_patient' %}">
-                        <i class="fa fa-plus"></i>
-                         Add Past History</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'presenthistory:table_add_present_hist' %}">
-                        <i class="fa fa-address-book">
-                             Add Present History</i>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="fa fa-address-book"></i>
-                        </a>
-                </li> -->
+                
                 <li class="nav-item dropdown active">
                     <a href="#historySubmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">
                         <span class="fa fa-heartbeat"></span> Add History</a>
@@ -124,37 +103,9 @@
                 {% url 'revisits:edit_revisit' query.id patient.id visit.id as edit_revisit_url %}
                 {% url 'revisits:save_revisit' patient.id visit.id as save_revisit_url %}
                 {% url 'visits:visits_patient_id' visit.id patient.id as edit_visit_url %}
-                {% if request.path == edit_revisit_url or request.path == save_revisit_url or request.path == edit_visit_url %}                    
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'revisits:view_revisit' visit.id patient.id %}">
-                            <i class="fa fa-address-book"></i>
-                            All Revists</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">
-                            <i class="fa fa-edit"></i>
-                            Add Prescription</a>
-                    </li>
-                {% endif %}
 
-                <!-- {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                    <span class="fa fa-sign-out-alt">
-                    </span> {% trans 'Log out' %}</a>
-                </li>
-                {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                    <span class="fa fa-sign-in-alt">
-                    </span> {% trans 'Login' %}</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                    <span class="fa fa-registered">
-                    </span> {% trans 'Register' %}</a>
-                </li>
-                {% endif %} -->
+                
+
             </ul>
         </div>
         
@@ -172,3 +123,4 @@
     // document.getElementsByName("language").selectedIndex = -1;
   </script>
 {% endblock %}
+

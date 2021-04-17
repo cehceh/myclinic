@@ -1,14 +1,16 @@
+
+{% load i18n %}
 {% load static %}
 
 {% if request.path == 'dashboard' %}
 {% else %}
-    <div class="align-content-center" style="background-color:transparent; position: relative; display: inline-block; width: 100%; height: 100%; border-style: outset; border-radius: 20px; border-color: #aab5af; box-shadow: 2px 2px 4px 4px grey; margin: 20px; padding: 20px;" {% if request.path == '/'  %} hidden {% endif %} id="searchreport-div">
-                    
-        {% if request.path == day_url or request.path == month_url or request.path == year_url or request.path == only_date_url %}
+
+    <div class="align-content-center" style="background-color:transparent; position: relative; display: inline-block; width: 100%; height: 100%; border-style: outset; border-radius: 20px; border-color: #aab5af; box-shadow: 2px 2px 4px 4px grey; margin: 20px; padding: 20px;" id="searchreport-div">
+        {% if request.path == day_url or request.path == month_url or request.path == year_url or request.path == only_date_url %}      
         
             <!-- <div class="align-content-center float-right"> -->
                 <form class="form-inline mt-2 mt-md-0 float-left" method="GET" action="{% url 'search:search_only' %}">
-
+                    <!-- {% url 'search:search_only' %} -->
                     <input class="form-control mr-sm-2" type="text" name='day' placeholder="Search Day..." value="{{request.GET.day}}" aria-label="Search" v-model="day">
                     <input class="form-control mr-sm-2" type="text" name='month' placeholder="Search Month..." value="{{request.GET.month}}" aria-label="Search" v-model="month">
                     <input class="form-control mr-sm-2" type="text" name='year' placeholder="Search Year..." value="{{request.GET.year}}" aria-label="Search" v-model="year">
@@ -71,8 +73,7 @@
                 <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
                 
             </form>
-        {% else %}
-            
+        {% else %}     
             <!-- table_patient or table_patient_search -->
             <form class="form-inline mt-2 mt-md-0 float-left" method="GET" action="{% url 'search:search_patient' %}">
 
@@ -88,18 +89,17 @@
                 <button class="btn btn-secondary my-2 my-sm-0" type="submit" hidden>Search</button>
             </form>
             <form class="form-inline mt-2 mt-md-0 float-left" method="GET" action="{% url 'search:search_patient' %}">
-                <input class="form-control mr-sm-2" type="text" name='pid' placeholder="Search Patient ID..." value="{{request.GET.pid}}" aria-label="Search">
+                <input class="form-control mr-sm-2" type="number" name='pid' placeholder="Search Patient ID..." value="{{request.GET.pid}}" aria-label="Search">
                 <button class="btn btn-secondary my-2 my-sm-0" type="submit" hidden>Search</button>
             </form>
             <form class="form-inline mt-2 mt-md-0 float-left" method="GET" action="{% url 'search:search_visit' %}">
 
-                <input class="form-control mr-sm-2" type="text" name='vis' placeholder="Search Visits No..." value="{{request.GET.vis}}" aria-label="Search">
+                <input class="form-control mr-sm-2" type="number" name='vis' placeholder="Search Visits No..." value="{{request.GET.vis}}" aria-label="Search">
                 <button class="btn btn-secondary my-2 my-sm-0" type="submit" hidden>Search</button>
             </form>
             
         {% endif %}
     </div>
-
 {% endif %}
 
 

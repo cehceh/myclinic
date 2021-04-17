@@ -41,8 +41,11 @@ urlpatterns = [
     path('presenthistory/', include('apps.presenthistory.urls', namespace='presenthistory')),
     path('revisitdrug/', include('apps.revisitdrug.urls', namespace='revisitdrug')),
     path('revisits/', include('apps.revisits.urls', namespace='revisits')),
+    
+    path('reports/', include('apps.reports.urls', namespace='reports')),
+    
     path('search/', include('apps.search.urls', namespace='search')),
-    # path('', include('', namespace='')),
+    
     path('visits/', include('apps.visits.urls', namespace='visits')),
     path('visitdrug/', include('apps.visitdrug.urls', namespace='visitdrug')),
     # path('', include('', namespace='')),

@@ -6,37 +6,7 @@
     <h1><a href="/" class="logo">KMA Clinic</a></h1>
     
     <ul class="list-unstyled components mb-5">
-    {% if user.is_authenticated %}
-        <li class="active">
-            <a href="#userSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                <span class="fa fa-user"></span>
-                {% trans 'Wellcome' %}: {{ user.username }}
-            </a>
-            <ul class="collapse list-unstyled" id="userSubmenu">
-                <li>
-                    <a href="/dashboard"><span class="fa fa-home"></span>
-                    {% trans 'Dashboard' %}</a>
-                </li>
-                {% if user.is_staff %}
-                <li>
-                    <a href="#">
-                        <span class="fa fa-cubes"></span>
-                     {% trans 'Created Products' %}</a>
-                </li>
-                <li>
-                    <a href="#"> 
-                        <span class="fas fa-battery-full"></span>
-                         {% trans 'Created Stock' %}</a>
-                </li>
-                {% endif %}
-                <li>
-                    <a href="#">
-                    <i class="fa fa-sign-out-alt" aria-hidden="true">
-                    </i> {% trans 'Log out' %}</a>
-                </li>
-            </ul>              
-        </li>
-    {% endif %}
+    
         <li class="active">
             <a href="/dashboard">
             <span class="fa fa-home"></span> Home</a>
@@ -111,40 +81,23 @@
             <span class="fa fa-line-chart"></span> Reports</a>
             <ul class="collapse list-unstyled" id="reportSubmenu">
                 <li>
-                    <a href="#">
+                    <a href="{% url 'reports:calculate_day_income' %}">
                         <span class="fa fa-pie-chart" aria-hidden="true">
                         </span> Daily Report</a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="{% url 'reports:calculate_month_income' %}">
                     <span class="fa fa-bar-chart"></span>
                      Monthly Report</a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="{% url 'reports:calculate_year_income' %}">
                     <span class="fa fa-area-chart"></span>    
                      Yearly Report</a>
                 </li>
             </ul>
         </li>
-        <!-- {% if user.is_authenticated %}
-            <li>
-                <form action="{% url 'change_language' %}" method="post" id="lang">
-                    {% csrf_token %}
-                    <select name="language" class="form-control" form="lang" onchange="form.submit()" id="myDropdown">   
-                        <option selected value="">{% trans 'Choose Language' %}</option>       
-                        {% get_available_languages as LANGUAGES %}
-                        {% for language in LANGUAGES %}
-                        <option value="{{ language.0 }}" {% if language.0 == LANGUAGE_CODE %} selected {% endif %}>
-                            {{ language.0|language_name_local }} 
-                            ({{ language.0 }})
-                        </option>
-                        {% endfor %}
-                    </select>
-                    <input type="hidden" value="Change">
-                </form>
-            </li>
-        {% endif %} -->
+        
         
         <li>
             <a href="#">

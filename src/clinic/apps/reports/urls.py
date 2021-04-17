@@ -1,0 +1,23 @@
+from django.urls import path
+
+from .views import (
+    calculate_income, calculate_day_income,
+    calculate_month_income, calculate_year_income
+)
+
+
+app_name = 'reports'
+urlpatterns = [
+    path('income/year/<int:year>/', calculate_income, name='year_income'),
+    # path('income/day/', calculate_income, name='calculate_day_income'),
+    # path('income/month/', calculate_income, name='calculate_month_income'),
+    path('income/day/', calculate_day_income, name='calculate_day_income'),
+    path('income/month/', calculate_month_income, name='calculate_month_income'),
+    path('income/year/', calculate_year_income, name='calculate_year_income'),
+    
+]
+
+
+
+
+

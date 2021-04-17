@@ -1,0 +1,55 @@
+{% extends 'index.html' %} 
+<!-- {% load static %}  -->
+{% load render_table from django_tables2 %} 
+<!-- {% load crispy_forms_tags %}  -->
+<!-- {% load export_url from django_tables2 %} -->
+
+
+{% block content %}
+          
+        <p class="float-left">
+            <h1><strong>Yearly Report</strong></h1>
+        </p>
+        
+        <br><br>
+        {% render_table year_table %}
+
+{% endblock %}
+
+
+
+{% block scripts %}
+
+    <!-- Write javascript code Here -->
+    <script type="text/javascript">    
+        $(document).ready(function() {
+            
+        })
+    </script>
+    
+    <script>
+        var editPasthist = new Vue ({
+            // el: '#edit-pasthist',
+            // delimiters: ['[[', ']]'],
+            // data: {
+        //         title: "Edit Past History",
+        //         message: 'Code with amr',
+        //         showDialog: false,
+        //         category_id: 0,
+            // },
+            methods: {
+                
+            }
+        });
+        // new instance of Vue.js
+        var savePasthist = new Vue({
+            // el: '',
+            // delimiters: ['[[', ']]'],
+            // data: {
+            //     title: "Add Past History",
+            // }
+        });
+        
+    </script>
+
+{% endblock  %}
