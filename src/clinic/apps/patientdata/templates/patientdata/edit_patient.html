@@ -51,15 +51,16 @@
             {{editpatform.mobile.label_tag}} {{editpatform.mobile}} <br>
             
             {{editpatform.cardid.label_tag}} 
-            {% render_field editpatform.cardid v-model="cardid" %} <br>
+            {% render_field editpatform.cardid v-model="cardid" v-on::change="cardValue" id="cardid" %} <br>
             
-            {{editpatform.barcode.label_tag}}
-            {% render_field editpatform.barcode ::value="this.id + this.sign + this.dob + this.sign + this.cardid" %} <br>
-
+            {{editpatform.barcode.label_tag.hidden }}
+            {% render_field editpatform.barcode ::value="barcodeChanged + cardValue"  hidden="true" %} <br>
+            <!-- this.id + this.sign + this.dob + this.sign + this.cardid -->
             <!-- {{editpatform.barimg.label_tag}}
             {% render_field editpatform.barimg %} -->
-            {% render_field editpatform.barurl ::value="this.url + this.id + this.sign + this.dob + this.sign + this.cardid" %} 
+            {% render_field editpatform.barurl ::value="urlChanged"  hidden="true" %} 
             <br>
+            <!-- this.url + this.id + this.sign + this.dob + this.sign + this.cardid -->
             {% if query.barimg %}
                 <div>
                     <a href="{% url 'patientdata:patient_details' barcode %}">
@@ -221,6 +222,18 @@
                     'monthDob=:'+monthDob,'dateDob=:'+dateDob, 'ageString=:'+ageString)
 
                     return ageString;
+                },
+                cardValue(){
+                    this.cardid = document.getElementById('cardid').value;
+                    return this.cardid;
+                },
+                barcodeChanged(){
+                    this.barcode = this.id + this.sign + this.dob + this.sign ;//+ this.cardid;
+                    return this.barcode;
+                },
+                urlChanged(){
+                    this.barurl = this.url + this.id + this.sign + this.dob + this.sign + this.cardid;
+                    return this.barurl;
                 }
             }
         })

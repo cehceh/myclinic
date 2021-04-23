@@ -8,7 +8,7 @@ from clinic.utils import auth_required
 
 # Create your views here.
 
-# @auth_required
+@auth_required
 def frontpage(request):
     ''' Home page before user sign in '''
     context = {}
@@ -45,7 +45,7 @@ def frontpage(request):
 #     return response
 
 #################################
-# @auth_required
+@auth_required
 def dashboard(request):
     ''' Dashboard page main page means English'''
     # from xml.dom import minidom

@@ -68,10 +68,10 @@ def pass_patient_id(request, id): # Making save to new visits
             save_form = form.save(commit=False)
             save_form.patient_id = var
             save_form.save()
-
+            visit_id = save_form.id
             # name = save_form.patient
             messages.success(request, 'Saving new visit for (' + str(patient) + ') done')
-            return redirect('visits:table_visits')#('/clinic/table/visits/')
+            return redirect(reverse('visits:visits_patient_id', args=(visit_id, save_form.patient_id)))#('visits:table_visits')
     else:
         form = VisitsForm()
     context = {

@@ -17,4 +17,5 @@ D:\Django\projects\myclinic>python src\clinic\manage.py migrate visits --setting
 D:\Django\projects\myclinic>python src\clinic\manage.py makemigrations gyno --settings=clinic.settings.development
 D:\Django\projects\myclinic>python src\clinic\manage.py migrate gyno --settings=clinic.settings.development
 
-
+# 5-
+D:\Django\projects\myclinic>python src\clinic\manage.py makemigrations revisitdrug --settings=clinic.settings.development

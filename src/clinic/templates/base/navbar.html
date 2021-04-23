@@ -78,7 +78,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item dropdown active">
+                <!-- <li class="nav-item dropdown active">
                     <a href="#navreportSubmenu" data-toggle="dropdown"  aria-expanded="false" class="nav-link dropdown-toggle">
                         <span class="fa fa-line-chart"></span> Reports</a>
                     <ul class="collapse list-unstyled dropdown-menu" aria-labelledby="navreportSubmenu" id="navreportSubmenu">
@@ -98,11 +98,12 @@
                                      Yearly Report</a>
                         </li>
                     </ul>
-                </li>
+                </li> -->
                 <!-- URL -->
-                {% url 'revisits:edit_revisit' query.id patient.id visit.id as edit_revisit_url %}
+                {% include 'base/nav_included.html' %}
+                <!-- {% url 'revisits:edit_revisit' query.id patient.id visit.id as edit_revisit_url %}
                 {% url 'revisits:save_revisit' patient.id visit.id as save_revisit_url %}
-                {% url 'visits:visits_patient_id' visit.id patient.id as edit_visit_url %}
+                {% url 'visits:visits_patient_id' visit.id patient.id as edit_visit_url %} -->
 
                 
 

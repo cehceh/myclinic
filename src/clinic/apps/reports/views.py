@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.db.models import Max
+from django.db.models import Q, Max
 from django.db import connection, transaction
 from django.contrib import messages
 from datetime import datetime, date
@@ -31,11 +31,37 @@ def calculate_day_income(request):
 def calculate_month_income(request):
     today = date.today()#datetime.now()
     month_income = Visits.objects.filter(visitdate__year=today.year, visitdate__month=today.month)
-    month_table = VisitsTable(month_income, exclude='addpresent')
-    month_table.paginate(page=request.GET.get("page", 1), per_page=10)
+    table = VisitsTable(month_income, exclude='addpresent')
+    table.paginate(page=request.GET.get("page", 1), per_page=10)
+
+    search_name = request.GET.get('name')
+    search_vis = request.GET.get('vis')
+    search_date = request.GET.get('d')
+    if search_name == None and search_vis == None and search_date == None : 
+        table = VisitsTable(month_income, exclude='addpresent')
+        table.paginate(page=request.GET.get("page", 1), per_page=10)
+    elif ('vis' in request.GET) and request.GET['vis']:#search_vis != '':
+        visit = Visits.objects.filter(Q(id=search_vis))
+        table = VisitsTable(visit, exclude='addpresent')
+        # table.paginate(page=request.GET.get("page", 1), per_page=5)
+    elif ('d' in request.GET) and request.GET['d']: 
+        result_date = Visits.objects.filter(Q(visitdate=search_date))
+        table = VisitsTable(result_date, exclude='addpresent')
+        table.paginate(page=request.GET.get("page", 1), per_page=10)
+    elif ('name' in request.GET) and request.GET['name'].strip():#search_name != '':
+        patient = Visits.objects.filter(Q(patient__name__icontains=search_name)) # note HERE '__name__icontains' it's important to get related field "patient"(string not id) 
+        table = VisitsTable(patient, exclude='addpresent')
+        table.paginate(page=request.GET.get("page", 1), per_page=10)
+    # elif search_vis == "" or int(search_vis) == 0: 
+    #     table = VisitsTable(month_income, exclude='addpresent')
+    #     table.paginate(page=request.GET.get("page", 1), per_page=10)
+    else:
+        table = VisitsTable(month_income, exclude='addpresent')
+        table.paginate(page=request.GET.get("page", 1), per_page=10)
+    
 
     context = {
-        'month_table': month_table,
+        'month_table': table,
     }
     return render(request, 'reports/month_table.html', context)
 

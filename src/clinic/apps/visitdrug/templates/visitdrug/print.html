@@ -33,14 +33,29 @@
   border-color: #aab5af; box-shadow: 2px 2px 4px 4px grey;"> -->
     <!-- <br><br><br><br><br><br><br><br><br><br> -->
     <!--  -->
-    <span class="" id="p">
-    <br><br><br><br><br><h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            Visit No: {{ visit_no }} <br><br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;Visit Date: {{ date }} <br><br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;Name: {{ name }}</h4>
-    </span>
+    <div class="container">
+        <div class="float-left" style="width: 50%; height: 50%;" id="p">
+            <br><br><br><br><br><h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    Visit No: {{ visit_no }} <br><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;Visit Date: {{ date }} <br><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;Name: {{ name }}</h4>
+        </div>
+            
+        <!-- </div> -->
+        <div class="float-left" style="width: 3%; height: 3%;" id="img">
+            {% if name.barimg %}
+                <br><br><br><br><br>
+                <!-- <div > -->
+                    <a href="{% url 'patientdata:patient_details' name.barcode %}">
+                        <img class="image" src="{{ name.barimg.url }}"> 
+                    </a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <!-- </div> -->
+                <br>
+            {% endif %}
+        </div>
+    </div>
     <!--  -->
     <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="padding-right: 10px;" id="r">
         <h4>R\</h4>
@@ -80,10 +95,10 @@
 <script type="text/javascript">
     function printData() {
         var spanToPrint = document.getElementById("p");
-        // var rToPrint = document.getElementById("r");
+        var imgToPrint = document.getElementById("img");
         var divToPrint = document.getElementById("pdata");
         newWin = window.open("");
-        newWin.document.write(spanToPrint.innerHTML + divToPrint.outerHTML);
+        newWin.document.write(spanToPrint.innerHTML + imgToPrint.innerHTML + divToPrint.outerHTML);
         newWin.print();
         newWin.close();
     }

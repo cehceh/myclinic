@@ -18,7 +18,35 @@
         <p class="float-left">
             <h1><strong>Monthly Report</strong></h1>
         </p>
-        <a class="btn btn-secondary float-right" href="#" type="button">Button</a>
+        <div class="container">
+            <!-- <a class="btn btn-secondary float-right" href="#" type="button">Button</a> -->
+            <form class="form-inline mt-2 mt-md-0 float-left" method="GET" action="{{month_url}}">
+
+                <input class="form-control mr-sm-2" type="text" name='name' placeholder="Patient Name ..." value="{{request.GET.name}}" aria-label="Search">
+                
+                <!-- <input class="form-control mr-sm-2" type="number" name='vis' placeholder="Visit ID ..." value="{{request.GET.vis}}" aria-label="Search"> -->
+
+                <button class="btn btn-secondary my-2 my-sm-0" type="submit" hidden>Search</button>
+                
+            </form> &nbsp;&nbsp;
+
+            <form class="form-inline mt-2 mt-md-0 float-left" method="GET" action="{{month_url}}">
+
+                <input class="form-control mr-sm-2" type="number" name='vis' placeholder="Visit ID ..." value="{{request.GET.vis}}" aria-label="Search">
+                
+                <button class="btn btn-secondary my-2 my-sm-0" type="submit" hidden>Search</button>
+                
+            </form>&nbsp;&nbsp;
+
+            <form class="form-inline mt-2 mt-md-0 float-left" method="GET" action="{{month_url}}">
+
+                <input class="form-control mr-sm-2" type="date" name='d' placeholder="Specific Date..." value="{{request.GET.d}}" aria-label="Search">
+                
+                <button class="btn btn-secondary my-2 my-sm-0" type="submit" hidden>Search</button>
+                
+            </form>
+        </div>
+        
         <br><br>
         {% render_table month_table %}  
    

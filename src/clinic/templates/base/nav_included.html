@@ -1,0 +1,46 @@
+{% load static %}
+{% load i18n %}
+
+{% url 'revisits:edit_revisit' query.id patient.id visit.id as edit_revisit_url %}
+{% url 'revisits:save_revisit' patient.id visit.id as save_revisit_url %}
+{% url 'visits:visits_patient_id' visit.id patient.id as edit_visit_url %}
+
+
+{% if request.path == edit_revisit_url or request.path == save_revisit_url %}
+        
+    <li class="nav-item active">
+        <a class="nav-link" href="{% url 'revisits:view_revisit' visit.id patient.id %}">
+        <span class="fa fa-user-plus"></span> 
+        All Revisits For Visit No.({{visit.id}})</a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" href="{% url 'patientdata:table_patient' %}"> 
+        <i class="fa fa-medkit" aria-hidden="true" aria-hidden="true"></i>
+        Add Prescription For ReVisit No.({{visit.id}})</a>
+    </li>
+
+{% elif request.path == edit_visit_url %}
+
+    <li class="nav-item active">
+        <a class="nav-link" href="{% url 'revisits:view_revisit' visit.id patient.id %}">
+        <span class="fa fa-user-plus"></span> 
+        All Revisits For Visit No.({{visit.id}})</a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" href="{% url 'visitdrug:save_medicine' patient.id visit.id %}"> 
+        <i class="fa fa-medkit" aria-hidden="true" aria-hidden="true"></i>
+        Add Prescription For Visit No.({{visit.id}})</a>
+    </li>
+
+{% endif %}
+
+
+
+{% block scripts %}
+  <script>
+    // var x = document.getElementById("myDropdown");
+    // x.selectedIndex = -1;
+    // document.getElementById("myDropdown").selectedIndex = -1;
+    // document.getElementsByName("language").selectedIndex = -1;
+  </script>
+{% endblock %}

@@ -54,10 +54,12 @@
                 </div>
 
                 <footer class="card-footer">
-                    <a class="button is-dark card-footer-item" href="#">
+                    <a class="button is-dark card-footer-item" href="{% url 'patientdata:save_patient' %}">
                         New Patient</a>&nbsp;&nbsp;
-                    <a href="#" class="card-footer-item button is-primary">
-                        New Visit</a> &nbsp;&nbsp; 
+                    <a href="{% url 'patientdata:edit_patient' qs.id %}" class="card-footer-item button is-primary">
+                        Edit Patient</a> &nbsp;&nbsp; 
+                        <a href="{% url 'visits:pass_patient_id' qs.id %}" class="card-footer-item button is-primary">
+                        New Visit</a> &nbsp;&nbsp;
                 </footer>
             </div>
         </div> 

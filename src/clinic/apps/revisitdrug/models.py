@@ -31,17 +31,15 @@ class Remedicine(models.Model):
     patient = models.ForeignKey(Patients, on_delete=models.CASCADE)
     visit   = models.ForeignKey(Visits, null=True, blank=True, on_delete=models.CASCADE)
     revisit = models.ForeignKey(Revisits, null=True, blank=True, on_delete=models.CASCADE)
-    # presc   = models.IntegerField(default=0)
-
+    
     def __str__(self):
         return "{}".format(self.name)
 
     def get_absolute_url(self):
         # return reverse('clinic:save_medicine',
         #                 kwargs={'patient_id':self.patient, 'visit':self.visit})
-        return reverse('clinic:save_medicine', 
+        return reverse('revisitdrug:save_medicine', 
                     kwargs={
-                        'patient_id':self.patient,
-                        'visit':self.visit
-                    }) #args=(self.patient, self.visit))
+                        'patient_id': self.patient,
+                        'visit': self.visit}) #args=(self.patient, self.visit))
 

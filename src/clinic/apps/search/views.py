@@ -141,15 +141,15 @@ def search_only(request): # We need to know what this function do
     if (search_day) == '' and (search_month) == '' and (search_year) == '':
         return redirect('search:search_date')
     elif search_day != '' and search_month != '' and search_year != '':
-        date_search = Visits.objects.filter(Q(visitdate__year=search_year, visitdate__month=search_month, visitdate__day=search_day)).all().order_by('-id')
+        date_search = Visits.objects.filter(Q(visitdate__year=search_year, visitdate__month=search_month, visitdate__day=search_day)).order_by('-id')
         date_table_search = VisitsTable(date_search, exclude='addpresent, addrevis')
         date_table_search.paginate(page=request.GET.get("page", 1), per_page=5)
     elif search_month != '' and search_year != '':
-        date_search = Visits.objects.filter(Q(visitdate__year=search_year, visitdate__month=search_month)).all().order_by('-visitdate')
+        date_search = Visits.objects.filter(Q(visitdate__year=search_year, visitdate__month=search_month)).order_by('-visitdate')
         date_table_search = VisitsTable(date_search, exclude='addpresent, addrevis')
         date_table_search.paginate(page=request.GET.get("page", 1), per_page=5)
     elif search_year != '':
-        date_search = Visits.objects.filter(Q(visitdate__year=search_year)).all().order_by('-visitdate')
+        date_search = Visits.objects.filter(Q(visitdate__year=search_year)).order_by('-visitdate')
         date_table_search = VisitsTable(date_search, exclude='addpresent, addrevis')
         date_table_search.paginate(page=request.GET.get("page", 1), per_page=5)
     elif (search_year) == '':

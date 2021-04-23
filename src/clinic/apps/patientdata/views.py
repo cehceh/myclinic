@@ -54,7 +54,10 @@ def save_patient(request):
         form = PatientsForm()
 
     lastid = Patients.objects.values('id').last()
-    patid = lastid['id'] + 1
+    if lastid is not None:
+        patid = lastid['id'] + 1
+    else:
+        patid = 1
     # print(patid)
     label2 = "Save"
     context = {

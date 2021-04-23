@@ -5,14 +5,16 @@ from django.db import connection, transaction
 from django.contrib import messages
 # from django.contrib.postgres.search import SearchVector
 
-from .forms import RevisitsForm
 from apps.patientdata.models import Patients
 from apps.visits.models import Visits
 from apps.visitdrug.models import Medicine
+from apps.revisitdrug.models import Remedicine 
 from apps.presenthistory.models import PresentHistory
-from .models import Revisits
 from apps.patientdata.tables import PatientsTable
 from apps.visits.tables import VisitsTable
+
+from .models import Revisits
+from .forms import RevisitsForm
 from .tables import RevisitsTable
 
 
@@ -38,6 +40,7 @@ def save_revisit(request, patient_id, visit_id): # Making save to new visits
         present_qs = PresentHistory.objects.get(id=presentid)
 
     match_medicine = Medicine.objects.filter(visit=visit_id).exists()
+    match_revisit_medicine = Remedicine.objects.filter(visit=visit_id).exists()
     # if match_medicine:
     #     medicine = Medicine.objects.get(visit=visit_id)
     # else:
@@ -67,6 +70,7 @@ def save_revisit(request, patient_id, visit_id): # Making save to new visits
         'pat_id': var,
         'patient': patient, 
         'medicine': match_medicine,
+        'remidicine': match_revisit_medicine,
         'save_revisits_form': form,
         'bound_form': bound_form,
     }
@@ -128,8 +132,10 @@ def edit_revisit(request, patient_id, visit_id, id):
 
 #
 def table_revisit(request):
-    # qs = Revisits.objects.select_related('patient').order_by('-id') # the next lines are the result of this query ORM
-    qs = Revisits.objects.all().order_by('-id')
+    qs = Revisits.objects.select_related('patient', 'visit')#.order_by('id')
+    # ('-visits_visits.id') # the next lines are the result of this query ORM
+    # qs = Revisits.objects.all().order_by('-id')
+    print(qs.query)
     page_no = request.GET.get('pageno')
     if page_no == None or page_no == '' or int(page_no) == 0:
         table = RevisitsTable(qs, exclude='prn')
